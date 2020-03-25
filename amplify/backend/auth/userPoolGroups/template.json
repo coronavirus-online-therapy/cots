@@ -1,23 +1,23 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
     "Parameters": {
-        "authcots15b9c7d4UserPoolId": {
+        "authcotsc3138bc7UserPoolId": {
             "Type": "String",
-            "Default": "authcots15b9c7d4UserPoolId"
+            "Default": "authcotsc3138bc7UserPoolId"
         },
         
-        "authcots15b9c7d4IdentityPoolId": {
+        "authcotsc3138bc7IdentityPoolId": {
             "Type": "String",
-            "Default": "authcots15b9c7d4IdentityPoolId"
+            "Default": "authcotsc3138bc7IdentityPoolId"
         },
         
-        "authcots15b9c7d4AppClientID": {
+        "authcotsc3138bc7AppClientID": {
             "Type": "String",
-            "Default": "authcots15b9c7d4AppClientID"
+            "Default": "authcotsc3138bc7AppClientID"
         },
-        "authcots15b9c7d4AppClientIDWeb": {
+        "authcotsc3138bc7AppClientIDWeb": {
             "Type": "String",
-            "Default": "authcots15b9c7d4AppClientIDWeb"
+            "Default": "authcotsc3138bc7AppClientIDWeb"
         },
         "AuthRoleArn": {
             "Type": "String"
@@ -55,7 +55,7 @@
               },
               
               "UserPoolId" : {
-                "Ref": "authcots15b9c7d4UserPoolId"
+                "Ref": "authcotsc3138bc7UserPoolId"
               } 
             }
         },
@@ -68,7 +68,7 @@
                         "",
                         [
                           {
-                            "Ref": "authcots15b9c7d4UserPoolId"
+                            "Ref": "authcotsc3138bc7UserPoolId"
                           },
                           "-patientsGroupRole"
                         ]
@@ -85,7 +85,7 @@
                             },
                             "Action": "sts:AssumeRoleWithWebIdentity",
                             "Condition": {
-                              "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref":"authcots15b9c7d4IdentityPoolId"}},
+                              "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref":"authcotsc3138bc7IdentityPoolId"}},
                               "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": "authenticated"}
                             }
                         }
@@ -109,7 +109,7 @@
               },
               
               "UserPoolId" : {
-                "Ref": "authcots15b9c7d4UserPoolId"
+                "Ref": "authcotsc3138bc7UserPoolId"
               } 
             }
         },
@@ -122,7 +122,7 @@
                         "",
                         [
                           {
-                            "Ref": "authcots15b9c7d4UserPoolId"
+                            "Ref": "authcotsc3138bc7UserPoolId"
                           },
                           "-providersGroupRole"
                         ]
@@ -139,7 +139,7 @@
                             },
                             "Action": "sts:AssumeRoleWithWebIdentity",
                             "Condition": {
-                              "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref":"authcots15b9c7d4IdentityPoolId"}},
+                              "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref":"authcotsc3138bc7IdentityPoolId"}},
                               "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": "authenticated"}
                             }
                         }
@@ -165,7 +165,7 @@
                                 "",
                                 [
                                   
-                                  "cots15b9c7d4",
+                                  "cotsc3138bc7",
                                   "-ExecutionRole-",
                                   {
                                     "Ref": "env"
@@ -324,16 +324,16 @@
                     "Ref": "UnauthRoleArn"
                 },
                 "identityPoolId": {
-                    "Ref": "authcots15b9c7d4IdentityPoolId"
+                    "Ref": "authcotsc3138bc7IdentityPoolId"
                 },
                 "userPoolId": {
-                    "Ref": "authcots15b9c7d4UserPoolId"
+                    "Ref": "authcotsc3138bc7UserPoolId"
                 },
                 "appClientIDWeb": {
-                    "Ref": "authcots15b9c7d4AppClientIDWeb"
+                    "Ref": "authcotsc3138bc7AppClientIDWeb"
                 },
                 "appClientID": {
-                    "Ref": "authcots15b9c7d4AppClientID"
+                    "Ref": "authcotsc3138bc7AppClientID"
                 },
                 "region": {
                     "Ref": "AWS::Region"

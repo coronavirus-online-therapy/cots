@@ -6,7 +6,7 @@
         }
     },
     "auth": {
-        "cots15b9c7d4": {
+        "cotsc3138bc7": {
             "service": "Cognito",
             "providerPlugin": "awscloudformation",
             "dependsOn": []
@@ -17,7 +17,7 @@
             "dependsOn": [
                 {
                     "category": "auth",
-                    "resourceName": "cots15b9c7d4",
+                    "resourceName": "cotsc3138bc7",
                     "attributes": [
                         "UserPoolId",
                         "AppClientIDWeb",

@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "cots15b9c7d4_identitypool_15b9c7d4",
+    "identityPoolName": "cotsc3138bc7_identitypool_c3138bc7",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "cots15b9c7d4",
-    "userPoolName": "cots15b9c7d4_userpool_15b9c7d4",
+    "resourceNameTruncated": "cotsc3138bc7",
+    "userPoolName": "cotsc3138bc7_userpool_c3138bc7",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -28,15 +28,14 @@
     "userpoolClientGenerateSecret": true,
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [
-        "email",
-        "name"
+        "email"
     ],
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "cots1515b9c7d4_userpoolclient_lambda_role",
-    "userpoolClientSetAttributes": true,
-    "resourceName": "cots15b9c7d4",
+    "userpoolClientLambdaRole": "cotsc3c3138bc7_userpoolclient_lambda_role",
+    "userpoolClientSetAttributes": false,
+    "resourceName": "cotsc3138bc7",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -52,7 +51,7 @@
     },
     "useDefault": "manual",
     "usernameAttributes": [
-        "email, phone_number"
+        "email"
     ],
     "triggers": "{}",
     "userPoolGroupList": [

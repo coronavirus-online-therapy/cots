@@ -29,4 +29,34 @@ function App() {
   );
 }
 
-export default withAuthenticator(App, true);
+const authConfig = {
+  usernameAttributes: 'email',
+  signUpConfig: {
+    header: 'Request a Session',
+    hideAllDefaults: true,
+    signUpFields: [
+      {
+        label: 'Full Name',
+        key: 'name',
+        required: true,
+        displayOrder: 1,
+        type: 'string'
+      },
+      {
+        label: 'Email',
+        key: 'email',
+        required: true,
+        displayOrder: 2,
+        type: 'string'
+      },
+      {
+        label: 'Password',
+        key: 'password',
+        required: true,
+        displayOrder: 3,
+        type: 'password'
+      }
+    ]
+  }
+};
+export default withAuthenticator(App, authConfig);
