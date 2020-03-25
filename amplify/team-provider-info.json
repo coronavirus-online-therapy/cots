@@ -12,11 +12,21 @@
             "AmplifyAppId": "djuten1ugddu1"
         },
         "categories": {
+            "function": {
+                "cots970b3fa1DefineAuthChallenge": {},
+                "cots970b3fa1CreateAuthChallenge": {},
+                "cots970b3fa1VerifyAuthChallengeResponse": {
+                    "RECAPTCHASECRET": ""
+                }
+            },
             "hosting": {
                 "amplifyhosting": {
                     "appId": "djuten1ugddu1",
-                    "type": "manual"
+                    "type": "cicd"
                 }
+            },
+            "auth": {
+                "cots15b9c7d4": {}
             }
         }
     }

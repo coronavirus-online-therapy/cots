@@ -2,8 +2,30 @@
     "hosting": {
         "amplifyhosting": {
             "service": "amplifyhosting",
+            "type": "cicd"
+        }
+    },
+    "auth": {
+        "cots15b9c7d4": {
+            "service": "Cognito",
             "providerPlugin": "awscloudformation",
-            "type": "manual"
+            "dependsOn": []
+        },
+        "userPoolGroups": {
+            "service": "Cognito-UserPool-Groups",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": [
+                {
+                    "category": "auth",
+                    "resourceName": "cots15b9c7d4",
+                    "attributes": [
+                        "UserPoolId",
+                        "AppClientIDWeb",
+                        "AppClientID",
+                        "IdentityPoolId"
+                    ]
+                }
+            ]
         }
     }
 }
