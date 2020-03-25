@@ -10,6 +10,14 @@
             "StackName": "amplify-cots-prod-212007",
             "StackId": "arn:aws:cloudformation:us-west-2:042626818835:stack/amplify-cots-prod-212007/e9b27580-6e4f-11ea-9497-0aa7561f3002",
             "AmplifyAppId": "djuten1ugddu1"
+        },
+        "categories": {
+            "hosting": {
+                "amplifyhosting": {
+                    "appId": "djuten1ugddu1",
+                    "type": "manual"
+                }
+            }
         }
     }
 }
