@@ -17,7 +17,7 @@
             "dependsOn": [
                 {
                     "category": "auth",
-                    "resourceName": "cotsc3138bc7",
+                    "resourceName": "cots",
                     "attributes": [
                         "UserPoolId",
                         "AppClientIDWeb",
@@ -26,6 +26,28 @@
                     ]
                 }
             ]
+        },
+        "cots": {
+            "service": "Cognito",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": [
+                {
+                    "category": "function",
+                    "resourceName": "cotsPostConfirmation",
+                    "triggerProvider": "Cognito",
+                    "attributes": [
+                        "Arn",
+                        "Name"
+                    ]
+                }
+            ]
+        }
+    },
+    "function": {
+        "cotsPostConfirmation": {
+            "build": true,
+            "providerPlugin": "awscloudformation",
+            "service": "Lambda"
         }
     }
 }

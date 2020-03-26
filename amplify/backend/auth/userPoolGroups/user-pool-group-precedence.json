@@ -1,10 +1,10 @@
 [
     {
-        "groupName": "patients",
+        "groupName": "providers",
         "precedence": 1
     },
     {
-        "groupName": "providers",
+        "groupName": "patients",
         "precedence": 2
     }
 ]

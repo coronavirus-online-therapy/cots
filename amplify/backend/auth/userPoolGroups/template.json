@@ -1,23 +1,23 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
     "Parameters": {
-        "authcotsc3138bc7UserPoolId": {
+        "authcotsUserPoolId": {
             "Type": "String",
-            "Default": "authcotsc3138bc7UserPoolId"
+            "Default": "authcotsUserPoolId"
         },
         
-        "authcotsc3138bc7IdentityPoolId": {
+        "authcotsIdentityPoolId": {
             "Type": "String",
-            "Default": "authcotsc3138bc7IdentityPoolId"
+            "Default": "authcotsIdentityPoolId"
         },
         
-        "authcotsc3138bc7AppClientID": {
+        "authcotsAppClientID": {
             "Type": "String",
-            "Default": "authcotsc3138bc7AppClientID"
+            "Default": "authcotsAppClientID"
         },
-        "authcotsc3138bc7AppClientIDWeb": {
+        "authcotsAppClientIDWeb": {
             "Type": "String",
-            "Default": "authcotsc3138bc7AppClientIDWeb"
+            "Default": "authcotsAppClientIDWeb"
         },
         "AuthRoleArn": {
             "Type": "String"
@@ -41,65 +41,11 @@
     },
     "Resources": {
     
-        "patientsGroup": {
-          "Type" : "AWS::Cognito::UserPoolGroup",
-          "Properties" : {
-              "GroupName" : "patients",
-              "Precedence" : 1,
-              
-              "RoleArn" : {
-                "Fn::GetAtt": [
-                    "patientsGroupRole",
-                    "Arn"
-                ]
-              },
-              
-              "UserPoolId" : {
-                "Ref": "authcotsc3138bc7UserPoolId"
-              } 
-            }
-        },
-        
-        "patientsGroupRole": {
-            "Type": "AWS::IAM::Role",
-            "Properties": {
-                "RoleName":{
-                    "Fn::Join": [
-                        "",
-                        [
-                          {
-                            "Ref": "authcotsc3138bc7UserPoolId"
-                          },
-                          "-patientsGroupRole"
-                        ]
-                    ]
-                },
-                "AssumeRolePolicyDocument": {
-                    "Version": "2012-10-17",
-                    "Statement": [
-                        {
-                            "Sid": "",
-                            "Effect": "Allow",
-                            "Principal": {
-                                "Federated": "cognito-identity.amazonaws.com"
-                            },
-                            "Action": "sts:AssumeRoleWithWebIdentity",
-                            "Condition": {
-                              "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref":"authcotsc3138bc7IdentityPoolId"}},
-                              "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": "authenticated"}
-                            }
-                        }
-                    ]
-                }
-            }
-        },
-     
-    
         "providersGroup": {
           "Type" : "AWS::Cognito::UserPoolGroup",
           "Properties" : {
               "GroupName" : "providers",
-              "Precedence" : 2,
+              "Precedence" : 1,
               
               "RoleArn" : {
                 "Fn::GetAtt": [
@@ -109,7 +55,7 @@
               },
               
               "UserPoolId" : {
-                "Ref": "authcotsc3138bc7UserPoolId"
+                "Ref": "authcotsUserPoolId"
               } 
             }
         },
@@ -122,7 +68,7 @@
                         "",
                         [
                           {
-                            "Ref": "authcotsc3138bc7UserPoolId"
+                            "Ref": "authcotsUserPoolId"
                           },
                           "-providersGroupRole"
                         ]
@@ -139,7 +85,61 @@
                             },
                             "Action": "sts:AssumeRoleWithWebIdentity",
                             "Condition": {
-                              "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref":"authcotsc3138bc7IdentityPoolId"}},
+                              "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref":"authcotsIdentityPoolId"}},
+                              "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": "authenticated"}
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+     
+    
+        "patientsGroup": {
+          "Type" : "AWS::Cognito::UserPoolGroup",
+          "Properties" : {
+              "GroupName" : "patients",
+              "Precedence" : 2,
+              
+              "RoleArn" : {
+                "Fn::GetAtt": [
+                    "patientsGroupRole",
+                    "Arn"
+                ]
+              },
+              
+              "UserPoolId" : {
+                "Ref": "authcotsUserPoolId"
+              } 
+            }
+        },
+        
+        "patientsGroupRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "RoleName":{
+                    "Fn::Join": [
+                        "",
+                        [
+                          {
+                            "Ref": "authcotsUserPoolId"
+                          },
+                          "-patientsGroupRole"
+                        ]
+                    ]
+                },
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Sid": "",
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Federated": "cognito-identity.amazonaws.com"
+                            },
+                            "Action": "sts:AssumeRoleWithWebIdentity",
+                            "Condition": {
+                              "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref":"authcotsIdentityPoolId"}},
                               "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": "authenticated"}
                             }
                         }
@@ -165,7 +165,7 @@
                                 "",
                                 [
                                   
-                                  "cotsc3138bc7",
+                                  "cots",
                                   "-ExecutionRole-",
                                   {
                                     "Ref": "env"
@@ -324,16 +324,16 @@
                     "Ref": "UnauthRoleArn"
                 },
                 "identityPoolId": {
-                    "Ref": "authcotsc3138bc7IdentityPoolId"
+                    "Ref": "authcotsIdentityPoolId"
                 },
                 "userPoolId": {
-                    "Ref": "authcotsc3138bc7UserPoolId"
+                    "Ref": "authcotsUserPoolId"
                 },
                 "appClientIDWeb": {
-                    "Ref": "authcotsc3138bc7AppClientIDWeb"
+                    "Ref": "authcotsAppClientIDWeb"
                 },
                 "appClientID": {
-                    "Ref": "authcotsc3138bc7AppClientID"
+                    "Ref": "authcotsAppClientID"
                 },
                 "region": {
                     "Ref": "AWS::Region"
@@ -349,10 +349,10 @@
     
     "Outputs": {
       
-        "patientsGroupRole": {
+        "providersGroupRole": {
             "Value": {
                 "Fn::GetAtt": [
-                    "patientsGroupRole",
+                    "providersGroupRole",
                     "Arn"
                 ]
             }
@@ -360,10 +360,10 @@
         },
         
       
-        "providersGroupRole": {
+        "patientsGroupRole": {
             "Value": {
                 "Fn::GetAtt": [
-                    "providersGroupRole",
+                    "patientsGroupRole",
                     "Arn"
                 ]
             }

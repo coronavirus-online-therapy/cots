@@ -17,6 +17,9 @@
                 "cots970b3fa1CreateAuthChallenge": {},
                 "cots970b3fa1VerifyAuthChallengeResponse": {
                     "RECAPTCHASECRET": ""
+                },
+                "cotsPostConfirmation": {
+                    "GROUP": "providers"
                 }
             },
             "hosting": {
@@ -26,7 +29,7 @@
                 }
             },
             "auth": {
-                "cotsc3138bc7": {}
+                "cots": {}
             }
         }
     }
