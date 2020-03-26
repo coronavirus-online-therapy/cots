@@ -17,4 +17,7 @@ function App() {
 const signUpConfig =  {
   hiddenDefaults: ['username', 'phone_number']
 };
-export default withAuthenticator(App, { usernameAttributes: 'email', signUpConfig, includeGreetings: true });
+
+let authenticatedComponent = withAuthenticator(App, { usernameAttributes: 'email', signUpConfig, includeGreetings: true });
+authenticatedComponent.defaultProps = { authState: 'signUp' }
+export default authenticatedComponent;
