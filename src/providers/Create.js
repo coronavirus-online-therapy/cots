@@ -50,7 +50,6 @@ function Create() {
       firstName,
       lastName,
       rate: parseInt(rate),
-      _version: 0,
     });
   };
 

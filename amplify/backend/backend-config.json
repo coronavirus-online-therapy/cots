@@ -6,11 +6,6 @@
 		}
 	},
 	"auth": {
-		"cotsc3138bc7": {
-			"service": "Cognito",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": []
-		},
 		"userPoolGroups": {
 			"service": "Cognito-UserPool-Groups",
 			"providerPlugin": "awscloudformation",
