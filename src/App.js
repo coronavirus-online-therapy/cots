@@ -3,23 +3,33 @@ import './App.css';
 
 import Amplify  from 'aws-amplify';
 import awsconfig from './aws-exports';
-import { withAuthenticator} from 'aws-amplify-react'; 
 
 import ProviderApp from './providers/App';
+import PatientApp from './patients/App';
+
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
+
 
 Amplify.configure(awsconfig);
 
-function App(props) {
+function App() {
   return (
     <div className="App">
-      <ProviderApp/>
+      <Router>
+        <Switch>
+          <Route path="/providers">
+            <ProviderApp />
+          </Route>
+          <Route path="/">
+            <PatientApp />
+          </Route>
+        </Switch>
+      </Router>
     </div>
   );
 }
-const signUpConfig =  {
-  hiddenDefaults: ['username', 'phone_number']
-};
-
-let authenticatedComponent = withAuthenticator(App, { usernameAttributes: 'email', signUpConfig, includeGreetings: true });
-authenticatedComponent.defaultProps = { authState: 'signUp' }
-export default authenticatedComponent;
+export default App;

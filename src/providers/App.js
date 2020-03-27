@@ -2,9 +2,9 @@ import React, {useState}  from 'react';
 
 import { Auth } from 'aws-amplify';
 import { graphqlOperation } from 'aws-amplify';
-import { Connect } from "aws-amplify-react";
+import { withAuthenticator, Connect } from "aws-amplify-react";
 import * as queries from '../graphql/queries';
-import ProviderView from './View';
+import ProviderEdit from './Edit';
 import ProviderCreate from './Create';
 
 function App() {
@@ -35,10 +35,16 @@ function App() {
         if (error) return <h3>Error</h3>;
         if (loading) return <h3>Loading...</h3>;
         if (!getProvider) return (<ProviderCreate onCreate={createHandler}/>);
-        return (<ProviderView provider={getProvider}/>);
+        return (<ProviderEdit provider={getProvider}/>);
       }}
     </Connect>
   );
 }
 
-export default App
+const signUpConfig =  {
+  hiddenDefaults: ['username', 'phone_number']
+};
+
+let authenticatedComponent = withAuthenticator(App, { usernameAttributes: 'email', signUpConfig, includeGreetings: true });
+authenticatedComponent.defaultProps = { authState: 'signUp' }
+export default authenticatedComponent;
