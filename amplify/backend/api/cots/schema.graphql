@@ -1,0 +1,13 @@
+type Provider 
+  @model 
+  @auth(rules: [
+      {allow: groups, groups: ["providers"], queries: null, mutations: [create]},
+      {allow: owner},
+
+    ])
+{
+  id: ID!
+  firstName: String!
+  lastName: String!
+  rate: Int!
+}

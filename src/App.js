@@ -5,12 +5,14 @@ import Amplify  from 'aws-amplify';
 import awsconfig from './aws-exports';
 import { withAuthenticator} from 'aws-amplify-react'; 
 
+import ProviderApp from './providers/App';
+
 Amplify.configure(awsconfig);
 
-function App() {
+function App(props) {
   return (
     <div className="App">
-      Hello world
+      <ProviderApp/>
     </div>
   );
 }
