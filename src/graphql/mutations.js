@@ -7,14 +7,16 @@ export const createProvider = /* GraphQL */ `
     $condition: ModelProviderConditionInput
   ) {
     createProvider(input: $input, condition: $condition) {
-      id
+      owner
       firstName
       lastName
       rate
+      state
+      specialties
+      available
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -24,14 +26,16 @@ export const updateProvider = /* GraphQL */ `
     $condition: ModelProviderConditionInput
   ) {
     updateProvider(input: $input, condition: $condition) {
-      id
+      owner
       firstName
       lastName
       rate
+      state
+      specialties
+      available
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -41,14 +45,16 @@ export const deleteProvider = /* GraphQL */ `
     $condition: ModelProviderConditionInput
   ) {
     deleteProvider(input: $input, condition: $condition) {
-      id
+      owner
       firstName
       lastName
       rate
+      state
+      specialties
+      available
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;

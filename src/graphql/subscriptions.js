@@ -4,42 +4,48 @@
 export const onCreateProvider = /* GraphQL */ `
   subscription OnCreateProvider($owner: String) {
     onCreateProvider(owner: $owner) {
-      id
+      owner
       firstName
       lastName
       rate
+      state
+      specialties
+      available
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
 export const onUpdateProvider = /* GraphQL */ `
   subscription OnUpdateProvider($owner: String!) {
     onUpdateProvider(owner: $owner) {
-      id
+      owner
       firstName
       lastName
       rate
+      state
+      specialties
+      available
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
 export const onDeleteProvider = /* GraphQL */ `
   subscription OnDeleteProvider($owner: String!) {
     onDeleteProvider(owner: $owner) {
-      id
+      owner
       firstName
       lastName
       rate
+      state
+      specialties
+      available
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;

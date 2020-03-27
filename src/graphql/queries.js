@@ -15,14 +15,16 @@ export const syncProviders = /* GraphQL */ `
       lastSync: $lastSync
     ) {
       items {
-        id
+        owner
         firstName
         lastName
         rate
+        state
+        specialties
+        available
         _version
         _deleted
         _lastChangedAt
-        owner
       }
       nextToken
       startedAt
@@ -30,35 +32,79 @@ export const syncProviders = /* GraphQL */ `
   }
 `;
 export const getProvider = /* GraphQL */ `
-  query GetProvider($id: ID!) {
-    getProvider(id: $id) {
-      id
+  query GetProvider($owner: String!) {
+    getProvider(owner: $owner) {
+      owner
       firstName
       lastName
       rate
+      state
+      specialties
+      available
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
 export const listProviders = /* GraphQL */ `
   query ListProviders(
+    $owner: String
+    $filter: ModelProviderFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listProviders(
+      owner: $owner
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        owner
+        firstName
+        lastName
+        rate
+        state
+        specialties
+        available
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const itemsByState = /* GraphQL */ `
+  query ItemsByState(
+    $state: String
+    $sortDirection: ModelSortDirection
     $filter: ModelProviderFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listProviders(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    itemsByState(
+      state: $state
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
       items {
-        id
+        owner
         firstName
         lastName
         rate
+        state
+        specialties
+        available
         _version
         _deleted
         _lastChangedAt
-        owner
       }
       nextToken
       startedAt
