@@ -3,9 +3,9 @@ type Provider
   @key(fields: ["owner"])
   @key(name: "ByState", fields: ["state"], queryField: "itemsByState") 
   @auth(rules: [
-      {allow: groups, groups: ["providers"], queries: null, mutations: [create]},
-      {allow: owner},
-
+      {allow: owner, operations: [create, read, update, delete]},
+      {allow: private, operations: [read]}
+      {allow: public, operations: [read]}
     ])
 {
   owner: String!

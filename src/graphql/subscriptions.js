@@ -2,7 +2,7 @@
 // this is an auto generated file. This will be overwritten
 
 export const onCreateProvider = /* GraphQL */ `
-  subscription OnCreateProvider($owner: String) {
+  subscription OnCreateProvider($owner: String!) {
     onCreateProvider(owner: $owner) {
       owner
       firstName
@@ -11,9 +11,6 @@ export const onCreateProvider = /* GraphQL */ `
       state
       specialties
       available
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -27,9 +24,6 @@ export const onUpdateProvider = /* GraphQL */ `
       state
       specialties
       available
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -43,9 +37,6 @@ export const onDeleteProvider = /* GraphQL */ `
       state
       specialties
       available
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;

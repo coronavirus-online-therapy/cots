@@ -55,7 +55,7 @@
 						{
 							"authenticationType": "API_KEY",
 							"apiKeyConfig": {
-								"description": "cots",
+								"description": "cots-patient",
 								"apiKeyExpirationDays": "365"
 							}
 						}

@@ -1,13 +1,21 @@
 import React, {useState, useEffect} from 'react';
 
-import { API, graphqlOperation } from "aws-amplify";
+import { Auth, API, graphqlOperation } from "aws-amplify";
 import * as mutations from '../graphql/mutations';
-import { Typography, Grid, Container, Paper, TextField, FormControlLabel, Checkbox, FormControl, FormLabel, RadioGroup, Radio, Button }  from '@material-ui/core';
+import { Typography, Grid, Container, Paper, TextField, FormControlLabel, Checkbox, FormControl, FormLabel, RadioGroup, Radio, Button, InputLabel, Select}  from '@material-ui/core';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
+import States from './States';
 
 const useStyles = makeStyles(theme => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
   root: {
     '& .MuiTextField-root': {
       margin: theme.spacing(1),
@@ -24,11 +32,12 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-function Create() {
+function Create(props) {
   const classes = useStyles();
   const [rate, setRate] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [state, setState] = useState('');
   const [error, setError] = useState(false);
 
   const handleRateChange = event => {
@@ -40,6 +49,9 @@ function Create() {
   const handleLastNameChange = event => {
     setLastName(event.target.value);
   };
+  const handleStateChange = event => {
+    setState(event.target.value);
+  };
 
 
   const [providerDetails, setProviderDetails] = useState(undefined);
@@ -50,6 +62,8 @@ function Create() {
       firstName,
       lastName,
       rate: parseInt(rate),
+      state,
+      available: true,
     });
   };
 
@@ -58,10 +72,13 @@ function Create() {
       return;
     }
     const createProvider = async () => {
+      let user = await Auth.currentAuthenticatedUser();
+      providerDetails.owner = user.getUsername();
       try {
-        console.log(providerDetails);
         let response = await API.graphql(graphqlOperation(mutations.createProvider, {input: providerDetails}));
-        console.log(response)
+        if(props.onCreate) {
+          props.onCreate(response);
+        }
       } catch({data, errors}) {
         let errList = errors.map(e => e.message);
         console.error(errList)
@@ -69,7 +86,7 @@ function Create() {
       }
     };
     createProvider();
-  }, [providerDetails]);
+  }, [providerDetails, props]);
 
   const handleCloseError = (event, reason) => {
     if (reason === 'clickaway') {
@@ -94,6 +111,27 @@ function Create() {
                 <Grid item xs={8} align="left">
                     <TextField required id="first-name" label="First Name"  variant="outlined" value={firstName} onChange={handleFirstNameChange}/>
                     <TextField required id="last-name" label="Last Name" variant="outlined" value={lastName} onChange={handleLastNameChange}/>
+                </Grid>
+                <Grid item xs={8} align="left">
+                  <FormControl variant="outlined" className={classes.formControl} required>
+                    <InputLabel htmlFor="state-select">
+                      State
+                    </InputLabel>
+                    <Select
+                      native
+                      value={state}
+                      required
+                      label="State"
+                      onChange={handleStateChange}
+                      inputProps={{
+                        name: 'state',
+                        id: 'state-select',
+                      }}
+                    >
+                      <option value="" />
+                      {States.map(state => <option key={state.Code} value={state.Code}>{state.State}</option>)}
+                    </Select>
+                  </FormControl>
                 </Grid>
                 <Grid item xs={8} align="left">
                   <FormControl component="fieldset"> 
@@ -148,3 +186,4 @@ function Create() {
 }
 
 export default Create
+

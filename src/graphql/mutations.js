@@ -14,9 +14,6 @@ export const createProvider = /* GraphQL */ `
       state
       specialties
       available
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -33,9 +30,6 @@ export const updateProvider = /* GraphQL */ `
       state
       specialties
       available
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -52,9 +46,6 @@ export const deleteProvider = /* GraphQL */ `
       state
       specialties
       available
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
