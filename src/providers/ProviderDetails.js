@@ -8,11 +8,7 @@ class ProviderDetails {
   valueChangeHandler(fieldName) {
     return function(val) {
       if(val.target) {
-        if('checked' in val.target) {
-          val = val.target.checked;
-        } else {
-          val = val.target.value;
-        }
+        val = val.target.value;
       }
       this[fieldName] = val;
     }.bind(this)
@@ -29,7 +25,6 @@ class ProviderDetails {
     let user = await Auth.currentAuthenticatedUser();
     this.owner = user.getUsername();
     this.rate = parseInt(this.rate);
-    console.log(this);
     this.available = (String(this.available) === 'true');
     return await API.graphql(graphqlOperation(mutations.updateProvider, {input: this}));
   }

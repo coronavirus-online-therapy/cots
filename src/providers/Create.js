@@ -55,7 +55,7 @@ function Create(props) {
       } catch({data, errors}) {
         setError(errors.map(e => e.message));
       }
-      setSubmit(true);
+      setSubmit(false);
     };
     createProvider();
   }, [submit, providerDetails, props]);
