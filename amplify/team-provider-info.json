@@ -1,35 +1,31 @@
 {
-    "prod": {
+    "production": {
         "awscloudformation": {
-            "AuthRoleName": "amplify-cots-prod-212007-authRole",
-            "UnauthRoleArn": "arn:aws:iam::042626818835:role/amplify-cots-prod-212007-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::042626818835:role/amplify-cots-prod-212007-authRole",
+            "AuthRoleName": "amplify-cots-production-170033-authRole",
+            "UnauthRoleArn": "arn:aws:iam::089257848720:role/amplify-cots-production-170033-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::089257848720:role/amplify-cots-production-170033-authRole",
             "Region": "us-west-2",
-            "DeploymentBucketName": "amplify-cots-prod-212007-deployment",
-            "UnauthRoleName": "amplify-cots-prod-212007-unauthRole",
-            "StackName": "amplify-cots-prod-212007",
-            "StackId": "arn:aws:cloudformation:us-west-2:042626818835:stack/amplify-cots-prod-212007/e9b27580-6e4f-11ea-9497-0aa7561f3002",
-            "AmplifyAppId": "djuten1ugddu1"
+            "DeploymentBucketName": "amplify-cots-production-170033-deployment",
+            "UnauthRoleName": "amplify-cots-production-170033-unauthRole",
+            "StackName": "amplify-cots-production-170033",
+            "StackId": "arn:aws:cloudformation:us-west-2:089257848720:stack/amplify-cots-production-170033/50a11dc0-7150-11ea-a413-02eb596faf62",
+            "AmplifyAppId": "dq0lwxtkvzv2z"
         },
         "categories": {
             "function": {
-                "cots970b3fa1DefineAuthChallenge": {},
-                "cots970b3fa1CreateAuthChallenge": {},
-                "cots970b3fa1VerifyAuthChallengeResponse": {
-                    "RECAPTCHASECRET": ""
-                },
                 "cotsPostConfirmation": {
                     "GROUP": "providers"
                 }
             },
+            "auth": {
+                "userPoolGroups": {},
+                "cots": {}
+            },
             "hosting": {
                 "amplifyhosting": {
-                    "appId": "djuten1ugddu1",
+                    "appId": "dq0lwxtkvzv2z",
                     "type": "cicd"
                 }
-            },
-            "auth": {
-                "cots": {}
             }
         }
     }
