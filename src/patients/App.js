@@ -1,7 +1,5 @@
-import React, {useState}  from 'react';
-
-import { graphqlOperation } from 'aws-amplify';
-import { Connect } from "aws-amplify-react";
+import React, {useState, useEffect}  from 'react';
+import { API } from "aws-amplify";
 import * as queries from '../graphql/queries';
 
 import Container from '@material-ui/core/Container';
@@ -39,14 +37,21 @@ function App() {
 }
 function SearchResults({state, maxRate}) {
   const limit = 100;
+  const [providers, setProviders] = useState([])
+  useEffect(() => {
+    const runSearch = async () => {
+      const {data: {itemsByState}} = await API.graphql({
+        query: queries.itemsByState,
+        variables: {state, filter: {available: {eq: true}, rate: {le: maxRate}}, limit },
+        authMode: 'API_KEY'
+      })
+      setProviders(itemsByState.items)
+    };
+    runSearch();
+  }, [setProviders, state, maxRate]);
+
   return (
-    <Connect query={graphqlOperation(queries.itemsByState, {state, filter: {available: {eq: true}, rate: {le: maxRate}}, limit })}> 
-      {({ data: {itemsByState}, loading, error }) => {
-        if (error) return <h3>Error</h3>;
-        if (loading) return <h3>Loading...</h3>;
-        return (<ProviderList providers={shuffle(itemsByState.items)} />);
-      }}
-    </Connect>
+    <ProviderList providers={providers}/>
   );
 }
 
