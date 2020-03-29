@@ -98,9 +98,9 @@ function Edit(props) {
                   <FormControlLabel label="Available for referrals" control={
                       <Switch
                         disabled={!edit}
-                        checked={providerDetails.available}
+                        checked={providerDetails.active}
                         onChange={handleCheck}
-                        name="available"
+                        name="active"
                         color="secondary"
                       />
                     }

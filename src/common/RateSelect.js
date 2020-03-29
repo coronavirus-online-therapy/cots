@@ -25,7 +25,7 @@ function RateSelect(props) {
 }
 
 RateSelect.defaultProps = {
-  label: 'I would be willing to offer sessions:',
+  label: 'Lowest fee I can accept at this time is:',
   required: true,
   disabled: false,
   defaultValue: ''
@@ -39,15 +39,15 @@ const rates = [
     value: "0"
   },
   {
-    label: "For $15/session", 
+    label: "$15/session", 
     value: "15"
   },
   {
-    label: "For $25/session", 
+    label: "$25/session", 
     value: "25"
   },
   {
-    label: "For $50/session", 
+    label: "$50/session", 
     value: "50"
   }
 ];

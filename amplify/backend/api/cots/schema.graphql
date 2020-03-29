@@ -1,7 +1,6 @@
 type Provider 
   @model
   @key(fields: ["owner"])
-  @key(name: "ByState", fields: ["state"], queryField: "itemsByState") 
   @auth(rules: [
       {allow: owner, operations: [create, read, update, delete]},
       {allow: private, operations: [read]}
@@ -9,18 +8,58 @@ type Provider
     ])
 {
   owner: String!
-  firstName: String!
-  lastName: String!
+  fullName: String!
+  licenseType: String!
+  liabilityPolicy: String!
+  phone: String
+  url: String
   rate: Int!
-  state: String!
-  specialties: [Specialty]
-  available: Boolean!
+  acceptedInsurance: [String]
+  gender: Gender!
+  specializations: [String]
+  modalities: [String]
+  languages: [String]
+  active: Boolean!
+  availability: [Availability]
+  tosAcceptedAt: String!
+  accessPoints: [AccessPoint] @connection(fields: ["owner"])
 }
 
-enum Specialty {
-  ANXIETY
-  FEAR
-  DEPRESSION
-  ADDICTION
-  EATING_DISORDER
+type Availability {
+  day: Day!
+  hour: Int!
+  min: Int!
+  duration: Int! 
+}
+
+enum Day {
+  SUNDAY
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  NON_BINARY
+}
+
+type AccessPoint
+  @model
+  @key(fields: ["owner", "state"])
+  @key(name: "byState", fields: ["state"], queryField: "accessPointsByState")
+  @auth(rules: [
+      {allow: owner, operations: [create, read, update, delete]},
+      {allow: private, operations: [read]}
+      {allow: public, operations: [read]}
+    ])
+{
+    state: String!
+    owner: String!
+    provider: Provider @connection(fields: ["owner"])
+    license: String!
 }

@@ -8,12 +8,28 @@ export const createProvider = /* GraphQL */ `
   ) {
     createProvider(input: $input, condition: $condition) {
       owner
-      firstName
-      lastName
+      fullName
+      licenseType
+      liabilityPolicy
+      phone
+      url
       rate
-      state
-      specialties
-      available
+      acceptedInsurance
+      gender
+      specializations
+      modalities
+      languages
+      active
+      availability {
+        day
+        hour
+        min
+        duration
+      }
+      tosAcceptedAt
+      accessPoints {
+        nextToken
+      }
     }
   }
 `;
@@ -24,12 +40,28 @@ export const updateProvider = /* GraphQL */ `
   ) {
     updateProvider(input: $input, condition: $condition) {
       owner
-      firstName
-      lastName
+      fullName
+      licenseType
+      liabilityPolicy
+      phone
+      url
       rate
-      state
-      specialties
-      available
+      acceptedInsurance
+      gender
+      specializations
+      modalities
+      languages
+      active
+      availability {
+        day
+        hour
+        min
+        duration
+      }
+      tosAcceptedAt
+      accessPoints {
+        nextToken
+      }
     }
   }
 `;
@@ -40,12 +72,112 @@ export const deleteProvider = /* GraphQL */ `
   ) {
     deleteProvider(input: $input, condition: $condition) {
       owner
-      firstName
-      lastName
+      fullName
+      licenseType
+      liabilityPolicy
+      phone
+      url
       rate
+      acceptedInsurance
+      gender
+      specializations
+      modalities
+      languages
+      active
+      availability {
+        day
+        hour
+        min
+        duration
+      }
+      tosAcceptedAt
+      accessPoints {
+        nextToken
+      }
+    }
+  }
+`;
+export const createAccessPoint = /* GraphQL */ `
+  mutation CreateAccessPoint(
+    $input: CreateAccessPointInput!
+    $condition: ModelAccessPointConditionInput
+  ) {
+    createAccessPoint(input: $input, condition: $condition) {
       state
-      specialties
-      available
+      owner
+      license
+      provider {
+        owner
+        fullName
+        licenseType
+        liabilityPolicy
+        phone
+        url
+        rate
+        acceptedInsurance
+        gender
+        specializations
+        modalities
+        languages
+        active
+        tosAcceptedAt
+      }
+    }
+  }
+`;
+export const updateAccessPoint = /* GraphQL */ `
+  mutation UpdateAccessPoint(
+    $input: UpdateAccessPointInput!
+    $condition: ModelAccessPointConditionInput
+  ) {
+    updateAccessPoint(input: $input, condition: $condition) {
+      state
+      owner
+      license
+      provider {
+        owner
+        fullName
+        licenseType
+        liabilityPolicy
+        phone
+        url
+        rate
+        acceptedInsurance
+        gender
+        specializations
+        modalities
+        languages
+        active
+        tosAcceptedAt
+      }
+    }
+  }
+`;
+export const deleteAccessPoint = /* GraphQL */ `
+  mutation DeleteAccessPoint(
+    $input: DeleteAccessPointInput!
+    $condition: ModelAccessPointConditionInput
+  ) {
+    deleteAccessPoint(input: $input, condition: $condition) {
+      state
+      owner
+      license
+      provider {
+        owner
+        fullName
+        licenseType
+        liabilityPolicy
+        phone
+        url
+        rate
+        acceptedInsurance
+        gender
+        specializations
+        modalities
+        languages
+        active
+        tosAcceptedAt
+      }
     }
   }
 `;

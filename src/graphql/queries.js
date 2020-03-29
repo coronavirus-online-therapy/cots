@@ -1,19 +1,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getProvider = /* GraphQL */ `
-  query GetProvider($owner: String!) {
-    getProvider(owner: $owner) {
-      owner
-      firstName
-      lastName
-      rate
-      state
-      specialties
-      available
-    }
-  }
-`;
 export const listProviders = /* GraphQL */ `
   query ListProviders(
     $owner: String
@@ -31,26 +18,113 @@ export const listProviders = /* GraphQL */ `
     ) {
       items {
         owner
-        firstName
-        lastName
+        fullName
+        licenseType
+        liabilityPolicy
+        phone
+        url
         rate
-        state
-        specialties
-        available
+        acceptedInsurance
+        gender
+        specializations
+        modalities
+        languages
+        active
+        tosAcceptedAt
       }
       nextToken
     }
   }
 `;
-export const itemsByState = /* GraphQL */ `
-  query ItemsByState(
+export const getProvider = /* GraphQL */ `
+  query GetProvider($owner: String!) {
+    getProvider(owner: $owner) {
+      owner
+      fullName
+      licenseType
+      liabilityPolicy
+      phone
+      url
+      rate
+      acceptedInsurance
+      gender
+      specializations
+      modalities
+      languages
+      active
+      availability {
+        day
+        hour
+        min
+        duration
+      }
+      tosAcceptedAt
+      accessPoints {
+        nextToken
+      }
+    }
+  }
+`;
+export const getAccessPoint = /* GraphQL */ `
+  query GetAccessPoint($owner: String!, $state: String!) {
+    getAccessPoint(owner: $owner, state: $state) {
+      state
+      owner
+      license
+      provider {
+        owner
+        fullName
+        licenseType
+        liabilityPolicy
+        phone
+        url
+        rate
+        acceptedInsurance
+        gender
+        specializations
+        modalities
+        languages
+        active
+        tosAcceptedAt
+      }
+    }
+  }
+`;
+export const listAccessPoints = /* GraphQL */ `
+  query ListAccessPoints(
+    $owner: String
+    $state: ModelStringKeyConditionInput
+    $filter: ModelAccessPointFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listAccessPoints(
+      owner: $owner
+      state: $state
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        state
+        owner
+        license
+      }
+      nextToken
+    }
+  }
+`;
+export const accessPointsByState = /* GraphQL */ `
+  query AccessPointsByState(
     $state: String
     $sortDirection: ModelSortDirection
-    $filter: ModelProviderFilterInput
+    $filter: ModelAccessPointFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    itemsByState(
+    accessPointsByState(
       state: $state
       sortDirection: $sortDirection
       filter: $filter
@@ -58,13 +132,9 @@ export const itemsByState = /* GraphQL */ `
       nextToken: $nextToken
     ) {
       items {
-        owner
-        firstName
-        lastName
-        rate
         state
-        specialties
-        available
+        owner
+        license
       }
       nextToken
     }

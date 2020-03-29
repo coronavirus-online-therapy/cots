@@ -41,8 +41,8 @@ function SearchResults({state, maxRate}) {
   useEffect(() => {
     const runSearch = async () => {
       const {data: {itemsByState}} = await API.graphql({
-        query: queries.itemsByState,
-        variables: {state, filter: {available: {eq: true}, rate: {le: maxRate}}, limit },
+        query: queries.accessPointsByState,
+        variables: {state, limit },
         authMode: 'API_KEY'
       })
       setProviders(itemsByState.items)
@@ -53,25 +53,6 @@ function SearchResults({state, maxRate}) {
   return (
     <ProviderList providers={providers}/>
   );
-}
-
-function shuffle(array) {
-  var currentIndex = array.length, temporaryValue, randomIndex;
-
-  // While there remain elements to shuffle...
-  while (0 !== currentIndex) {
-
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
-
-    // And swap it with the current element.
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
-  }
-
-  return array;
 }
 
 export default App;

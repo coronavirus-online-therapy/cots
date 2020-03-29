@@ -3,12 +3,11 @@ import React, {useState} from 'react';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
-import States from './States';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
     formControl: {
-      margin: theme.spacing(1),
+      margin: theme.spacing(0),
       minWidth: 120,
     },
     selectEmpty: {
@@ -17,41 +16,41 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-function StateSelect(props) {
+function GenderSelect(props) {
     const classes = useStyles();
-    const [state, setState] = useState(props.defaultValue);
+    const [gender, setGender] = useState(props.defaultValue);
     const handleStateChange = event => {
         let newValue = event.target.value;
-        setState(newValue);
+        setGender(newValue);
         if(props.onChange) {
             props.onChange(newValue);
         }
     }
     return (
-        <FormControl variant={props.variant} className={props.className || classes.formControl} required={props.required}>
+        <FormControl fullWidth variant={props.variant} className={props.className || classes.formControl} required={props.required}>
             <InputLabel htmlFor={props.id}>{props.label}</InputLabel>
             <Select
                 native
                 disabled={props.disabled}
-                value={state}
+                value={gender}
                 required
                 label={props.label}
                 onChange={handleStateChange}
                 inputProps={{
-                    name: 'state',
+                    name: 'gender',
                     id: props.id,
                 }}
             >
                 <option value="" />
-                {States.map(state => <option key={state.Code} value={state.Code}>{state.State}</option>)}
+                {genders.map(gender => <option key={gender.value} value={gender.value}>{gender.label}</option>)}
             </Select>
         </FormControl>
     );
 }
 
-StateSelect.defaultProps = {
-    id: 'state-select',
-    label: 'State',
+GenderSelect.defaultProps = {
+    id: 'gender-select',
+    label: 'Gender',
     variant: 'outlined',
     required: true,
     disabled: false,
@@ -59,4 +58,19 @@ StateSelect.defaultProps = {
     defaultValue: ''
 }
 
-export default StateSelect;
+const genders = [
+  {
+      "label": "Male",
+      "value": "MALE",
+  },
+  {
+      "label": "Female",
+      "value": "FEMALE",
+  },
+  {
+      "label": "Non-binary",
+      "value": "NON_BINARY",
+  }
+];
+
+export default GenderSelect;
