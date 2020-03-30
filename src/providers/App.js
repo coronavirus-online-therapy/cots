@@ -1,44 +1,32 @@
-import React, {useState}  from 'react';
+import React, {useState, useEffect}  from 'react';
 
-import { Auth } from 'aws-amplify';
-import { graphqlOperation } from 'aws-amplify';
-import { withAuthenticator, Connect } from "aws-amplify-react";
-import * as queries from '../graphql/queries';
-import ProviderEdit from './Edit';
-import ProviderCreate from './Create';
+import { withAuthenticator } from "aws-amplify-react";
+import ProviderProfile from './Profile';
+import ProviderDetails from './ProviderDetails';
 
 function App() {
-  const [providerId, setProviderId] = useState(null);
-  const [key, setKey] = useState(1)
+  const [provider, setProvider] = useState(null);
+  const [key, setKey] = useState(0);
 
-  Auth.currentAuthenticatedUser()
-    .then(user => {
-      setProviderId(user.getUsername());
-    })
-    .catch(err => console.error(err));
+  useEffect(() => {
+    let p = new ProviderDetails();
+    p.read().then(() => {
+      setProvider(p);
+    }).catch(e => {
+      setProvider(null);
+    });
+  }, [key, setProvider]);
 
-  // Don't show anything until login is complete
-  if(!providerId) {
-    return (<div>Login required.</div>)
-  }
-
-  const createHandler = (provider) => {
-    console.log(`<-- created provider`);
-    console.log(provider)
-    setKey(key + 1);
+  const changeHandler = (e) => {
+    setKey(key+1);
   };
 
-  console.log(`providerId: ${providerId}`)
-  return (
-    <Connect query={graphqlOperation(queries.getProvider, {owner: providerId})} key={key}>
-      {({ data: {getProvider}, loading, error }) => {
-        if (error) return <h3>Error</h3>;
-        if (loading) return <h3>Loading...</h3>;
-        if (!getProvider) return (<ProviderCreate onCreate={createHandler}/>);
-        return (<ProviderEdit provider={getProvider}/>);
-      }}
-    </Connect>
-  );
+  // Don't show anything until login is complete
+  if(!provider) {
+    return (<div>Login required.</div>)
+  } else {
+    return (<ProviderProfile onChange={changeHandler} provider={provider}/>);
+  }
 }
 
 const signUpConfig =  {

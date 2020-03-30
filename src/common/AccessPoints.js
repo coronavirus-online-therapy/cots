@@ -6,7 +6,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import States from './States';
 
 function AccessPoints(props) {
-  const [value, setValue] = useState(props.defaultValue);
+  const [value, setValue] = useState(props.defaultValue.map(p => {return {licState: p.state, licNum: p.license}}));
   const [error, setError] = useState("");
 
   const validate = (data) => {
@@ -28,8 +28,11 @@ function AccessPoints(props) {
       setError("");
       const newValue = [...value, newData]; 
       setValue(newValue);
-      if(props.onChange) {
-        props.onChange(newValue);
+      if(props.onAdd) {
+        props.onAdd({
+            state: newData.licState,
+            license: newData.licNum
+        });
       }
   };
   const handleUpdate = async (newData, oldData) => {
@@ -39,8 +42,11 @@ function AccessPoints(props) {
         const newValue = [...value]; 
         newValue[newValue.indexOf(oldData)] = newData;
         setValue(newValue);
-        if(props.onChange) {
-            props.onChange(newValue);
+        if(props.onUpdate) {
+            props.onUpdate({
+                state: newData.licState,
+                license: newData.licNum
+            });
         }
       }
   };
@@ -49,8 +55,10 @@ function AccessPoints(props) {
     setError("");
     newValue.splice(newValue.indexOf(oldData), 1);
     setValue(newValue);
-    if(props.onChange) {
-        props.onChange(newValue);
+    if(props.onDelete) {
+        props.onDelete({
+            state: oldData.licState
+        });
     }
   };
   const stateLookup = States.reduce((map, state) => {
@@ -61,8 +69,9 @@ function AccessPoints(props) {
   return( 
     <FormControl fullWidth>
         <MaterialTable
+            disabled={props.disabled}
             columns={[
-                { title: "State", field: "licState", lookup: stateLookup },
+                { title: "State", field: "licState", lookup: stateLookup, editable: 'onAdd' },
                 { title: "License #", field: "licNum" }
             ]}
             data={value}
@@ -71,7 +80,7 @@ function AccessPoints(props) {
                 search: false,
                 actionsColumnIndex: 2
             }}
-            editable={{
+            editable={props.disabled?{}:{
                 onRowAdd: handleAdd,
                 onRowUpdate: handleUpdate,
                 onRowDelete: handleDelete,

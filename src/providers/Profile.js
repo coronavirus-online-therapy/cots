@@ -6,6 +6,9 @@ import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import EditIcon from '@material-ui/icons/Edit';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -32,11 +35,13 @@ const useStyles = makeStyles(theme => ({
 
 
 
-function Create(props) {
+function Profile(props) {
   const classes = useStyles();
+  const [mode, setMode] = useState(props.provider.owner?'VIEW':'CREATE');
   const [submit, setSubmit] = useState(false);
   const [error, setError] = useState("");
-  const [providerDetails, setProviderDetails] = useState(new ProviderDetails());
+  const [providerDetails, setProviderDetails] = useState(new ProviderDetails(props.provider));
+  const [accessPoints, setAccessPoints] = useState((props.provider&&props.provider.accessPoints)?props.provider.accessPoints.items:[]);
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -47,19 +52,47 @@ function Create(props) {
     if(!submit) {
       return;
     }
-    const createProvider = async () => {
-      try {
-        let response = await providerDetails.create();
-        if(props.onCreate) {
-          props.onCreate(response);
+
+    const doAccessPoints = async () => {
+      for (let ap of accessPoints) {
+        if(ap.operation === 'ADD') {
+          await providerDetails.addAccessPoint(ap.accessPoint);
+        } else if(ap.operation === 'UPDATE') {
+          await providerDetails.updateAccessPoint(ap.accessPoint);
+        } else if(ap.operation === 'DELETE') {
+          await providerDetails.deleteAccessPoint(ap.accessPoint);
         }
-      } catch({data, errors}) {
-        setError(errors.map(e => e.message));
+      }
+    }
+
+    const doSubmit = async () => {
+      try {
+        let response;
+        if(mode === 'CREATE') {
+         response = await providerDetails.create();
+         await doAccessPoints();
+        } else if(mode === 'UPDATE') {
+         response = await providerDetails.update();
+         await doAccessPoints();
+        }
+        
+        if(props.onChange) {
+          props.onChange(response);
+        }
+      } catch(err) {
+        console.error(err);
+        if(err.errors) {
+          setError(err.errors.map(e => e.message));
+        } else {
+          setError(err);
+        }
       }
       setSubmit(false);
+      setMode('VIEW');
     };
-    createProvider();
-  }, [submit, providerDetails, props]);
+
+    doSubmit();
+  }, [submit, providerDetails, props, accessPoints, mode]);
 
   const handleChange = field => {
     return (event, value, reason) => {
@@ -72,12 +105,32 @@ function Create(props) {
         pd[field] = event;
       }
       setProviderDetails(pd);
-      console.log(pd);
     };
   };
 
-  const handleAccessPoints = (value) => {
-    console.log(value);
+  const handleCheck = event => {
+    let pd = new ProviderDetails(providerDetails);
+    pd[event.target.name] = event.target.checked;
+    setProviderDetails(pd);
+  };
+
+  const handleAccessPointAdd = (value) => {
+    setAccessPoints([...accessPoints, {
+      operation: 'ADD',
+      accessPoint: value
+    }]);
+  }
+  const handleAccessPointUpdate = (value) => {
+    setAccessPoints([...accessPoints, {
+      operation: 'UPDATE',
+      accessPoint: value
+    }]);
+  }
+  const handleAccessPointDelete = (value) => {
+    setAccessPoints([...accessPoints, {
+      operation: 'DELETE',
+      accessPoint: value
+    }]);
   }
 
   return (
@@ -90,51 +143,98 @@ function Create(props) {
                 <Grid item xs={12}>
                   <Typography variant="h2" component="h2">
                     Therapist Profile
+                    {mode === 'VIEW' && <Button variant="contained" color="primary" onClick={() => {setMode('UPDATE')}}><EditIcon/></Button>}
                   </Typography>
                 </Grid>
                 <Grid item xs={8} align="left">
-                    <TextField fullWidth required id="full-name" label="Full Name"  variant="outlined" onChange={handleChange('fullName')}/>
+                    <TextField fullWidth required id="full-name" label="Full Name"  variant="outlined" 
+                               disabled={mode === 'VIEW'}
+                               defaultValue={providerDetails.fullName} 
+                               onChange={handleChange('fullName')}/>
                 </Grid>
                 <Grid item xs={8} align="left">
-                    <LanguagesInput max="3" onChange={handleChange('languages')}/>
+                    <LicenseTypeInput onChange={handleChange('licenseType')}
+                                      disabled={mode === 'VIEW'}
+                                      defaultValue={providerDetails.licenseType} 
+                    />
                 </Grid>
                 <Grid item xs={8} align="left">
-                    <LicenseTypeInput onChange={handleChange('licenseType')}/>
+                    <AccessPoints onAdd={handleAccessPointAdd} onUpdate={handleAccessPointUpdate} onDelete={handleAccessPointDelete}
+                                      disabled={mode === 'VIEW'}
+                                      defaultValue={accessPoints} 
+                    />
                 </Grid>
                 <Grid item xs={8} align="left">
-                    <AccessPoints onChange={handleAccessPoints}/>
+                    <TextField fullWidth required id="liability-policy" label="Liability Policy #"  variant="outlined" 
+                               disabled={mode === 'VIEW'}
+                               defaultValue={providerDetails.liabilityPolicy} 
+                               onChange={handleChange('liabilityPolicy')}/>
                 </Grid>
                 <Grid item xs={8} align="left">
-                    <TextField fullWidth required id="liability-policy" label="Liability Policy #"  variant="outlined" onChange={handleChange('liabilityPolicy')}/>
+                    <TextField fullWidth id="phone" label="Phone #"  variant="outlined" 
+                               disabled={mode === 'VIEW'}
+                               defaultValue={providerDetails.phone} 
+                               onChange={handleChange('phone')}/>
                 </Grid>
                 <Grid item xs={8} align="left">
-                    <TextField fullWidth id="phone" label="Phone #"  variant="outlined" onChange={handleChange('phone')}/>
+                    <TextField fullWidth id="url" label="Website"  variant="outlined"
+                               disabled={mode === 'VIEW'}
+                               defaultValue={providerDetails.url} 
+                               onChange={handleChange('url')}/>
                 </Grid>
                 <Grid item xs={8} align="left">
-                    <TextField fullWidth id="url" label="Website"  variant="outlined" onChange={handleChange('url')}/>
+                  {mode !== 'CREATE' && 
+                    <FormControlLabel label="Available for referrals" control={
+                        <Switch
+                          disabled={mode === 'VIEW'}
+                          checked={providerDetails.active}
+                          onChange={handleCheck}
+                          name="active"
+                          color="secondary"
+                        />
+                      }
+                    />
+                  }
                 </Grid>
                 <Grid item xs={8} align="left">
-                  <RateSelect onChange={handleChange('rate')}/>
+                  <RateSelect disabled={mode === 'VIEW'}
+                              defaultValue={providerDetails.rate} 
+                              onChange={handleChange('rate')}/>
                 </Grid>
                 <Grid item xs={8} align="left">
-                    <InsuranceInput max="3" onChange={handleChange('acceptedInsurance')}/>
+                    <InsuranceInput max="3" 
+                                    disabled={mode === 'VIEW'}
+                                    defaultValue={providerDetails.acceptedInsurance} 
+                                    onChange={handleChange('acceptedInsurance')}/>
                 </Grid>
                 <Grid item xs={8} align="left">
-                  <GenderSelect onChange={handleChange('gender')}/>
+                  <GenderSelect disabled={mode === 'VIEW'}
+                                defaultValue={providerDetails.gender} 
+                                onChange={handleChange('gender')}/>
                 </Grid>
                 <Grid item xs={8} align="left">
-                    <SpecializationInput max="3" onChange={handleChange('specializations')}/>
+                    <SpecializationInput max="3" 
+                                         disabled={mode === 'VIEW'}
+                                         defaultValue={providerDetails.specializations} 
+                                         onChange={handleChange('specializations')}/>
                 </Grid>
                 <Grid item xs={8} align="left">
-                    <ModalityInput max="3" onChange={handleChange('modalities')}/>
+                    <ModalityInput max="3" 
+                                   disabled={mode === 'VIEW'}
+                                   defaultValue={providerDetails.modalities} 
+                                   onChange={handleChange('modalities')}/>
                 </Grid>
                 <Grid item xs={8} align="left">
-                    <AcceptTerms required={true} onChange={handleChange('tosAcceptedAt')} contract={contract}/>
+                    <LanguagesInput max="3" onChange={handleChange('languages')} 
+                                    disabled={mode === 'VIEW'}
+                                    defaultValue={providerDetails.languages} 
+                    />
+                </Grid>
+                <Grid item xs={8} align="left">
+                    {mode === 'CREATE' && <AcceptTerms required={true} onChange={handleChange('tosAcceptedAt')} contract={contract}/>}
                 </Grid>
                 <Grid item xs={6} align="center">
-                  <Button variant="contained" color="primary" type="submit">
-                    Submit
-                  </Button>
+                  {mode !== 'VIEW' && <Button variant="contained" color="primary" type="submit">Submit</Button>}
                 </Grid>
               </Grid>
             </div>
@@ -144,6 +244,9 @@ function Create(props) {
       <ErrorSnackbar message={error}/>
     </div>
   );
+}
+
+Profile.defaultProps = {
 }
 
 const contract = `
@@ -158,5 +261,5 @@ Enim praesent elementum facilisis leo vel fringilla est ullamcorper eget. Tempor
 Lacus viverra vitae congue eu consequat ac felis donec et. Egestas purus viverra accumsan in nisl. Hendrerit gravida rutrum quisque non tellus orci ac auctor augue. Mi sit amet mauris commodo quis imperdiet massa. Blandit turpis cursus in hac habitasse platea dictumst. Sit amet mauris commodo quis imperdiet massa tincidunt nunc pulvinar. Parturient montes nascetur ridiculus mus mauris vitae ultricies leo. Habitant morbi tristique senectus et netus et malesuada fames. Fermentum leo vel orci porta. Purus in mollis nunc sed id. Libero nunc consequat interdum varius. Ultrices sagittis orci a scelerisque purus semper eget duis at. Massa id neque aliquam vestibulum morbi. Duis at tellus at urna. Eu volutpat odio facilisis mauris. Fermentum dui faucibus in ornare quam viverra orci. Enim ut tellus elementum sagittis vitae et. Ornare quam viverra orci sagittis.
 `;
 
-export default Create
+export default Profile
 
