@@ -62,6 +62,7 @@ export const accessPointsByStateWithProvider = /* GraphQL */ `
           licenseType
           phone
           url
+          email
           acceptedInsurance
           specializations
           modalities

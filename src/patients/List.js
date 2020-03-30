@@ -62,7 +62,7 @@ export default function ListView({providers}) {
                 </Grid>
                 <Grid item xs={12}>
                   <Typography variant="h5" component="h5" align="left">
-                    <Button color="primary" variant="contained" className={classes.button}><EmailIcon/></Button> test@test.com
+                    <Button color="primary" variant="contained" className={classes.button}><EmailIcon/></Button> {provider.email}
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>

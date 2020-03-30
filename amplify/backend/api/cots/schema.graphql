@@ -11,6 +11,7 @@ type Provider
   fullName: String!
   licenseType: String!
   liabilityPolicy: String!
+  email: String @function(name: "GetProviderEmail-${env}")
   phone: String
   url: String
   rate: Int!
@@ -62,4 +63,16 @@ type AccessPoint
     owner: String!
     provider: Provider @connection(fields: ["owner"])
     license: String!
+}
+
+type Referral
+{
+    state: String!
+    rate: Int!
+    acceptedInsurance: [String]
+    gender: Gender
+    specializations: [String]
+    modalities: [String]
+    languages: [String]
+    providers: [Provider]
 }

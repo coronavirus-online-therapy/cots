@@ -21,6 +21,7 @@ export const listProviders = /* GraphQL */ `
         fullName
         licenseType
         liabilityPolicy
+        email
         phone
         url
         rate
@@ -43,6 +44,7 @@ export const getProvider = /* GraphQL */ `
       fullName
       licenseType
       liabilityPolicy
+      email
       phone
       url
       rate
@@ -76,6 +78,7 @@ export const getAccessPoint = /* GraphQL */ `
         fullName
         licenseType
         liabilityPolicy
+        email
         phone
         url
         rate

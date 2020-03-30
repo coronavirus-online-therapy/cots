@@ -11,6 +11,7 @@ export const createProvider = /* GraphQL */ `
       fullName
       licenseType
       liabilityPolicy
+      email
       phone
       url
       rate
@@ -43,6 +44,7 @@ export const updateProvider = /* GraphQL */ `
       fullName
       licenseType
       liabilityPolicy
+      email
       phone
       url
       rate
@@ -75,6 +77,7 @@ export const deleteProvider = /* GraphQL */ `
       fullName
       licenseType
       liabilityPolicy
+      email
       phone
       url
       rate
@@ -111,6 +114,7 @@ export const createAccessPoint = /* GraphQL */ `
         fullName
         licenseType
         liabilityPolicy
+        email
         phone
         url
         rate
@@ -139,6 +143,7 @@ export const updateAccessPoint = /* GraphQL */ `
         fullName
         licenseType
         liabilityPolicy
+        email
         phone
         url
         rate
@@ -167,6 +172,7 @@ export const deleteAccessPoint = /* GraphQL */ `
         fullName
         licenseType
         liabilityPolicy
+        email
         phone
         url
         rate

@@ -43,6 +43,20 @@
 			"build": true,
 			"providerPlugin": "awscloudformation",
 			"service": "Lambda"
+		},
+		"cotsProviderBackend": {
+			"build": true,
+			"providerPlugin": "awscloudformation",
+			"service": "Lambda",
+			"dependsOn": [
+				{
+					"category": "auth",
+					"resourceName": "cots",
+					"attributes": [
+						"UserPoolId"
+					]
+				}
+			]
 		}
 	},
 	"api": {

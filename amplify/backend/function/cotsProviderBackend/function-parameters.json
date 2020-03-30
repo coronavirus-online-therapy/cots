@@ -1,0 +1,10 @@
+{
+    "permissions": {
+        "auth": {
+            "cots": [
+                "read"
+            ]
+        }
+    },
+    "authcotsUserPoolId": "us-west-2_N2NbZcBP7"
+}
