@@ -43,7 +43,8 @@ function App() {
   const [providers, setProviders] = useState(null);
 
   useEffect(() => {
-    if(!query.state) {
+    let isValid = (query.state && query.tosAcceptedAt);
+    if(!isValid) {
       setProviders(null);
       return;
     }
@@ -68,8 +69,8 @@ function App() {
         </Container>
         <Divider className={classes.divider}/>
         <Container className={classes.search}>
-          <ProviderQuery onChange={setQuery}/>
-          <ProviderList providers={providers}/>
+          {providers === null && <ProviderQuery onChange={setQuery}/>}
+          {providers !== null && <ProviderList providers={providers}/>}
         </Container> 
       </Paper>
     </Container>
@@ -100,7 +101,6 @@ function ProviderQuery(props) {
   };
   const isQueryValid = () => {
     let isValid = (query.state && query.tosAcceptedAt);
-    console.log(`isValid = ${isValid}`);
     return isValid;
   }
   return (

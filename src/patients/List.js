@@ -38,7 +38,7 @@ export default function ListView({providers}) {
   const classes = useStyles();
 
   if(!providers || providers.length === 0) {
-    return (<div/>);
+    return (<Typography variant="h4" component="h4">No matches found</Typography>);
   }
 
   return (
