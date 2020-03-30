@@ -18,8 +18,8 @@ class Referral {
         variables: vars,
         authMode: 'API_KEY'
       })
+      console.log(this);
       let ap = accessPointsByState.items.map(a => a.provider).filter(this.filter.bind(this));
-      console.log(ap);
       return ap;
     } catch (e) {
       console.error(e);

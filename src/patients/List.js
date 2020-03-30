@@ -44,7 +44,7 @@ export default function ListView({providers}) {
   return (
     <div className={classes.root}>
         {providers.map(provider => {return (
-          <Paper className={classes.paper}>
+          <Paper key={provider.owner} className={classes.paper}>
             <div>
               <Grid container spacing={0}>
                 <Grid item xs={10}>
