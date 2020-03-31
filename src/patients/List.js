@@ -60,11 +60,13 @@ export default function ListView({providers}) {
                     </Typography>
                   </Box>
                 </Grid>
-                <Grid item xs={12}>
+                {provider.email && 
+                 <Grid item xs={12}>
                   <Typography variant="h5" component="h5" align="left">
                     <Button color="primary" variant="contained" className={classes.button}><EmailIcon/></Button> <Link href="mailto:{provider.email}">{provider.email}</Link>
                   </Typography>
-                </Grid>
+                 </Grid>
+                }
                 <Grid item xs={12}>
                   <Typography variant="h5" component="h5" align="left">
                     <Button color="primary" variant="contained" className={classes.button}><PhoneIcon/></Button> {formatPhoneNumber(provider.phone)}

@@ -145,8 +145,12 @@ async function getAccessPoints(state, limit) {
     const resp = await new Promise((resolve, reject) => {
         const client = (protocol==='https:'?https:http);
         const httpRequest = client.request({ ...req, host: endpoint, port}, (result) => {
-            result.on('data', (data) => {
-                resolve(JSON.parse(data.toString()));
+            let data = '';
+            result.on('data', (chunk) => {
+                data += chunk;
+            });
+            result.on('end', () => {
+                resolve(JSON.parse(data));
             });
         });
 

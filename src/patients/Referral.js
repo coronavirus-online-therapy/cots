@@ -28,7 +28,11 @@ class Referral {
       return referrals.map(a => {return{...a.provider, score: a.score}});
     } catch (e) {
       console.error(e);
-      return [];
+      try {
+        return e.data.referrals.map(a => {return{...a.provider, score: a.score}});
+      } catch (e2) {
+        return [];
+      }
     }
   }
 }
