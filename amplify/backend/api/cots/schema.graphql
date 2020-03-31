@@ -3,7 +3,8 @@ type Provider
   @key(fields: ["owner"])
   @auth(rules: [
       {allow: owner, operations: [create, read, update, delete]},
-      {allow: private, operations: [read]}
+      {allow: private, operations: [read], provider: iam}
+      {allow: private, operations: [read], provider: userPools}
       {allow: public, operations: [read]}
     ])
 {
@@ -55,7 +56,8 @@ type AccessPoint
   @key(name: "byState", fields: ["state"], queryField: "accessPointsByState")
   @auth(rules: [
       {allow: owner, operations: [create, read, update, delete]},
-      {allow: private, operations: [read]}
+      {allow: private, operations: [read], provider: iam}
+      {allow: private, operations: [read], provider: userPools}
       {allow: public, operations: [read]}
     ])
 {
@@ -65,7 +67,17 @@ type AccessPoint
     license: String!
 }
 
-type Referral
+type Query {
+  referrals(query: ReferralQuery, limit: Int = 3): [ReferralResult] @function(name: "ScoreReferral-${env}") @aws_api_key @aws_cognito_user_pools
+}
+
+
+type ReferralResult {
+  score: Float! @aws_api_key @aws_cognito_user_pools
+  provider: Provider! @aws_api_key @aws_cognito_user_pools
+}
+
+input ReferralQuery
 {
     state: String!
     rate: Int!
@@ -74,5 +86,4 @@ type Referral
     specializations: [String]
     modalities: [String]
     languages: [String]
-    providers: [Provider]
 }

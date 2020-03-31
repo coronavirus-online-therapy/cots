@@ -43,7 +43,7 @@ function App() {
   const [providers, setProviders] = useState(null);
 
   useEffect(() => {
-    let isValid = (query.state && query.tosAcceptedAt);
+    let isValid = (query.state && query.tosAcceptedAt && query.rate !== undefined);
     if(!isValid) {
       setProviders(null);
       return;
@@ -100,7 +100,7 @@ function ProviderQuery(props) {
     }
   };
   const isQueryValid = () => {
-    let isValid = (query.state && query.tosAcceptedAt);
+    let isValid = (query.state && query.tosAcceptedAt && query.rate !== undefined);
     return isValid;
   }
   return (
@@ -119,6 +119,7 @@ function ProviderQuery(props) {
             </Grid>
             <Grid item xs={12} align="left" className={classes.search}>
               <GenderSelect onChange={handleChange('gender')}
+                            required={false}
                             label='Preferred Gender' 
                             helperText='Optional: choose the preferred gender of a therapist'/>
             </Grid>

@@ -8,69 +8,57 @@ class Referral {
   }
 
   async execute() {
-    const vars = {
-      state: this.state,
-      limit: this.limit
-    }
+    const queryParams = ['state','rate','gender','acceptedInsurance','specializations','modalities','languages'];
+    const query = Object.entries(this).reduce((q, keypair) => {
+      if(queryParams.includes(keypair[0])) {
+        q[keypair[0]] = keypair[1];
+      }
+      return q;
+    }, {});
     try {
-      const {data: {accessPointsByState}} = await API.graphql({
-        query: accessPointsByStateWithProvider,
-        variables: vars,
+      const {data: {referrals}} = await API.graphql({
+        query: referralsQuery,
+        variables: {
+          query,
+          limit: 3,
+        },
         authMode: 'API_KEY'
-      })
+      });
       console.log(this);
-      let ap = accessPointsByState.items.map(a => a.provider).filter(this.filter.bind(this));
-      return ap;
+      return referrals.map(a => {return{...a.provider, score: a.score}});
     } catch (e) {
       console.error(e);
       return [];
     }
-  }
-
-  filter(provider) {
-    if(this.rate !== undefined && this.rate < provider.rate) {
-      return false;
-    }
-    return true;
   }
 }
 
 
 export default Referral;
 
-export const accessPointsByStateWithProvider = /* GraphQL */ `
-  query AccessPointsByState(
-    $state: String
-    $sortDirection: ModelSortDirection
-    $filter: ModelAccessPointFilterInput
+export const referralsQuery = /* GraphQL */ `
+  query Referrals(
+    $query: ReferralQuery
     $limit: Int
-    $nextToken: String
   ) {
-    accessPointsByState(
-      state: $state
-      sortDirection: $sortDirection
-      filter: $filter
+    referrals(
+      query: $query
       limit: $limit
-      nextToken: $nextToken
     ) {
-      items {
-        state
-        license
-        provider {
-          owner
-          fullName
-          licenseType
-          phone
-          url
-          email
-          acceptedInsurance
-          specializations
-          modalities
-          languages
-          rate
-        }
+      score 
+      provider {
+        owner
+        fullName
+        licenseType
+        phone
+        url
+        email
+        acceptedInsurance
+        specializations
+        modalities
+        languages
+        rate
       }
-      nextToken
     }
   }
 `;

@@ -57,6 +57,21 @@
 					]
 				}
 			]
+		},
+		"cotsReferralBackend": {
+			"build": true,
+			"providerPlugin": "awscloudformation",
+			"service": "Lambda",
+			"dependsOn": [
+				{
+					"category": "api",
+					"resourceName": "cots",
+					"attributes": [
+						"GraphQLAPIIdOutput",
+						"GraphQLAPIEndpointOutput"
+					]
+				}
+			]
 		}
 	},
 	"api": {
@@ -72,6 +87,9 @@
 								"description": "cots-patient",
 								"apiKeyExpirationDays": "365"
 							}
+						},
+						{
+							"authenticationType": "AWS_IAM"
 						}
 					],
 					"defaultAuthentication": {
