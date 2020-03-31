@@ -26,7 +26,7 @@ exports.handler = async (event, context) => {
     // trim to length
     results.length = Math.min(results.length, event.arguments.limit);
 
-    console.log(results);
+    console.log(results.map(r => {return {provider: r.provider.owner, score: r.score}}));
     context.done(null, results);
 };
 
@@ -41,67 +41,78 @@ function score(query) {
 }
 
 
-const scorers = [
-    { func: scoreProviderRate, weight: 20 },
-    { func: scoreProviderLanguages, weight: 10 },
-    { func: scoreProviderGender, weight: 5 },
-    { func: scoreProviderInsurance, weight: 5 },
-    { func: scoreProviderSpecializations, weight: 1 },
-    { func: scoreProviderModalities, weight: 1 },
-];
+const scorers = {
+    rate: (p, q) => {
+        if(p <= q) {
+            return 1;
+        }
+        const scale = 50;
+        return (q-p) / scale;
+    },
+    gender: (p, q) => {
+        if(p === undefined) {
+            return 0;
+        } 
+        return p===q?1:-1;
+    },
+    languages: scoreLists,
+    acceptedInsurance: scoreLists,
+    specializations: scoreLists,
+    modalities: scoreLists,
+};
+const weights = {
+    rate: 50,
+    languages: 10,
+    gender: 5,
+    acceptedInsurance: 5,
+};
+
 function scoreProvider(query, provider) {
-    const scoreSum = scorers.reduce((sum, scorer) => {
-        const s = Math.min(1, Math.max(-1, scorer.func(query, provider)));
-        return sum + (scorer.weight * s);
-    }, 0);
-    const scoreWeight = scorers.reduce((sum, scorer) => sum + scorer.weight, 0);
-    return scoreSum/scoreWeight;
+
+    const scores = Object.entries(query).reduce((scores, keypair) => {
+        const field = keypair[0];
+        if(!(field in scorers) || keypair[1] === null || keypair[1].length === 0) {
+            return scores;
+        }
+        const score = Math.min(1, Math.max(-1,scorers[field](provider[field], keypair[1])));
+        const weight = (field in weights)?weights[field]:1;
+        scores[field] = [score, weight]
+        return scores;
+    }, {});
+
+    const [sumScore, sumWeight] = Object.values(scores).reduce(([score, weight], field) => {
+        return [score + (field[0] * field[1]), weight + field[1]]
+    }, [0, 0]);
+
+    let score = sumScore/sumWeight;
+    if(isNaN(score)) {
+        score = 0;
+    }
+
+    const logMessage = {
+        query,
+        provider: provider.owner,
+        score,
+        scores,
+    }
+    console.log(logMessage);
+
+    return score;
 }
-function scoreProviderRate(query, provider) {
-    if(query.rate >= provider.rate) {
-        return 1;
-    } 
-    const scale = 50;
-    return (query.rate - provider.rate) / scale;
-}
-function scoreProviderLanguages(query, provider) {
-    return scoreLists(query.languages, provider.languages);
-}
-function scoreProviderGender(query, provider) {
-    if(query.gender === undefined || provider.gender === undefined) {
-        return 0;
-    } 
-    if(query.gender === provider.gender) {
-        return 1;
-    } 
-    return -1;
-}
-function scoreProviderInsurance(query, provider) {
-    return scoreLists(query.acceptedInsurance, provider.acceptedInsurance);
-}
-function scoreProviderSpecializations(query, provider) {
-    return scoreLists(query.specializations, provider.specializations);
-}
-function scoreProviderModalities(query, provider) {
-    return scoreLists(query.modalities, provider.modalities);
-}
-function scoreLists(queryList, providerList) {
-    if(queryList === undefined 
-        || queryList === null 
-        || queryList.length === 0 
-        || providerList === undefined 
-        || providerList === null 
-        || providerList.length === 0) 
+
+function scoreLists(pList, qList) {
+    if(pList === undefined || pList === null || pList.length === 0) 
     {
         return 0;
     } 
-    const sum = queryList.reduce((sum, item) => {
-        if(providerList.includes(item)) {
+    const sum = qList.reduce((sum, item) => {
+        if(pList.includes(item)) {
             return sum + 1;
+        } else {
+            return sum - 1;
         }
-        return sum;
     }, 0);
-    return sum/queryList.length;
+    return sum/qList.length;
 }
 
 async function getAccessPoints(state, limit) {
