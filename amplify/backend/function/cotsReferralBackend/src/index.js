@@ -95,6 +95,7 @@ function scoreProvider(query, provider) {
         score = 0;
     }
 
+    /*
     const logMessage = {
         query,
         provider: provider.owner,
@@ -102,6 +103,7 @@ function scoreProvider(query, provider) {
         scores,
     }
     console.log(logMessage);
+    */
 
     return score;
 }

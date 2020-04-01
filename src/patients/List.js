@@ -9,6 +9,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
+import Hidden from '@material-ui/core/Hidden';
 
 import EmailIcon from '@material-ui/icons/Email';
 import PhoneIcon from '@material-ui/icons/Phone';
@@ -19,19 +20,25 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   paper: {
-    margin: theme.spacing(2),
+    margin: theme.spacing(1),
     textAlign: 'center',
     color: theme.palette.text.secondary,
     backgroundColor: theme.palette.grey[300]
   },
   chip: {
     margin: theme.spacing(0.5),
+    maxWidth: 100,
   },
   card: {
     margin: theme.spacing(1),
+    height: 130
   },
   button: {
     margin: theme.spacing(0.5),
+  },
+  feeBox: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
   },
 }));
 export default function ListView({providers}) {
@@ -47,14 +54,14 @@ export default function ListView({providers}) {
           <Paper key={provider.owner} className={classes.paper}>
             <div>
               <Grid container spacing={0}>
-                <Grid item xs={10}>
+                <Grid item xs={9}>
                   <Typography variant="h4" component="h4" align="left">
                     {provider.fullName}, {provider.licenseType}
                   </Typography>
                 </Grid>
-                <Grid item xs={2} align="right">
-                  <Box bgcolor="primary.main" color="primary.contrastText" padding={1}>
-                    Session Fee:
+                <Grid item xs={3} align="right">
+                  <Box className={classes.feeBox} padding={1}>
+                    <Hidden xsDown>Session Fee:</Hidden>
                     <Typography variant="h5" component="h5">
                       ${provider.rate.toFixed(2)}
                     </Typography>
@@ -75,7 +82,7 @@ export default function ListView({providers}) {
                 {provider.url && 
                  <Grid item xs={12}>
                   <Typography variant="h5" component="h5" align="left">
-                    <Button color="primary" variant="contained" className={classes.button}><LanguageIcon/></Button> <Link href={provider.url}>{provider.url}</Link>
+                    <Button color="primary" variant="contained" className={classes.button}><LanguageIcon/></Button> <Link href={provider.url}>Webpage</Link>
                   </Typography>
                  </Grid>
                 }
@@ -84,7 +91,7 @@ export default function ListView({providers}) {
                    <Card className={classes.card}>
                     <CardContent>
                       <Typography className={classes.title} color="textSecondary" gutterBottom>
-                        Insurance Plans Accepted:
+                        Insurance<Hidden xsDown> Plans Accepted</Hidden>:
                       </Typography>
                       {provider.acceptedInsurance.map((data) => {
                         return (
@@ -104,7 +111,7 @@ export default function ListView({providers}) {
                    <Card className={classes.card}>
                     <CardContent>
                       <Typography className={classes.title} color="textSecondary" gutterBottom>
-                        Therapists's Specializations:
+                        <Hidden xsDown>Therapists's </Hidden>Specializations:
                       </Typography>
                       {provider.specializations.map((data) => {
                         return (
@@ -124,7 +131,7 @@ export default function ListView({providers}) {
                    <Card className={classes.card}>
                     <CardContent>
                       <Typography className={classes.title} color="textSecondary" gutterBottom>
-                        Types of Therapy Offered:
+                        <Hidden xsDown>Types of </Hidden>Therapy Offered:
                       </Typography>
                       {provider.modalities.map((data) => {
                         return (
@@ -144,7 +151,7 @@ export default function ListView({providers}) {
                    <Card className={classes.card}>
                     <CardContent>
                       <Typography className={classes.title} color="textSecondary" gutterBottom>
-                        Languages Spoken:
+                        Languages<Hidden xsDown> Spoken</Hidden>:
                       </Typography>
                       {provider.languages.map((data) => {
                         return (
