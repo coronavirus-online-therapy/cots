@@ -1,0 +1,11 @@
+{
+    "permissions": {
+        "api": {
+            "cots": [
+                "read"
+            ]
+        }
+    },
+    "apicotsGraphQLAPIIdOutput": "apicotsGraphQLAPIIdOutput",
+    "apicotsGraphQLAPIEndpointOutput": "http://localhost:20002/graphql"
+}

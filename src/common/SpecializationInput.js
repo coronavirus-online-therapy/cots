@@ -4,7 +4,7 @@ import Chip from '@material-ui/core/Chip';
 import TextField from '@material-ui/core/TextField';
 
 function SpecializationInput(props) {
-  const [value, setValue] = useState(props.defaultValue);
+  const [value, setValue] = useState(props.defaultValue || []);
   const [helperText, setHelperText] = useState('');
 
   const handleFocus = event => {
@@ -72,6 +72,7 @@ const topSpecializations = [
   'Child or Adolescent',
   'Chronic Illness',
   'Codependency',
+  'Couple\'s Therapy',
   'Depression',
   'Domestic Abuse/Violence',
   'Eating Disorders',

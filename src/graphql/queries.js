@@ -1,6 +1,30 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const referrals = /* GraphQL */ `
+  query Referrals($query: ReferralQuery, $limit: Int = 3) {
+    referrals(query: $query, limit: $limit) {
+      score
+      provider {
+        owner
+        fullName
+        licenseType
+        liabilityPolicy
+        email
+        phone
+        url
+        rate
+        acceptedInsurance
+        gender
+        specializations
+        modalities
+        languages
+        active
+        tosAcceptedAt
+      }
+    }
+  }
+`;
 export const listProviders = /* GraphQL */ `
   query ListProviders(
     $owner: String

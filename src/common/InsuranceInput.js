@@ -4,7 +4,7 @@ import Chip from '@material-ui/core/Chip';
 import TextField from '@material-ui/core/TextField';
 
 function InsuranceInput(props) {
-  const [value, setValue] = useState(props.defaultValue);
+  const [value, setValue] = useState(props.defaultValue || []);
   const [helperText, setHelperText] = useState('');
 
   const handleFocus = event => {
