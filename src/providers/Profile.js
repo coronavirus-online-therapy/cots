@@ -12,6 +12,7 @@ import EditIcon from '@material-ui/icons/Edit';
 
 import { makeStyles } from '@material-ui/core/styles';
 
+import TermsOfService from './TermsOfService';
 import AccessPoints from '../common/AccessPoints';
 import AcceptTerms from '../common/AcceptTerms';
 import RateSelect from '../common/RateSelect';
@@ -231,7 +232,7 @@ function Profile(props) {
                     />
                 </Grid>
                 <Grid item xs={8} align="left">
-                    {mode === 'CREATE' && <AcceptTerms required={true} onChange={handleChange('tosAcceptedAt')} contract={contract}/>}
+                    {mode === 'CREATE' && <AcceptTerms required={true} onChange={handleChange('tosAcceptedAt')} contract={TermsOfService}/>}
                 </Grid>
                 <Grid item xs={6} align="center">
                   {mode !== 'VIEW' && <Button variant="contained" color="primary" type="submit">Submit</Button>}
@@ -248,18 +249,6 @@ function Profile(props) {
 
 Profile.defaultProps = {
 }
-
-const contract = `
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Euismod quis viverra nibh cras pulvinar mattis. Scelerisque eu ultrices vitae auctor eu augue. Molestie nunc non blandit massa enim. Felis eget nunc lobortis mattis aliquam. Enim blandit volutpat maecenas volutpat blandit aliquam. Ut morbi tincidunt augue interdum velit euismod. Donec enim diam vulputate ut pharetra. Aenean euismod elementum nisi quis eleifend quam. Mi eget mauris pharetra et ultrices. Nulla at volutpat diam ut venenatis tellus in metus. Tempor orci eu lobortis elementum nibh tellus molestie nunc. Consequat id porta nibh venenatis cras. Enim eu turpis egestas pretium aenean pharetra magna. Augue lacus viverra vitae congue eu consequat ac felis donec. Ut eu sem integer vitae justo eget magna fermentum. Vitae et leo duis ut diam. Luctus venenatis lectus magna fringilla urna. Sed cras ornare arcu dui vivamus arcu felis bibendum ut.
-
-Hac habitasse platea dictumst vestibulum rhoncus est. Risus nullam eget felis eget. Vel pretium lectus quam id leo in vitae turpis massa. Turpis massa tincidunt dui ut ornare. Dui nunc mattis enim ut tellus elementum sagittis. Et tortor at risus viverra adipiscing at in tellus integer. Magna sit amet purus gravida quis blandit turpis cursus. Suspendisse in est ante in nibh mauris cursus mattis. Egestas integer eget aliquet nibh praesent tristique magna sit amet. Sed lectus vestibulum mattis ullamcorper velit sed ullamcorper morbi tincidunt. Mattis nunc sed blandit libero volutpat sed. Lacus sed viverra tellus in. Aliquet porttitor lacus luctus accumsan. Egestas integer eget aliquet nibh praesent tristique magna sit amet. Tortor dignissim convallis aenean et tortor at risus viverra. Viverra tellus in hac habitasse platea dictumst vestibulum. Arcu odio ut sem nulla pharetra diam sit. Tortor id aliquet lectus proin nibh nisl condimentum id.
-
-Nibh sit amet commodo nulla facilisi nullam vehicula ipsum a. Egestas quis ipsum suspendisse ultrices gravida dictum fusce ut placerat. Enim praesent elementum facilisis leo. Cursus turpis massa tincidunt dui. Convallis aenean et tortor at risus viverra adipiscing at in. Cras fermentum odio eu feugiat pretium nibh ipsum consequat. Pretium nibh ipsum consequat nisl vel. Nam at lectus urna duis convallis convallis tellus id. Egestas congue quisque egestas diam in arcu cursus euismod quis. Tellus mauris a diam maecenas sed.
-
-Enim praesent elementum facilisis leo vel fringilla est ullamcorper eget. Tempor orci dapibus ultrices in. Purus viverra accumsan in nisl nisi scelerisque eu ultrices. Ornare aenean euismod elementum nisi quis eleifend quam adipiscing. Facilisis leo vel fringilla est ullamcorper eget nulla facilisi etiam. Mauris cursus mattis molestie a iaculis at erat pellentesque. Tincidunt vitae semper quis lectus nulla. Augue mauris augue neque gravida in fermentum et sollicitudin ac. Pretium lectus quam id leo. Vivamus at augue eget arcu dictum varius duis. Auctor urna nunc id cursus metus aliquam eleifend mi. Nulla aliquet porttitor lacus luctus accumsan tortor. Adipiscing enim eu turpis egestas pretium aenean pharetra magna.
-
-Lacus viverra vitae congue eu consequat ac felis donec et. Egestas purus viverra accumsan in nisl. Hendrerit gravida rutrum quisque non tellus orci ac auctor augue. Mi sit amet mauris commodo quis imperdiet massa. Blandit turpis cursus in hac habitasse platea dictumst. Sit amet mauris commodo quis imperdiet massa tincidunt nunc pulvinar. Parturient montes nascetur ridiculus mus mauris vitae ultricies leo. Habitant morbi tristique senectus et netus et malesuada fames. Fermentum leo vel orci porta. Purus in mollis nunc sed id. Libero nunc consequat interdum varius. Ultrices sagittis orci a scelerisque purus semper eget duis at. Massa id neque aliquam vestibulum morbi. Duis at tellus at urna. Eu volutpat odio facilisis mauris. Fermentum dui faucibus in ornare quam viverra orci. Enim ut tellus elementum sagittis vitae et. Ornare quam viverra orci sagittis.
-`;
 
 export default Profile
 

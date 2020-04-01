@@ -50,6 +50,9 @@ export default function ListView({providers}) {
 
   return (
     <div className={classes.root}>
+        <Typography variant="h5" align="left">
+          Here are your top matches based on your search criteria:
+        </Typography>
         {providers.map(provider => {return (
           <Paper key={provider.owner} className={classes.paper}>
             <div>
@@ -60,7 +63,7 @@ export default function ListView({providers}) {
                   </Typography>
                 </Grid>
                 <Grid item xs={3} align="right">
-                  <Box className={classes.feeBox} padding={1}>
+                  <Box className={classes.feeBox} padding={1} hidden={true}>
                     <Hidden xsDown>Session Fee:</Hidden>
                     <Typography variant="h5" component="h5">
                       ${provider.rate.toFixed(2)}

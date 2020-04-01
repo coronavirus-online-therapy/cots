@@ -72,6 +72,7 @@ const topSpecializations = [
   'Child or Adolescent',
   'Chronic Illness',
   'Codependency',
+  'Couple\'s Therapy',
   'Depression',
   'Domestic Abuse/Violence',
   'Eating Disorders',
