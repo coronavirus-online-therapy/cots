@@ -69,7 +69,7 @@
 				"Runtime": "nodejs12.x",
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "amplify-cots-preview-105259-deployment",
+					"S3Bucket": "amplify-cots-production-170033-deployment",
 					"S3Key": "amplify-builds/cotsProviderBackend-4461313955503231376c-build.zip"
 				}
 			}

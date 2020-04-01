@@ -15,7 +15,9 @@
             "function": {
                 "cotsPostConfirmation": {
                     "GROUP": "providers"
-                }
+                },
+                "cotsProviderBackend": {},
+                "cotsReferralBackend": {}
             },
             "auth": {
                 "userPoolGroups": {},
@@ -48,6 +50,7 @@
             },
             "function": {
                 "cotsProviderBackend": {},
+                "cotsReferralBackend": {},
                 "cotsPostConfirmation": {
                     "GROUP": "providers"
                 }
