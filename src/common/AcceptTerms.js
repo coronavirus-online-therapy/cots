@@ -35,7 +35,7 @@ function AcceptTerms(props) {
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle);
   const [read, setRead] = useState(false);
-  const [accepted, setAccepted] = useState(false);
+  const [accepted, setAccepted] = useState(Boolean(props.defaultValue));
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
     setOpen(true);
@@ -93,6 +93,7 @@ AcceptTerms.defaultProps = {
   agreementText: 'I have read and accept the',
   contractTitle: 'Terms of Service',
   contract: '',
+  defaultValue: false
 }
 
 export default AcceptTerms;

@@ -21,7 +21,13 @@ exports.handler = async (event, context) => {
 
     // score & sort
     const results = providers.map(score(event.arguments.query));
-    results.sort((a,b) => {return b.score - a.score});
+    results.sort((a,b) => {
+        let diff = b.score - a.score;
+        if(diff === 0) {
+            return .5 - Math.random();
+        }
+        return diff;
+    });
 
     // trim to length
     results.length = Math.min(results.length, event.arguments.limit);
