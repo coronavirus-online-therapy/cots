@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField';
 
 function LanguagesInput(props) {
   const [value, setValue] = useState(props.defaultValue || []) ;
-  const [helperText, setHelperText] = useState('');
+  const [helperText, setHelperText] = useState(props.helperText);
 
   const handleFocus = event => {
     setHelperText(props.helperText);
@@ -54,7 +54,7 @@ LanguagesInput.defaultProps = {
   required: false,
   disabled: false,
   defaultValue: [],
-  helperText: 'Specify the top 3 languages that you speak.',
+  helperText: 'Optional: Specify the top 3 languages that you speak.',
   max: 0
 }
 

@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField';
 
 function SpecializationInput(props) {
   const [value, setValue] = useState(props.defaultValue || []);
-  const [helperText, setHelperText] = useState('');
+  const [helperText, setHelperText] = useState(props.helperText);
 
   const handleFocus = event => {
     setHelperText(props.helperText);
@@ -50,7 +50,7 @@ function SpecializationInput(props) {
 SpecializationInput.defaultProps = {
   id: 'specialization',
   label: 'Specializations',
-  helperText: 'Choose up to 3 of your top specializations.',
+  helperText: 'Optional: Choose up to 3 of your top specializations.',
   variant: 'outlined',
   required: false,
   disabled: false,

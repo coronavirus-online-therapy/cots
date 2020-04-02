@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField';
 
 function InsuranceInput(props) {
   const [value, setValue] = useState(props.defaultValue || []);
-  const [helperText, setHelperText] = useState('');
+  const [helperText, setHelperText] = useState(props.helperText);
 
   const handleFocus = event => {
     setHelperText(props.helperText);

@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField';
 
 function ModalityInput(props) {
   const [value, setValue] = useState(props.defaultValue || []);
-  const [helperText, setHelperText] = useState('');
+  const [helperText, setHelperText] = useState(props.helperText);
 
   const handleFocus = event => {
     setHelperText(props.helperText);
@@ -50,7 +50,7 @@ function ModalityInput(props) {
 ModalityInput.defaultProps = {
   id: 'modality',
   label: 'Types of therapy',
-  helperText: 'Choose up to 3 of your top types of therapy.',
+  helperText: 'Optional: Choose up to 3 of your top types of therapy.',
   variant: 'outlined',
   required: false,
   disabled: false,

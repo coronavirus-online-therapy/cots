@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
@@ -19,6 +20,16 @@ const useStyles = makeStyles(theme => ({
 function GenderSelect(props) {
     const classes = useStyles();
     const [gender, setGender] = useState(props.defaultValue);
+    const [helperText, setHelperText] = useState(props.helperText);
+
+    const handleFocus = event => {
+        setHelperText(props.helperText);
+    }
+
+    const handleBlur = event => {
+        setHelperText('');
+    }
+
     const handleStateChange = event => {
         let newValue = event.target.value;
         setGender(newValue);
@@ -36,6 +47,8 @@ function GenderSelect(props) {
                 required
                 label={props.label}
                 onChange={handleStateChange}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
                 inputProps={{
                     name: 'gender',
                     id: props.id,
@@ -44,6 +57,7 @@ function GenderSelect(props) {
                 <option value="" />
                 {genders.map(gender => <option key={gender.value} value={gender.value}>{gender.label}</option>)}
             </Select>
+            <FormHelperText disabled={props.disabled}>{helperText}</FormHelperText>
         </FormControl>
     );
 }
@@ -55,7 +69,8 @@ GenderSelect.defaultProps = {
     required: true,
     disabled: false,
     className: '',
-    defaultValue: ''
+    defaultValue: '',
+    helperText: 'Optional: Select your gender identification'
 }
 
 const genders = [

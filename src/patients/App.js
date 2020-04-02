@@ -156,7 +156,7 @@ function ProviderQuery(props) {
                             defaultValue={query.gender}
                             required={false}
                             label='Preferred Gender Identification' 
-                            helperText='Optional: choose the preferred gender identification of a therapist'/>
+                            helperText='Optional: choose preferred gender identification of therapist'/>
             </Grid>
             <Grid item xs={12} align="left" className={classes.search}>
               <SpecializationInput onChange={handleChange('specializations')}
