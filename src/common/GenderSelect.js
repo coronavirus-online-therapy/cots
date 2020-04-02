@@ -64,7 +64,7 @@ function GenderSelect(props) {
 
 GenderSelect.defaultProps = {
     id: 'gender-select',
-    label: 'Gender',
+    label: 'Gender Identification',
     variant: 'outlined',
     required: true,
     disabled: false,

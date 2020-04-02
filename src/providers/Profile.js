@@ -141,11 +141,22 @@ function Profile(props) {
           <form className={classes.root} autoComplete="off" onSubmit={handleSubmit}>
             <div>
               <Grid container spacing={3} justify="center">
-                <Grid item xs={12}>
-                  <Typography variant="h2" component="h2">
+                <Grid item xs={9}>
+                  <Typography variant="h2" component="h2" align="right">
                     Therapist Profile
-                    {mode === 'VIEW' && <Button variant="contained" color="primary" onClick={() => {setMode('UPDATE')}}><EditIcon/></Button>}
                   </Typography>
+                </Grid>
+                <Grid item xs={3}> 
+                    {mode === 'VIEW' && 
+                      <div>
+                      <Button variant="contained" color="primary" onClick={() => {setMode('UPDATE')}}><EditIcon/></Button>
+                      <div>
+                      <Typography>
+                        Edit
+                      </Typography>
+                      </div>
+                      </div>
+                    }
                 </Grid>
                 <Grid item xs={8} align="left">
                     <TextField fullWidth required id="full-name" label="Full Name"  variant="outlined" 
