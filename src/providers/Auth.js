@@ -107,7 +107,6 @@ function ProviderAuth(props) {
     setError('');
     Auth.signIn(creds.username, creds.password)
         .then(user => {
-          console.log(user);
           if (
             user.challengeName === 'SMS_MFA' ||
             user.challengeName === 'SOFTWARE_TOKEN_MFA'
