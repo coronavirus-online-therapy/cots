@@ -50,6 +50,7 @@ function Profile(props) {
   const classes = useStyles();
   const [mode, setMode] = useState(props.provider.owner?'VIEW':'CREATE');
   const [submit, setSubmit] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [providerDetails, setProviderDetails] = useState(new ProviderDetails(props.provider));
   const [accessPoints, setAccessPoints] = useState((props.provider&&props.provider.accessPoints)?props.provider.accessPoints.items:[]);
@@ -65,6 +66,7 @@ function Profile(props) {
       return;
     }
     setSubmit(false);
+    setLoading(true);
 
     const doAccessPoints = async () => {
       for (let ap of accessPoints) {
@@ -103,6 +105,7 @@ function Profile(props) {
           setError(err);
         }
       }
+      setLoading(false);
     };
 
     doSubmit();
