@@ -45,7 +45,7 @@ function ProviderAuth(props) {
   const [loading, setLoading] = useState(false);
 
   const handleUsernameChange = (e) => {
-    setCreds({...creds, username: e.target.value});
+    setCreds({...creds, username: e.target.value.toLowerCase()});
   }
   const handlePasswordChange = (e) => {
     setCreds({...creds, password: e.target.value});
