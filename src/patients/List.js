@@ -50,6 +50,16 @@ export default function ListView({providers}) {
     return (<Typography variant="h4" component="h4">No matches found. Please broaden your search criteria and try again.</Typography>);
   }
 
+  const mailtoHref = (email) => {
+    return `mailto:${email}`;
+  }
+  const cleanUrl = (url) => {
+    if (!/^(?:f|ht)tps?:\/\//.test(url)) {
+      url = "http://" + url;
+    }
+    return url;
+  }
+
   return (
     <div className={classes.root}>
         <Alert severity="info">
@@ -78,7 +88,7 @@ export default function ListView({providers}) {
                 {provider.email && 
                  <Grid item xs={12}>
                   <Typography variant="h5" component="h5" align="left">
-                    <Button color="primary" variant="contained" className={classes.button}><EmailIcon/></Button> <Link href="mailto:{provider.email}">{provider.email}</Link>
+                    <Button color="primary" variant="contained" className={classes.button}><EmailIcon/></Button> <Link href={mailtoHref(provider.email)}>{provider.email}</Link>
                   </Typography>
                  </Grid>
                 }
@@ -90,7 +100,7 @@ export default function ListView({providers}) {
                 {provider.url && 
                  <Grid item xs={12}>
                   <Typography variant="h5" component="h5" align="left">
-                    <Button color="primary" variant="contained" className={classes.button}><LanguageIcon/></Button> <Link href={provider.url}>Webpage</Link>
+                    <Button color="primary" variant="contained" className={classes.button}><LanguageIcon/></Button> <Link href={cleanUrl(provider.url)}>Webpage</Link>
                   </Typography>
                  </Grid>
                 }

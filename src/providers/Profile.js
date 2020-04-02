@@ -270,7 +270,7 @@ function Profile(props) {
                 </Grid>
               </Grid>
             </div>
-            <Backdrop className={classes.backdrop} open={submit}>
+            <Backdrop className={classes.backdrop} open={loading}>
               <CircularProgress color="inherit" />
             </Backdrop>
           </form>
