@@ -64,19 +64,16 @@ function Profile(props) {
     if(!submit) {
       return;
     }
+    setSubmit(false);
 
     const doAccessPoints = async () => {
       for (let ap of accessPoints) {
-        try {
-          if(ap.operation === 'ADD') {
-            await providerDetails.addAccessPoint(ap.accessPoint);
-          } else if(ap.operation === 'UPDATE') {
-            await providerDetails.updateAccessPoint(ap.accessPoint);
-          } else if(ap.operation === 'DELETE') {
-            await providerDetails.deleteAccessPoint(ap.accessPoint);
-          }
-        } catch (e) {
-          console.error(e);
+        if(ap.operation === 'ADD') {
+          await providerDetails.addAccessPoint(ap.accessPoint);
+        } else if(ap.operation === 'UPDATE') {
+          await providerDetails.updateAccessPoint(ap.accessPoint);
+        } else if(ap.operation === 'DELETE') {
+          await providerDetails.deleteAccessPoint(ap.accessPoint);
         }
      }
     }
@@ -97,6 +94,7 @@ function Profile(props) {
         if(props.onChange) {
           props.onChange(response);
         }
+        setMode('VIEW');
       } catch(err) {
         console.error(err);
         if(err.errors) {
@@ -105,8 +103,6 @@ function Profile(props) {
           setError(err);
         }
       }
-      setSubmit(false);
-      setMode('VIEW');
     };
 
     doSubmit();
