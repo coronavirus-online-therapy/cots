@@ -14,7 +14,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Referral from './Referral';
 import ProviderList from './List';
-import TermsOfService from './TermsOfService';
+import TermsOfService from '../common/TermsOfService';
 import AcceptTerms from '../common/AcceptTerms';
 import StateSelect from '../common/StateSelect';
 import RateSelect from '../common/RateSelect';
@@ -149,7 +149,7 @@ function ProviderQuery(props) {
                               defaultValue={query.acceptedInsurance}
                               onChange={handleChange('acceptedInsurance')}
                               label='Health Insurance' 
-                              helperText='Optional: only enter if you have insurance available'/>
+                              helperText='Optional: only enter if you wish to utilize your health insurance benefits'/>
             </Grid>
             <Grid item xs={12} align="left" className={classes.search}>
               <GenderSelect onChange={handleChange('gender')}

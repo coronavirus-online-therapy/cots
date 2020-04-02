@@ -10,6 +10,8 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import Hidden from '@material-ui/core/Hidden';
+import Alert from '@material-ui/lab/Alert';
+
 
 import EmailIcon from '@material-ui/icons/Email';
 import PhoneIcon from '@material-ui/icons/Phone';
@@ -45,11 +47,14 @@ export default function ListView({providers}) {
   const classes = useStyles();
 
   if(!providers || providers.length === 0) {
-    return (<Typography variant="h4" component="h4">No matches found</Typography>);
+    return (<Typography variant="h4" component="h4">No matches found. Please broaden your search criteria and try again.</Typography>);
   }
 
   return (
     <div className={classes.root}>
+        <Alert severity="info">
+          PLEASE NOTE: You must let the therapist know you connected with them via Coronavirus Online Therapy, as well as tell them the fee you require. If you do not, they will quote you their full, regular fees. Thank you.
+        </Alert>
         <Typography variant="h5" align="left">
           Here are your top matches based on your search criteria:
         </Typography>

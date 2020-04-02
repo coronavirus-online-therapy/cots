@@ -9,10 +9,16 @@ import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import EditIcon from '@material-ui/icons/Edit';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import Alert from '@material-ui/lab/Alert';
 
 import { makeStyles } from '@material-ui/core/styles';
 
-import TermsOfService from './TermsOfService';
+import TermsOfService from '../common/TermsOfService';
 import AccessPoints from '../common/AccessPoints';
 import AcceptTerms from '../common/AcceptTerms';
 import RateSelect from '../common/RateSelect';
@@ -32,6 +38,10 @@ const useStyles = makeStyles(theme => ({
       marginTop: theme.spacing(2),
     },
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
 }));
 
 
@@ -43,6 +53,7 @@ function Profile(props) {
   const [error, setError] = useState("");
   const [providerDetails, setProviderDetails] = useState(new ProviderDetails(props.provider));
   const [accessPoints, setAccessPoints] = useState((props.provider&&props.provider.accessPoints)?props.provider.accessPoints.items:[]);
+  const [confirmMessage, setConfirmMessage] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -53,6 +64,7 @@ function Profile(props) {
     if(!submit) {
       return;
     }
+    setSubmit(false);
 
     const doAccessPoints = async () => {
       for (let ap of accessPoints) {
@@ -63,7 +75,7 @@ function Profile(props) {
         } else if(ap.operation === 'DELETE') {
           await providerDetails.deleteAccessPoint(ap.accessPoint);
         }
-      }
+     }
     }
 
     const doSubmit = async () => {
@@ -72,14 +84,17 @@ function Profile(props) {
         if(mode === 'CREATE') {
          response = await providerDetails.create();
          await doAccessPoints();
+         setConfirmMessage('Thank you.  Your profile is now live');
         } else if(mode === 'UPDATE') {
          response = await providerDetails.update();
          await doAccessPoints();
+         setConfirmMessage('Thank you.  Your profile has been updated.');
         }
         
         if(props.onChange) {
           props.onChange(response);
         }
+        setMode('VIEW');
       } catch(err) {
         console.error(err);
         if(err.errors) {
@@ -88,8 +103,6 @@ function Profile(props) {
           setError(err);
         }
       }
-      setSubmit(false);
-      setMode('VIEW');
     };
 
     doSubmit();
@@ -134,6 +147,12 @@ function Profile(props) {
     }]);
   }
 
+  const navigateEdit = () => {
+    setSubmit(false);
+    setConfirmMessage('');
+    setMode('UPDATE');
+  }
+
   return (
     <div className={classes.root}>
       <Container maxWidth="md">
@@ -141,11 +160,22 @@ function Profile(props) {
           <form className={classes.root} autoComplete="off" onSubmit={handleSubmit}>
             <div>
               <Grid container spacing={3} justify="center">
-                <Grid item xs={12}>
-                  <Typography variant="h2" component="h2">
+                <Grid item xs={9}>
+                  <Typography variant="h2" component="h2" align="right">
                     Therapist Profile
-                    {mode === 'VIEW' && <Button variant="contained" color="primary" onClick={() => {setMode('UPDATE')}}><EditIcon/></Button>}
                   </Typography>
+                </Grid>
+                <Grid item xs={3}> 
+                    {mode === 'VIEW' && 
+                      <div>
+                      <Button variant="contained" color="primary" onClick={navigateEdit}><EditIcon/></Button>
+                      <div>
+                      <Typography>
+                        Edit
+                      </Typography>
+                      </div>
+                      </div>
+                    }
                 </Grid>
                 <Grid item xs={8} align="left">
                     <TextField fullWidth required id="full-name" label="Full Name"  variant="outlined" 
@@ -237,11 +267,54 @@ function Profile(props) {
                 </Grid>
               </Grid>
             </div>
+            <Backdrop className={classes.backdrop} open={submit}>
+              <CircularProgress color="inherit" />
+            </Backdrop>
           </form>
         </Paper>
       </Container>
+      <ConfirmSnackbar message={confirmMessage} />
       <ErrorSnackbar message={error}/>
     </div>
+  );
+}
+
+function ConfirmSnackbar(props) {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if(props.message !== '') {
+      setOpen(true);
+    } else {
+      setOpen(false);
+    }
+  }, [props, setOpen]);
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  return (
+    <Snackbar
+      open={open}
+      autoHideDuration={6000}
+      onClose={handleClose}
+      action={
+        <React.Fragment>
+          <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        </React.Fragment>
+      }
+    >
+      <Alert onClose={handleClose} severity="success">
+        {props.message}
+      </Alert>
+    </Snackbar>
   );
 }
 

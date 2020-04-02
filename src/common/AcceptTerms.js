@@ -6,18 +6,28 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+import Markdown from 'markdown-to-jsx';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'absolute',
-    width: 400,
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
+    width: '40%',
+    [theme.breakpoints.down('sm')]: {
+      width: '90%',
+    },
   },
   contract: {
+    overflow: 'scroll',
+    height: '200px',
+    border: '2px solid #000',
+    margin: theme.spacing(1),
+  },
+  contractText: {
+    fontSize: '8pt'
   }
 }));
 
@@ -65,7 +75,18 @@ function AcceptTerms(props) {
   const body = (
     <div style={modalStyle} className={classes.paper}>
       <h2 id="{props.id}-title">{props.contractTitle}</h2>
-      <TextareaAutosize cols={60} rowsMax={20} id="{props.id}-description" className={classes.contract} value={props.contract} onScroll={handleScroll}/>
+      <div className={classes.contract} onScroll={handleScroll}>
+        <Markdown options={{
+            overrides: {
+              h1: { component: Typography, props: { gutterBottom: true, variant: 'h6' } },
+              p: { component: Typography, props: { paragraph: true, className: classes.contractText } },
+              a: { component: Link },
+            },
+        }}> 
+          {props.contract}
+        </Markdown>
+      </div>
+
       <Button onClick={handleAccept} variant="contained" color="primary" disabled={!read}>Accept</Button>
       {!read && <Typography variant="caption">Please scroll down to accept</Typography>}
     </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MuiAlert from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
 
@@ -7,24 +7,31 @@ function Alert(props) {
 }
 
 function ErrorSnackbar(props) {
-  const [open, setOpen] = useState(true);
-  const handleClose= (event, reason) => {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if(props.message !== '') {
+      setOpen(true);
+    } else {
+      setOpen(false);
+    }
+  }, [props, setOpen]);
+
+  const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
+
     setOpen(false);
   };
 
-  if(props.message && props.message.length > 0) {
-    return (
-      <Snackbar open={open} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="error">
-          {props.message}
-        </Alert>
-      </Snackbar>
-    )
-  }
-  return (<div/>);
+  return (
+    <Snackbar open={open} onClose={handleClose}>
+      <Alert onClose={handleClose} severity="error">
+        {props.message.toString()}
+      </Alert>
+    </Snackbar>
+  )
 }
 
 export default ErrorSnackbar;
