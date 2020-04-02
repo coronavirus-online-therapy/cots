@@ -147,6 +147,12 @@ function Profile(props) {
     }]);
   }
 
+  const navigateEdit = () => {
+    setSubmit(false);
+    setConfirmMessage('');
+    setMode('UPDATE');
+  }
+
   return (
     <div className={classes.root}>
       <Container maxWidth="md">
@@ -162,7 +168,7 @@ function Profile(props) {
                 <Grid item xs={3}> 
                     {mode === 'VIEW' && 
                       <div>
-                      <Button variant="contained" color="primary" onClick={() => {setMode('UPDATE')}}><EditIcon/></Button>
+                      <Button variant="contained" color="primary" onClick={navigateEdit}><EditIcon/></Button>
                       <div>
                       <Typography>
                         Edit
@@ -274,12 +280,13 @@ function Profile(props) {
 }
 
 function ConfirmSnackbar(props) {
-  console.log(`message:${props.message}`);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if(props.message !== '') {
       setOpen(true);
+    } else {
+      setOpen(false);
     }
   }, [props, setOpen]);
 
