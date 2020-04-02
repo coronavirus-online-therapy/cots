@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField';
 
 function InsuranceInput(props) {
   const [value, setValue] = useState(props.defaultValue || []);
-  const [helperText, setHelperText] = useState('');
+  const [helperText, setHelperText] = useState(props.helperText);
 
   const handleFocus = event => {
     setHelperText(props.helperText);
@@ -55,7 +55,7 @@ InsuranceInput.defaultProps = {
   disabled: false,
   defaultValue: [],
   max: 0,
-  helperText: 'Select the insurance plans that you accept. Type in unlisted plans to add.'
+  helperText: 'Optional: Select the insurance plans that you accept. Type in unlisted plans to add.'
 }
 
 const topInsurances = [

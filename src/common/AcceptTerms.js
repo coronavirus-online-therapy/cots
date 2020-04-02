@@ -5,6 +5,7 @@ import Link from '@material-ui/core/Link';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 
 const useStyles = makeStyles((theme) => ({
@@ -66,6 +67,7 @@ function AcceptTerms(props) {
       <h2 id="{props.id}-title">{props.contractTitle}</h2>
       <TextareaAutosize cols={60} rowsMax={20} id="{props.id}-description" className={classes.contract} value={props.contract} onScroll={handleScroll}/>
       <Button onClick={handleAccept} variant="contained" color="primary" disabled={!read}>Accept</Button>
+      {!read && <Typography variant="caption">Please scroll down to accept</Typography>}
     </div>
   );
     
