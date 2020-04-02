@@ -68,7 +68,8 @@ const topLanguages = [
   'Korean',
   'German',
   'Arabic',
-  'Russian'
+  'Russian',
+  'American Sign Language',
 ]
 
 
