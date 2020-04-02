@@ -6,7 +6,7 @@ import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Switch from '@material-ui/core/Switch';
+import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import EditIcon from '@material-ui/icons/Edit';
 
@@ -186,15 +186,13 @@ function Profile(props) {
                 <Grid item xs={8} align="left">
                   {mode !== 'CREATE' && 
                     <FormControlLabel label="Available for referrals" control={
-                        <Switch
+                      <Checkbox 
                           disabled={mode === 'VIEW'}
                           checked={providerDetails.active}
-                          onChange={handleCheck}
+                          onClick={handleCheck}
                           name="active"
-                          color="secondary"
-                        />
-                      }
-                    />
+                          color="primary"/>
+                      } />
                   }
                 </Grid>
                 <Grid item xs={8} align="left">
