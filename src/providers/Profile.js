@@ -67,14 +67,18 @@ function Profile(props) {
 
     const doAccessPoints = async () => {
       for (let ap of accessPoints) {
-        if(ap.operation === 'ADD') {
-          await providerDetails.addAccessPoint(ap.accessPoint);
-        } else if(ap.operation === 'UPDATE') {
-          await providerDetails.updateAccessPoint(ap.accessPoint);
-        } else if(ap.operation === 'DELETE') {
-          await providerDetails.deleteAccessPoint(ap.accessPoint);
+        try {
+          if(ap.operation === 'ADD') {
+            await providerDetails.addAccessPoint(ap.accessPoint);
+          } else if(ap.operation === 'UPDATE') {
+            await providerDetails.updateAccessPoint(ap.accessPoint);
+          } else if(ap.operation === 'DELETE') {
+            await providerDetails.deleteAccessPoint(ap.accessPoint);
+          }
+        } catch (e) {
+          console.error(e);
         }
-      }
+     }
     }
 
     const doSubmit = async () => {
