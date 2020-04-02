@@ -55,7 +55,7 @@ InsuranceInput.defaultProps = {
   disabled: false,
   defaultValue: [],
   max: 0,
-  helperText: 'Select the insurance plans that you accept. Type in unlisted plans to add.'
+  helperText: 'Optional: Select the insurance plans that you accept. Type in unlisted plans to add.'
 }
 
 const topInsurances = [
