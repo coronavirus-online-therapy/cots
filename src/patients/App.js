@@ -14,7 +14,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Referral from './Referral';
 import ProviderList from './List';
-import TermsOfService from './TermsOfService';
+import TermsOfService from '../common/TermsOfService';
 import AcceptTerms from '../common/AcceptTerms';
 import StateSelect from '../common/StateSelect';
 import RateSelect from '../common/RateSelect';

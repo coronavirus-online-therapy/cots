@@ -12,7 +12,7 @@ import EditIcon from '@material-ui/icons/Edit';
 
 import { makeStyles } from '@material-ui/core/styles';
 
-import TermsOfService from './TermsOfService';
+import TermsOfService from '../common/TermsOfService';
 import AccessPoints from '../common/AccessPoints';
 import AcceptTerms from '../common/AcceptTerms';
 import RateSelect from '../common/RateSelect';
