@@ -1,38 +1,85 @@
 import React, {useState, useEffect}  from 'react';
 
-import { withAuthenticator } from "aws-amplify-react";
+import LinearProgress from '@material-ui/core/LinearProgress';
+import ProviderAuth from './Auth';
 import ProviderProfile from './Profile';
 import ProviderDetails from './ProviderDetails';
+import { Greetings, 
+         ConfirmSignIn, 
+         ForgotPassword, 
+         Loading,
+         RequireNewPassword, 
+         TOTPSetup,
+         VerifyContact, 
+         Authenticator } from 'aws-amplify-react';
 
-function App() {
+function App(props) {
   const [provider, setProvider] = useState(null);
   const [key, setKey] = useState(0);
 
   useEffect(() => {
-    let p = new ProviderDetails();
+    if (props.authState !== 'signedIn') {
+      setProvider(null);
+      return;
+    }
+    const p = new ProviderDetails();
     p.read().then(() => {
       setProvider(p);
     }).catch(e => {
       setProvider(null);
     });
-  }, [key, setProvider]);
+  }, [props, key, setProvider]);
 
-  const changeHandler = (e) => {
+  const reloadProvider = () => {
     setKey(key+1);
   };
 
   // Don't show anything until login is complete
-  if(!provider) {
-    return (<div>Login required.</div>)
+  if (props.authState !== 'signedIn') {
+    return null;
+  } else if(!provider) {
+    return (
+      <LinearProgress />
+     );
   } else {
-    return (<ProviderProfile onChange={changeHandler} provider={provider}/>);
+    return (<ProviderProfile onChange={reloadProvider} provider={provider}/>);
   }
 }
 
-const signUpConfig =  {
-  hiddenDefaults: ['username', 'phone_number']
+const authTheme = {
+  a: {
+    color: '#648dae',
+  },
+  button: {
+    color: '#fff',
+    backgroundColor: '#648dae',
+  },
+  navButton: {
+    color: '#fff',
+    backgroundColor: '#648dae',
+  }
 };
+function AppWithAuth() {
+  return (
+    <Authenticator 
+      authState='signUp'
+      usernameAttributes='email' 
+      includeGreetings={true}
+      hideDefault={true}
+      theme={authTheme}
+    >
+      <Greetings/>
+      <ProviderAuth />
+      <ConfirmSignIn/>
+      <RequireNewPassword/>
+      <VerifyContact/>
+      <ForgotPassword/>
+      <TOTPSetup/>
+      <Loading/>
+      <App/>
+    </Authenticator>
 
-let authenticatedComponent = withAuthenticator(App, { usernameAttributes: 'email', signUpConfig, includeGreetings: true });
-authenticatedComponent.defaultProps = { authState: 'signUp' }
-export default authenticatedComponent;
+  );
+}
+
+export default AppWithAuth;
