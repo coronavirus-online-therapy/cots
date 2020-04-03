@@ -185,7 +185,7 @@ function ProviderAuth(props) {
       <AuthForm title="Therapist Registration" onSubmit={doSignUp} error={error}>
         <Grid container spacing={3} justify="center">
           <Grid item xs={12} align="left">
-              <TextField fullWidth required id="email" label="Email"  variant="outlined" 
+              <TextField fullWidth required id="email" label="Office Email"  variant="outlined" 
                           defaultValue={creds.username}
                           autoFocus={true}
                           autoComplete="email"

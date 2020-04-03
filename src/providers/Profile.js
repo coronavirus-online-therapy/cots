@@ -205,7 +205,7 @@ function Profile(props) {
                                onChange={handleChange('liabilityPolicy')}/>
                 </Grid>
                 <Grid item xs={8} align="left">
-                    <TextField fullWidth id="phone" label="Phone #"  variant="outlined" 
+                    <TextField fullWidth id="phone" label="Office Phone #"  variant="outlined" 
                                disabled={mode === 'VIEW'}
                                defaultValue={providerDetails.phone} 
                                onChange={handleChange('phone')}/>
