@@ -22,6 +22,7 @@ function LicenseTypeInput(props) {
   }
   return(<Autocomplete
             name={props.name}
+            autoSelect={true}
             required={props.required}
             disabled={props.disabled}
             onChange={handleChange}

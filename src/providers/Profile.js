@@ -53,8 +53,9 @@ function Profile(props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [providerDetails, setProviderDetails] = useState(new ProviderDetails(props.provider));
-  const [accessPoints, setAccessPoints] = useState((props.provider&&props.provider.accessPoints)?props.provider.accessPoints.items:[]);
+  const [accessPointOps, setAccessPointOps] = useState([]);
   const [confirmMessage, setConfirmMessage] = useState('');
+
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -65,19 +66,38 @@ function Profile(props) {
     if(!submit) {
       return;
     }
+    setError("");
     setSubmit(false);
     setLoading(true);
 
-    const doAccessPoints = async () => {
-      for (let ap of accessPoints) {
+    const apCount = accessPointOps.reduce((apCount, ap) => {
         if(ap.operation === 'ADD') {
-          await providerDetails.addAccessPoint(ap.accessPoint);
-        } else if(ap.operation === 'UPDATE') {
-          await providerDetails.updateAccessPoint(ap.accessPoint);
+          return apCount + 1;
         } else if(ap.operation === 'DELETE') {
-          await providerDetails.deleteAccessPoint(ap.accessPoint);
+          return apCount - 1;
         }
-     }
+        return apCount;
+    }, providerDetails.getAccessPoints().length);
+    if(apCount === 0) {
+      setLoading(false);
+      setError("You must provide at least 1 state where you are licensed.");
+      return;
+    }
+
+    const doAccessPoints = async () => {
+      try {
+        for (let ap of accessPointOps) {
+          if(ap.operation === 'ADD') {
+            await providerDetails.addAccessPoint(ap.accessPoint);
+          } else if(ap.operation === 'UPDATE') {
+            await providerDetails.updateAccessPoint(ap.accessPoint);
+          } else if(ap.operation === 'DELETE') {
+            await providerDetails.deleteAccessPoint(ap.accessPoint);
+          }
+        }
+      } finally {
+        setAccessPointOps([]);
+      }
     }
 
     const doSubmit = async () => {
@@ -86,11 +106,12 @@ function Profile(props) {
         if(mode === 'CREATE') {
          response = await providerDetails.create();
          await doAccessPoints();
-         setConfirmMessage('Thank you.  Your profile is now live');
+         setConfirmMessage('Thank you. Your profile is now live');
         } else if(mode === 'UPDATE') {
          response = await providerDetails.update();
          await doAccessPoints();
-         setConfirmMessage('Thank you.  Your profile has been updated.');
+         setConfirmMessage('Thank you. Your profile has been updated.');
+         window.location.reload(false);
         }
         
         if(props.onChange) {
@@ -109,7 +130,7 @@ function Profile(props) {
     };
 
     doSubmit();
-  }, [submit, providerDetails, props, accessPoints, mode]);
+  }, [submit, providerDetails, props, accessPointOps, mode]);
 
   const handleChange = field => {
     return (event, value, reason) => {
@@ -132,19 +153,22 @@ function Profile(props) {
   };
 
   const handleAccessPointAdd = (value) => {
-    setAccessPoints([...accessPoints, {
+    setError("");
+    setAccessPointOps([...accessPointOps, {
       operation: 'ADD',
       accessPoint: value
     }]);
   }
   const handleAccessPointUpdate = (value) => {
-    setAccessPoints([...accessPoints, {
+    setError("");
+    setAccessPointOps([...accessPointOps, {
       operation: 'UPDATE',
       accessPoint: value
     }]);
   }
   const handleAccessPointDelete = (value) => {
-    setAccessPoints([...accessPoints, {
+    setError("");
+    setAccessPointOps([...accessPointOps, {
       operation: 'DELETE',
       accessPoint: value
     }]);
@@ -195,7 +219,7 @@ function Profile(props) {
                 <Grid item xs={8} align="left">
                     <AccessPoints onAdd={handleAccessPointAdd} onUpdate={handleAccessPointUpdate} onDelete={handleAccessPointDelete}
                                       disabled={mode === 'VIEW'}
-                                      defaultValue={accessPoints} 
+                                      defaultValue={providerDetails.getAccessPoints()} 
                     />
                 </Grid>
                 <Grid item xs={8} align="left">
@@ -205,7 +229,7 @@ function Profile(props) {
                                onChange={handleChange('liabilityPolicy')}/>
                 </Grid>
                 <Grid item xs={8} align="left">
-                    <TextField fullWidth id="phone" label="Phone #"  variant="outlined" 
+                    <TextField fullWidth id="phone" label="Office Phone #"  variant="outlined" 
                                disabled={mode === 'VIEW'}
                                defaultValue={providerDetails.phone} 
                                onChange={handleChange('phone')}/>

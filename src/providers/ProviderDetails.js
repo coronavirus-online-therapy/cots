@@ -47,6 +47,13 @@ class ProviderDetails {
     accessPoint.owner = user.getUsername();
     return await API.graphql(graphqlOperation(mutations.deleteAccessPoint, {input: accessPoint}));
   }
+
+  getAccessPoints() {
+    if(this.accessPoints !== undefined && this.accessPoints.items !== undefined) {
+      return this.accessPoints.items;
+    }
+    return [];
+  }
 }
 
 export default ProviderDetails;

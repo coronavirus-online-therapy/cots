@@ -27,6 +27,7 @@ function ModalityInput(props) {
   }
   return(<Autocomplete
             name={props.name}
+            autoSelect={true}
             required={props.required}
             disabled={props.disabled}
             autoComplete={false}
