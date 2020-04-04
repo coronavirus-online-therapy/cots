@@ -8,7 +8,7 @@ import { datadogLogs } from '@datadog/browser-logs'
 datadogLogs.init({
   clientToken: 'pub0148163baf468a253c412a931378e543',
   datacenter: 'us',
-  forwardErrorsToLogs: true,
+  forwardErrorsToLogs: (process.env.NODE_ENV!=='development'),
   sampleRate: 100
 });
 

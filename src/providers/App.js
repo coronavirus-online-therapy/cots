@@ -28,7 +28,7 @@ function App(props) {
       setProvider(null);
       return;
     }
-    
+
     const p = new ProviderDetails();
     p.read().then(() => {
       setProvider(p);
