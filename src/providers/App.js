@@ -12,20 +12,28 @@ import { Greetings,
          TOTPSetup,
          VerifyContact, 
          Authenticator } from 'aws-amplify-react';
+import { datadogLogs } from '@datadog/browser-logs'
 
 function App(props) {
   const [provider, setProvider] = useState(null);
   const [key, setKey] = useState(0);
+
+  if(props.authData) {
+    datadogLogs.logger.addContext('username', props.authData.username);
+    datadogLogs.logger.addContext('cognitoUser', props.authData.attributes);
+  }
 
   useEffect(() => {
     if (props.authState !== 'signedIn') {
       setProvider(null);
       return;
     }
+    
     const p = new ProviderDetails();
     p.read().then(() => {
       setProvider(p);
     }).catch(e => {
+      console.error(e);
       setProvider(null);
     });
   }, [props, key, setProvider]);

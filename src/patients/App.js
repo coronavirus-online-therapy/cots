@@ -58,7 +58,6 @@ function App() {
   const [providers, setProviders] = useState(null);
 
   useEffect(() => {
-    console.log(query);
     let isValid = (query.state && query.tosAcceptedAt && query.rate !== undefined);
     if(!isValid) {
       setProviders(null);
