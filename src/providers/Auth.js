@@ -229,7 +229,6 @@ function ProviderAuth(props) {
 		  Before you join us, we ask that you please read our <Link href='https://www.coronavirusonlinetherapy.com/therapist-portal-faq'>Therapist Portal FAQ</Link> to ensure an easy signup process.
           </Typography>
         </Container>
-        <Divider className={classes.divider}/>
 		<AuthForm title="Therapist Registration" onSubmit={doSignUp} error={error}>
         <Grid container spacing={3} justify="center">
           <Grid item xs={12} align="left">
