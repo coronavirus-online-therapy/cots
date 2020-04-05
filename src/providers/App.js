@@ -4,8 +4,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import ProviderAuth from './Auth';
 import ProviderProfile from './Profile';
 import ProviderDetails from './ProviderDetails';
-import { Greetings, 
-         ConfirmSignIn, 
+import { ConfirmSignIn, 
          ForgotPassword, 
          Loading,
          RequireNewPassword, 
@@ -76,7 +75,6 @@ function AppWithAuth() {
       hideDefault={true}
       theme={authTheme}
     >
-      <Greetings/>
       <ProviderAuth />
       <ConfirmSignIn/>
       <RequireNewPassword/>

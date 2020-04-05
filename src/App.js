@@ -4,6 +4,7 @@ import './App.css';
 import Amplify  from 'aws-amplify';
 import awsconfig from './aws-exports';
 
+import Navigation from './Navigation';
 import ProviderApp from './providers/App';
 import PatientApp from './patients/App';
 
@@ -13,7 +14,7 @@ import {
   Route,
 } from "react-router-dom";
 
-import { createMuiTheme, responsiveFontSizes, ThemeProvider } from '@material-ui/core/styles';
+import { makeStyles, createMuiTheme, responsiveFontSizes, ThemeProvider } from '@material-ui/core/styles';
 
 let theme = createMuiTheme({
   palette: {
@@ -42,24 +43,30 @@ theme.overrides.MuiInputLabel.root = {
   },
 };
 
+const useStyles = makeStyles(theme => ({
+}));
+
 Amplify.configure(awsconfig);
 
 function App() {
+  const classes = useStyles();
 
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
-
-        <Router>
-          <Switch>
-            <Route path="/providers">
-              <ProviderApp />
-            </Route>
-            <Route path="/">
-              <PatientApp />
-            </Route>
-          </Switch>
-        </Router>
+        <Navigation/>
+        <div className={classes.offset}>
+          <Router>
+            <Switch>
+              <Route path="/providers">
+                <ProviderApp />
+              </Route>
+              <Route path="/">
+                <PatientApp />
+              </Route>
+            </Switch>
+          </Router>
+        </div>
       </div>
     </ThemeProvider>
   );
