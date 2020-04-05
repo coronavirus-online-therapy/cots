@@ -155,6 +155,7 @@ function ProviderAuth(props) {
           <Grid item xs={12} align="left">
               <TextField fullWidth required id="email" label="Email"  variant="outlined" 
                           defaultValue={creds.username}
+                          name="email"
                           autoFocus={true}
                           autoComplete="email"
                           onChange={handleUsernameChange}/>
@@ -203,6 +204,7 @@ function ProviderAuth(props) {
 			  <Grid item xs={12} align="left">
 				  <TextField fullWidth required id="email" label="Office Email"  variant="outlined" 
 							  defaultValue={creds.username}
+                name="email"
 							  autoFocus={true}
 							  autoComplete="email"
 							  onChange={handleUsernameChange}/>
@@ -234,10 +236,11 @@ function ProviderAuth(props) {
       <AuthForm title="Check Email for Confirmation Code" onSubmit={doSignUpConfirm} error={error}>
         <Grid container spacing={3} justify="center">
           <Grid item xs={12} align="left">
-              <TextField fullWidth required id="email" label="Email"  variant="outlined" 
+              <TextField fullWidth id="email" label="Email"  variant="outlined" 
                           style={{display:'none'}}/>
               <TextField fullWidth required id="code" label="Confirmation Code"  variant="outlined" 
                           defaultValue={creds.code}
+                          name="code"
                           autoFocus={true}
                           autoComplete="none"
                           type="search"
