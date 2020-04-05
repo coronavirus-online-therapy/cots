@@ -66,11 +66,11 @@ GenderSelect.defaultProps = {
     id: 'gender-select',
     label: 'Gender Identification',
     variant: 'outlined',
-    required: true,
+    required: false,
     disabled: false,
     className: '',
     defaultValue: '',
-    helperText: 'Select your gender identification'
+    helperText: 'Optional: Select your gender identification'
 }
 
 const genders = [
