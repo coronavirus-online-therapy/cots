@@ -77,7 +77,7 @@ function Profile(props) {
           return apCount - 1;
         }
         return apCount;
-    }, providerDetails.getAccessPoints().length);
+    }, providerDetails.getAccessPoints()?providerDetails.getAccessPoints().length:0);
     if(apCount === 0) {
       setLoading(false);
       setError("You must provide at least 1 state where you are licensed.");
@@ -258,7 +258,7 @@ function Profile(props) {
                               onChange={handleChange('rate')}/>
                 </Grid>
                 <Grid item xs={8} align="left">
-                    <InsuranceInput max="3" 
+                    <InsuranceInput max="0" 
                                     disabled={mode === 'VIEW'}
                                     defaultValue={providerDetails.acceptedInsurance} 
                                     onChange={handleChange('acceptedInsurance')}/>
