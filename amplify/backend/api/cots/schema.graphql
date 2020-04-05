@@ -17,7 +17,7 @@ type Provider
   url: String
   rate: Int!
   acceptedInsurance: [String]
-  gender: Gender!
+  gender: Gender
   specializations: [String]
   modalities: [String]
   languages: [String]
