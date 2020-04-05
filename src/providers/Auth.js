@@ -183,6 +183,21 @@ function ProviderAuth(props) {
 
   const renderSignUp = () => {
     return (
+	    <Container maxWidth="md">
+      <Paper className={classes.root}>
+        <Typography variant="h2" component="h2" className={classes.title}>
+          - Therapists, Please Join Us! - 
+        </Typography>
+        <Container maxWidth="md" align="center">
+          <br/>
+          <Typography>
+           During this pandemic, we are gratefully adding more therapists who are willing to offer short-term (minimum four sessions per accepted referral) pro-bono sessions, and those willing to accept fees of $50 or less to our network. 
+          </Typography>
+          <br/>
+          <Typography>
+		  Before you join us, we ask that you please read our <Link href='https://www.coronavirusonlinetherapy.com/therapist-portal-faq'>Therapist Portal FAQ</Link> to ensure an easy signup process.
+          </Typography>
+        </Container>
       <AuthForm title="Therapist Registration" onSubmit={doSignUp} error={error}>
         <Grid container spacing={3} justify="center">
           <Grid item xs={12} align="left">
@@ -210,25 +225,12 @@ function ProviderAuth(props) {
           </Grid>
         </Grid>
       </AuthForm>
+    </Paper>
+</Container>  
     );
   };
   const renderConfirmSignUp = () => {
     return (
-<Container maxWidth="md">
-      <Paper className={classes.root}>
-        <Typography variant="h2" component="h2" className={classes.title}>
-          - Therapists, Please Join Us! - 
-        </Typography>
-        <Container maxWidth="md" align="center">
-          <br/>
-          <Typography>
-           During this pandemic, we are gratefully adding more therapists who are willing to offer short-term (minimum four sessions per accepted referral) pro-bono sessions, and those willing to accept fees of $50 or less to our network. 
-          </Typography>
-          <br/>
-          <Typography>
-		  Before you join us, we ask that you please read our <Link href='https://www.coronavirusonlinetherapy.com/therapist-portal-faq'>Therapist Portal FAQ</Link> to ensure an easy signup process.
-          </Typography>
-        </Container>
 		<AuthForm title="Therapist Registration" onSubmit={doSignUp} error={error}>
         <Grid container spacing={3} justify="center">
           <Grid item xs={12} align="left">
@@ -255,9 +257,7 @@ function ProviderAuth(props) {
             </div>
           </Grid>
         </Grid>
-      </AuthForm>
-      </Paper>
-</Container>      
+      </AuthForm>    
     );
   };
 
