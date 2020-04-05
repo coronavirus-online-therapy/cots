@@ -226,7 +226,7 @@ function ProviderAuth(props) {
           </Typography>
           <br/>
           <Typography>
-		  Before you join us, we ask that you please read our <Link href='https://www.coronavirusonlinetherapy.com/therapist-portal-faq'>Therapist Portal FAQ</link> to ensure an easy signup process.
+		  Before you join us, we ask that you please read our <Link href='https://www.coronavirusonlinetherapy.com/therapist-portal-faq'>Therapist Portal FAQ</Link> to ensure an easy signup process.
           </Typography>
         </Container>
         <Divider className={classes.divider}/>
