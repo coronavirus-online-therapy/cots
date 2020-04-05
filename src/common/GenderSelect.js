@@ -70,7 +70,7 @@ GenderSelect.defaultProps = {
     disabled: false,
     className: '',
     defaultValue: '',
-    helperText: 'Optional: Select your gender identification'
+    helperText: 'Select your gender identification'
 }
 
 const genders = [

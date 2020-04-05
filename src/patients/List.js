@@ -78,7 +78,7 @@ export default function ListView({providers}) {
                   </Typography>
                 </Grid>
                 <Grid item xs={3} align="right">
-                  <Box className={classes.feeBox} padding={1} hidden={true}>
+                  <Box className={classes.feeBox} padding={1} hidden={false}>
                     <Hidden xsDown>Session Fee:</Hidden>
                     <Typography variant="h5" component="h5">
                       ${provider.rate.toFixed(2)}

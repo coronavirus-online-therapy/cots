@@ -78,6 +78,7 @@ const topSpecializations = [
   'Domestic Abuse/Violence',
   'Eating Disorders',
   'Grief , Loss & Bereavement',
+  'LGBTQ+',
   'Men\'s Issues',
   'Obsessive-Compulsive (OCD)',
   'Pregnancy, Prenatal, Postpartum',
