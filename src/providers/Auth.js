@@ -214,30 +214,51 @@ function ProviderAuth(props) {
   };
   const renderConfirmSignUp = () => {
     return (
-      <AuthForm title="Check Email for Confirmation Code" onSubmit={doSignUpConfirm} error={error}>
+<Container maxWidth="md">
+      <Paper className={classes.root}>
+        <Typography variant="h2" component="h2" className={classes.title}>
+          - Therapists, Please Join Us! - 
+        </Typography>
+        <Container maxWidth="md" align="center">
+          <br/>
+          <Typography>
+           During this pandemic, we are gratefully adding more therapists who are willing to offer short-term (minimum four sessions per accepted referral) pro-bono sessions, and those willing to accept fees of $50 or less to our network. 
+          </Typography>
+          <br/>
+          <Typography>
+		  Before you join us, we ask that you please read our <Link href='https://www.coronavirusonlinetherapy.com/therapist-portal-faq'>Therapist Portal FAQ</link> to ensure an easy signup process.
+          </Typography>
+        </Container>
+        <Divider className={classes.divider}/>
+		<AuthForm title="Therapist Registration" onSubmit={doSignUp} error={error}>
         <Grid container spacing={3} justify="center">
           <Grid item xs={12} align="left">
-              <TextField fullWidth required id="email" label="Email"  variant="outlined" 
-                          style={{display:'none'}}/>
-              <TextField fullWidth required id="code" label="Confirmation Code"  variant="outlined" 
-                          defaultValue={creds.code}
+              <TextField fullWidth required id="email" label="Office Email"  variant="outlined"
+                          defaultValue={creds.username}
                           autoFocus={true}
-                          autoComplete="none"
-                          type="search"
-                          onChange={handleCodeChange}/>
-              <Typography variant="caption">Lost your code? <Link onClick={navigateResendCode}>Resend Code</Link></Typography>
+                          autoComplete="email"
+                          onChange={handleUsernameChange}/>
+          </Grid>
+          <Grid item xs={12} align="left">
+              <TextField fullWidth required id="password" label="Password"  variant="outlined"
+                          type="password"
+                          defaultValue={creds.password}
+                          autoComplete="new-password"
+                          onChange={handlePasswordChange}/>
           </Grid>
           <Grid item xs={8} align="center">
-            <Typography variant="caption"><Link onClick={navigateSignIn}>Back to Sign In</Link></Typography>
+            <Typography variant="caption">Already registered? <Link onClick={navigateSignIn}>Sign in</Link></Typography>
           </Grid>
           <Grid item xs={4} align="center">
             <div className={classes.buttonWrapper}>
-              <Button variant="contained" color="primary" type="submit" disabled={loading}>Confirm</Button>
+              <Button variant="contained" color="primary" type="submit" disabled={loading}>Register</Button>
               {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
             </div>
           </Grid>
         </Grid>
       </AuthForm>
+      </Paper>
+</Container>      
     );
   };
 
