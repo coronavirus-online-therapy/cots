@@ -44,7 +44,7 @@ function GenderSelect(props) {
                 native
                 disabled={props.disabled}
                 value={gender}
-                required
+                required={props.required}
                 label={props.label}
                 onChange={handleStateChange}
                 onFocus={handleFocus}
@@ -66,7 +66,7 @@ GenderSelect.defaultProps = {
     id: 'gender-select',
     label: 'Gender Identification',
     variant: 'outlined',
-    required: true,
+    required: false,
     disabled: false,
     className: '',
     defaultValue: '',

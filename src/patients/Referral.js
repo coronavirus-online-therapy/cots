@@ -24,7 +24,6 @@ class Referral {
         },
         authMode: 'API_KEY'
       });
-      console.log(this);
       return referrals.map(a => {return{...a.provider, score: a.score}});
     } catch (e) {
       console.error(e);

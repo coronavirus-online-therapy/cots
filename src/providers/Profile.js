@@ -56,6 +56,9 @@ function Profile(props) {
   const [accessPointOps, setAccessPointOps] = useState([]);
   const [confirmMessage, setConfirmMessage] = useState('');
 
+  if(mode === 'CREATE' && providerDetails.active === undefined) {
+    providerDetails.active = true;
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -77,7 +80,7 @@ function Profile(props) {
           return apCount - 1;
         }
         return apCount;
-    }, providerDetails.getAccessPoints().length);
+    }, providerDetails.getAccessPoints()?providerDetails.getAccessPoints().length:0);
     if(apCount === 0) {
       setLoading(false);
       setError("You must provide at least 1 state where you are licensed.");
@@ -241,24 +244,23 @@ function Profile(props) {
                                onChange={handleChange('url')}/>
                 </Grid>
                 <Grid item xs={8} align="left">
-                  {mode !== 'CREATE' && 
-                    <FormControlLabel label="Available for referrals" control={
-                      <Checkbox 
-                          disabled={mode === 'VIEW'}
-                          checked={providerDetails.active}
-                          onClick={handleCheck}
-                          name="active"
-                          color="primary"/>
-                      } />
-                  }
+                  <FormControlLabel label="Available for referrals" control={
+                    <Checkbox 
+                        disabled={mode === 'VIEW'}
+                        checked={providerDetails.active}
+                        onClick={handleCheck}
+                        name="active"
+                        color="primary"/>
+                    } />
                 </Grid>
                 <Grid item xs={8} align="left">
                   <RateSelect disabled={mode === 'VIEW'}
+                              label='I agree to offer each accepted referral a minimum of four sessions.  The lowest fee I can accept at this time is:'
                               defaultValue={providerDetails.rate} 
                               onChange={handleChange('rate')}/>
                 </Grid>
                 <Grid item xs={8} align="left">
-                    <InsuranceInput max="3" 
+                    <InsuranceInput max="0" 
                                     disabled={mode === 'VIEW'}
                                     defaultValue={providerDetails.acceptedInsurance} 
                                     onChange={handleChange('acceptedInsurance')}/>
@@ -285,6 +287,12 @@ function Profile(props) {
                                     disabled={mode === 'VIEW'}
                                     defaultValue={providerDetails.languages} 
                     />
+                </Grid>
+                <Grid item xs={8} align="left">
+                  {mode === 'CREATE' && 
+                    <FormControlLabel control={
+                      <Checkbox color="primary" required={true}/>} label="I attest that I am a licensed, insured clinician, authorized to practice by my state licensing board(s)."/>
+                  }
                 </Grid>
                 <Grid item xs={8} align="left">
                     {mode === 'CREATE' && <AcceptTerms required={true} onChange={handleChange('tosAcceptedAt')} contract={TermsOfService}/>}

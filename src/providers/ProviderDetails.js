@@ -19,7 +19,8 @@ class ProviderDetails {
   async create() {
     let user = await Auth.currentAuthenticatedUser();
     this.owner = user.getUsername();
-    this.active = true;
+    //this.active = true;
+    this.active = (String(this.active) === 'true');
     this.rate = parseInt(this.rate);
     return await API.graphql(graphqlOperation(mutations.createProvider, {input: this}));
   }

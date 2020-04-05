@@ -70,7 +70,7 @@ function ProviderAuth(props) {
     setError('');
     Auth.resendSignUp(creds.username)
     .then(() => console.log('code resent'))
-    .catch((e) => setError(e.message));
+    .catch((e) => {console.error(e); setError(e.message)});
   };
 
   const doSignUp = (e) => {
@@ -86,7 +86,7 @@ function ProviderAuth(props) {
       .then(data => {
         props.onStateChange('confirmSignUp', data.user.username);
       })
-      .catch((e) => setError(e.message))
+      .catch((e) => {console.error(e); setError(e.message)})
       .finally(() => setLoading(false));
   };
   const doSignUpConfirm = (e) => {
@@ -96,7 +96,7 @@ function ProviderAuth(props) {
     Auth.confirmSignUp(creds.username, creds.code)
       .then(() => props.onStateChange('signedUp'))
       .then(() => doSignIn())
-      .catch((e) => setError(e.message))
+      .catch((e) => {console.error(e); setError(e.message)})
       .finally(() => setLoading(false));
   };
   const doSignIn = (e) => {
@@ -137,6 +137,7 @@ function ProviderAuth(props) {
             });
           }
         }).catch((e) => {
+          console.error(e);
           if(e.code === "UserNotConfirmedException") {
             console.log('Tried to sign-in with unconfirmed user.  Initiate confirmation.');
             props.onStateChange('confirmSignUp', { username: creds.username });
