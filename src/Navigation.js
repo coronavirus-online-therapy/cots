@@ -41,7 +41,8 @@ const links=[
   },
   {
     label: 'Request A Therapist',
-    href: '/'
+    //href: '/',
+    href: 'https://www.coronavirusonlinetherapy.com/request-a-therapist'
   },
   {
     label: 'Join Us',
