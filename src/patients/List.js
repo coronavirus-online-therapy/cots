@@ -100,7 +100,7 @@ export default function ListView({providers}) {
                 {provider.url && 
                  <Grid item xs={12}>
                   <Typography variant="h5" component="h5" align="left">
-                    <Button color="primary" variant="contained" className={classes.button}><LanguageIcon/></Button> <Link href={cleanUrl(provider.url)}>Webpage</Link>
+                    <Button color="primary" variant="contained" className={classes.button}><LanguageIcon/></Button> <a href={cleanUrl(provider.url)} target="_blank">Webpage</a>
                   </Typography>
                  </Grid>
                 }
