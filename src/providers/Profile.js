@@ -291,7 +291,7 @@ function Profile(props) {
                 <Grid item xs={8} align="left">
                   {mode === 'CREATE' && 
                     <FormControlLabel control={
-                      <Checkbox color="primary" required={true}/>} label="i\"I attest that I am licensed, insured, and authorized for clinical private practice by my state board(s).\"<br><br> If you aren’t yet licensed for independent clinical practice, please stop and have the practice owner you work for complete a therapist profile instead."/>
+                      <Checkbox color="primary" required={true}/>} label="&quot;I attest that I am licensed, insured, and authorized for clinical private practice by my state board(s).&quot;<br><br> If you aren’t yet licensed for independent clinical practice, please stop and have the practice owner you work for complete a therapist profile instead."/>
                   }
                 </Grid>
                 <Grid item xs={8} align="left">
