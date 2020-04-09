@@ -198,6 +198,10 @@ function ProviderAuth(props) {
           <Typography>
 		  Before you join us, we ask that you please read our <Link href='https://www.coronavirusonlinetherapy.com/therapist-portal-faq'>Therapist Portal FAQ</Link> to ensure an easy signup process.
           </Typography>
+	   <br/>
+	  <Typography variant="h3" component="h3">
+	  	  At this time we are only accepting licensed, insured clinicians who are authorized for clinical private practice by their state board(s). We are unable to accept associates and interns who are NOT licensed and authorized to conduct clinical private practice. This includes AMFT's. We instead ask that you have your supervisors enroll, so that they may refer you clients under their private practices, and supervision, at their sole discretion. Thank you.
+	  </Typography>
         </Container>
 		  <AuthForm title="Therapist Registration" onSubmit={doSignUp} error={error}>
 			<Grid container spacing={3} justify="center">
