@@ -51,7 +51,7 @@ export default function ListView({providers}) {
   }
 
   const mailtoHref = (email) => {
-    return `mailto:${email}?subject=Referred by Coronavirus Online Therapy`;
+    return `mailto:${email}`;
   }
   const cleanUrl = (url) => {
     if (!/^(?:f|ht)tps?:\/\//.test(url)) {
