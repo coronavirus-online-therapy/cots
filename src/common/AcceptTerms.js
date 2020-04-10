@@ -55,7 +55,7 @@ function AcceptTerms(props) {
   const handleScroll = (event) => {
     let textarea = event.nativeEvent.target;
     //console.log(`scrollTop:${textarea.scrollTop} scrollHeight:${textarea.scrollHeight} offsetTop:${textarea.offsetTop} offset:Height:${textarea.offsetHeight}`);
-    if(textarea.scrollTop + textarea.offsetHeight >= textarea.scrollHeight) {
+    if(textarea.scrollTop + textarea.offsetHeight >= textarea.scrollHeight-50) {
       setRead(true);
     }
   }

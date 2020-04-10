@@ -120,10 +120,10 @@ export default function Navigation() {
               {links.map(link => (
                 <Link key={link.label} className={classes.title} href={link.href}>{link.label}</Link>
               ))}
-            {user && 
-              <Button variant="contained" color="primary" className={classes.signout} onClick={doSignOut}>SIGN OUT</Button>
-            }
           </Toolbar>
+          {user && 
+            <Button variant="contained" color="primary" className={classes.signout} onClick={doSignOut}>SIGN OUT</Button>
+            }
         </AppBar>
       </Hidden>
       <Hidden smUp>
@@ -137,7 +137,7 @@ export default function Navigation() {
         <Drawer anchor="left" open={drawerState} onClose={toggleDrawer(false)}>
           <List>
             {links.map(link => (
-              <ListItem button component="a" href={link.href}>
+              <ListItem key={link.label} button component="a" href={link.href}>
                 <ListItemText primary={link.label} />
               </ListItem>
             ))}

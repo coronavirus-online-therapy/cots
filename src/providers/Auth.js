@@ -41,18 +41,24 @@ const useStyles = makeStyles(theme => ({
 function ProviderAuth(props) {
   const classes = useStyles();
   const [creds, setCreds] = useState({});
+  const [forgotStarted, setForgotStarted] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleUsernameChange = (e) => {
-    setCreds({...creds, username: e.target.value.toLowerCase()});
+    setCreds({...creds, username: e.target.value.toLowerCase().trim()});
   }
   const handlePasswordChange = (e) => {
     setCreds({...creds, password: e.target.value});
   }
   const handleCodeChange = (e) => {
-    setCreds({...creds, code: e.target.value});
+    setCreds({...creds, code: e.target.value.trim()});
   }
+
+  const handleAuthError = (e) => {
+    console.error({...e, cognitoUser: {email: creds.username}}); 
+    setError(e.message);
+  };
 
   const navigateSignIn = () => {
     setError('');
@@ -70,7 +76,7 @@ function ProviderAuth(props) {
     setError('');
     Auth.resendSignUp(creds.username)
     .then(() => console.log('code resent'))
-    .catch((e) => {console.error(e); setError(e.message)});
+    .catch(handleAuthError);
   };
 
   const doSignUp = (e) => {
@@ -86,7 +92,7 @@ function ProviderAuth(props) {
       .then(data => {
         props.onStateChange('confirmSignUp', data.user.username);
       })
-      .catch((e) => {console.error(e); setError(e.message)})
+      .catch(handleAuthError)
       .finally(() => setLoading(false));
   };
   const doSignUpConfirm = (e) => {
@@ -96,9 +102,30 @@ function ProviderAuth(props) {
     Auth.confirmSignUp(creds.username, creds.code)
       .then(() => props.onStateChange('signedUp'))
       .then(() => doSignIn())
-      .catch((e) => {console.error(e); setError(e.message)})
+      .catch(handleAuthError)
       .finally(() => setLoading(false));
   };
+  const doForgotPassword = (e) => {
+    e.preventDefault()
+    setLoading(true);
+    setError('');
+    Auth.forgotPassword(creds.username)
+      .then(() => setForgotStarted(true))
+      .catch(handleAuthError)
+      .finally(() => setLoading(false));
+  }
+  const doForgotPasswordSubmit = (e) => {
+    e.preventDefault()
+    setLoading(true);
+    setError('');
+    Auth.forgotPasswordSubmit(creds.username, creds.code, creds.password)
+      .then(() => {
+        setForgotStarted(false);
+        doSignIn(e);
+      })
+      .catch(handleAuthError)
+      .finally(() => setLoading(false));
+  }
   const doSignIn = (e) => {
     if (e !== undefined) {
       e.preventDefault()
@@ -137,12 +164,11 @@ function ProviderAuth(props) {
             });
           }
         }).catch((e) => {
-          console.error(e);
           if(e.code === "UserNotConfirmedException") {
             console.log('Tried to sign-in with unconfirmed user.  Initiate confirmation.');
             props.onStateChange('confirmSignUp', { username: creds.username });
           } else {
-            setError(e.message);
+            handleAuthError(e);
           }
         })
         .finally(() => setLoading(false));
@@ -266,12 +292,73 @@ If you aren’t yet licensed for independent clinical private practice, please s
       </AuthForm>
     );
   };
+  const renderForgotPassword = () => {
+    return (
+      <AuthForm title="Reset Your Password" onSubmit={doForgotPassword} error={error}>
+        <Grid container spacing={3} justify="center">
+          <Grid item xs={12} align="left">
+              <TextField fullWidth required id="email" label="Office Email"  variant="outlined" 
+                    defaultValue={creds.username}
+                    name="email"
+                    autoFocus={true}
+                    autoComplete="email"
+                    onChange={handleUsernameChange}/>
+          </Grid>
+          <Grid item xs={8} align="center">
+            <Typography variant="caption"><Link onClick={navigateSignIn}>Back to Sign In</Link></Typography>
+          </Grid>
+          <Grid item xs={4} align="center">
+            <div className={classes.buttonWrapper}>
+              <Button variant="contained" color="primary" type="submit" disabled={loading}>Send Code</Button>
+              {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
+            </div>
+          </Grid>
+        </Grid>
+      </AuthForm>
+    );
+  };
+  const renderForgotPasswordSubmit = () => {
+    return (
+      <AuthForm title="Reset Your Password" onSubmit={doForgotPasswordSubmit} error={error}>
+        <Grid container spacing={3} justify="center">
+          <Grid item xs={12} align="left">
+              <TextField fullWidth id="email" label="Email"  variant="outlined" 
+                          style={{display:'none'}}/>
+              <TextField fullWidth required id="code" label="Confirmation Code"  variant="outlined" 
+                          defaultValue={creds.code}
+                          name="code"
+                          autoFocus={true}
+                          autoComplete="none"
+                          type="search"
+                          onChange={handleCodeChange}/>
+          </Grid>
+          <Grid item xs={12} align="left">
+              <TextField fullWidth required id="password" label="New Password"  variant="outlined" 
+                          type="password"
+                          defaultValue={creds.password}
+                          autoComplete="new-password"
+                          onChange={handlePasswordChange}/>
+          </Grid>
+          <Grid item xs={8} align="center">
+              <Typography variant="caption">Lost your code? <Link onClick={doForgotPassword}>Resend Code</Link></Typography>
+          </Grid>
+          <Grid item xs={4} align="center">
+            <div className={classes.buttonWrapper}>
+              <Button variant="contained" color="primary" type="submit" disabled={loading}>Confirm</Button>
+              {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
+            </div>
+          </Grid>
+        </Grid>
+      </AuthForm>
+    );
+  };
 
   switch(props.authState) {
     case 'signIn': return renderSignIn();
     case 'signedOut': return renderSignIn();
     case 'signUp': return renderSignUp();
     case 'confirmSignUp': return renderConfirmSignUp();
+    case 'forgotPassword': return !forgotStarted?renderForgotPassword():renderForgotPasswordSubmit();
     case 'signedUp': {
       return null
     }
