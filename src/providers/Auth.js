@@ -196,8 +196,8 @@ function ProviderAuth(props) {
           </Typography>
           <br/>
           <Typography>
-		  Therapists, we would love for you to join us! At this time, we require each clinician to be licensed for independent clinical practice and have their own malpractice insurance.<br>
-If you aren’t yet licensed for independent clinical private practice, please stop and have the practice owner you work for complete a therapist profile instead.<br>
+		  Therapists, we would love for you to join us! At this time, we require each clinician to be licensed for independent clinical practice and have their own malpractice insurance.<br/>
+If you aren’t yet licensed for independent clinical private practice, please stop and have the practice owner you work for complete a therapist profile instead.<br/>
 	    Before you create a profile, we ask that you please read our <Link href='https://www.coronavirusonlinetherapy.com/therapist-portal-faq'>Therapist Portal FAQ</Link> to ensure an easy signup process.
           </Typography>
 	   <br/>
