@@ -79,7 +79,6 @@ function AppWithAuth() {
       <ConfirmSignIn/>
       <RequireNewPassword/>
       <VerifyContact/>
-      <ForgotPassword/>
       <TOTPSetup/>
       <Loading/>
       <App/>

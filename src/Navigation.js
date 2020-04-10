@@ -137,7 +137,7 @@ export default function Navigation() {
         <Drawer anchor="left" open={drawerState} onClose={toggleDrawer(false)}>
           <List>
             {links.map(link => (
-              <ListItem button component="a" href={link.href}>
+              <ListItem key={link.label} button component="a" href={link.href}>
                 <ListItemText primary={link.label} />
               </ListItem>
             ))}
