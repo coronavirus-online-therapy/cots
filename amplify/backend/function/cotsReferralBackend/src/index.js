@@ -16,7 +16,7 @@ exports.handler = async (event, context) => {
     console.log(event.arguments);
 
     // fetch access points state
-    const accessPoints = await getAccessPoints(event.arguments.query.state, 100);
+    const accessPoints = await getAccessPoints(event.arguments.query.state, 500);
     const providers = accessPoints.map(ap => ap.provider).filter(p => p.active);
 
     // score & sort
