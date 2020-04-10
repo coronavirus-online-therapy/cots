@@ -120,10 +120,10 @@ export default function Navigation() {
               {links.map(link => (
                 <Link key={link.label} className={classes.title} href={link.href}>{link.label}</Link>
               ))}
-            {user && 
-              <Button variant="contained" color="primary" className={classes.signout} onClick={doSignOut}>SIGN OUT</Button>
-            }
           </Toolbar>
+          {user && 
+            <Button variant="contained" color="primary" className={classes.signout} onClick={doSignOut}>SIGN OUT</Button>
+            }
         </AppBar>
       </Hidden>
       <Hidden smUp>
