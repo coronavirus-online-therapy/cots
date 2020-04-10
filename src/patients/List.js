@@ -29,7 +29,15 @@ const useStyles = makeStyles((theme) => ({
   },
   chip: {
     margin: theme.spacing(0.5),
-    maxWidth: 100,
+    maxWidth: '90%'
+  },
+  chipExpanded: {
+    height: 'auto',
+    minHeight: '32px',
+    '& span': {
+      whiteSpace: 'normal',
+      wordBreak: 'break-word',
+    }
   },
   card: {
     margin: theme.spacing(1),
@@ -59,13 +67,17 @@ export default function ListView({providers}) {
     }
     return url;
   }
+  const expandChip= (e) => {
+    let chip = e.target;
+    if(!chip.classList.contains('MuiChip-root')) {
+      chip = chip.parentNode;
+    }
+    chip.classList.add(classes.chipExpanded);
+  }
 
   return (
     <div className={classes.root}>
-        <Alert severity="info">
-          PLEASE NOTE: You must let the therapist know you connected with them via Coronavirus Online Therapy, as well as tell them the fee you require. If you do not, they will quote you their full, regular fees. Thank you.
-        </Alert>
-        <Typography variant="h5" align="left">
+        <Typography variant="h5" align="center">
           Here are your top matches based on your search criteria:
         </Typography>
         {providers.map(provider => {return (
@@ -100,7 +112,7 @@ export default function ListView({providers}) {
                 {provider.url && 
                  <Grid item xs={12}>
                   <Typography variant="h5" component="h5" align="left">
-                    <Button color="primary" variant="contained" className={classes.button}><LanguageIcon/></Button> <a href={cleanUrl(provider.url)} target="_blank">Webpage</a>
+                    <Button color="primary" variant="contained" className={classes.button}><LanguageIcon/></Button> <Link href={cleanUrl(provider.url)} target="_blank" rel="noopener noreferrer">Webpage</Link>
                   </Typography>
                  </Grid>
                 }
@@ -117,6 +129,7 @@ export default function ListView({providers}) {
                             key={data}
                             label={data}
                             className={classes.chip}
+                            onClick={expandChip}
                           />
                         );
                       })}
@@ -137,6 +150,7 @@ export default function ListView({providers}) {
                             key={data}
                             label={data}
                             className={classes.chip}
+                            onClick={expandChip}
                           />
                         );
                       })}
@@ -157,6 +171,7 @@ export default function ListView({providers}) {
                             key={data}
                             label={data}
                             className={classes.chip}
+                            onClick={expandChip}
                           />
                         );
                       })}
@@ -177,6 +192,7 @@ export default function ListView({providers}) {
                             key={data}
                             label={data}
                             className={classes.chip}
+                            onClick={expandChip}
                           />
                         );
                       })}
@@ -188,6 +204,9 @@ export default function ListView({providers}) {
             </div>
           </Paper>
         )})}
+        <Alert severity="info">
+          PLEASE NOTE: You must let the therapist know you connected with them via Coronavirus Online Therapy, as well as tell them the fee you require. If you do not, they will quote you their full, regular fees. Thank you.
+        </Alert>
     </div>
   );
 }

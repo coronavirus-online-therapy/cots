@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
+import Hidden from '@material-ui/core/Hidden';
 import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
@@ -69,35 +70,36 @@ function App() {
   return (
     <Container maxWidth="md">
       <Paper className={classes.root}>
-        <Typography variant="h2" component="h2" className={classes.title}>
+        <Typography variant="h2" className={classes.title}>
           Find a Therapist 
         </Typography>
-        <Typography variant="h5" component="h5">
-          IF YOU ARE FEELING SUICIDAL, PLEASE CALL 911 
+        <Typography variant="h6">
+          IF YOU ARE FEELING SUICIDAL, CALL 911 
         </Typography>
         <Typography>
           or The National Suicide Hotline:  1-800-273-8255  
         </Typography>
-        <Container maxWidth="md" align="center">
-          <br/>
-          <Typography>
-           Please note that we are not equipped to assist in emergencies.  Online therapy is not appropriate for anyone in this situation, and we cannot match you with an online therapist if you are feeling suicidal.
-          </Typography>
-          <br/>
-          <Typography>
-            THIS SERVICE IS PRESENTLY FOR FRONT LINE WORKERS/ESSENTIAL EMPLOYEES ONLY
-          </Typography>
-          <br/>
-          <Typography>
-            Not sure if you qualify?  Visit out <Link href='https://www.coronavirusonlinetherapy.com/faq'>FAQ</Link> to learn more.
-          </Typography>
-        </Container>
+        {providers == null && 
+          <Container maxWidth="md" align="center">
+            <br/>
+            <Typography>
+            Please note that we are not equipped to assist in emergencies. Online therapy may not be appropriate for everyone, and we cannot match you with one of our online therapists if you are actively suicidal.          </Typography>
+            <br/>
+            <Typography>
+              THIS SERVICE IS PRESENTLY FOR FRONT LINE WORKERS/ESSENTIAL EMPLOYEES ONLY
+            </Typography>
+            <br/>
+            <Typography>
+              Not sure if you qualify?  Visit out <Link href='https://www.coronavirusonlinetherapy.com/faq'>FAQ</Link> to learn more.
+            </Typography>
+          </Container>
+        }
         <Divider className={classes.divider}/>
         <Container className={classes.search}>
           {providers === null && <ProviderQuery query={query} onChange={setQuery}/>}
           {providers !== null && 
             <Container>
-             <Button variant="contained" color="primary" onClick={() => {setProviders(null)}}><SearchIcon/> Refine Search</Button>
+             <Button  variant="contained" color="primary" onClick={() => {setProviders(null)}}><SearchIcon/> Refine Search</Button>
              <ProviderList providers={providers}/>
             </Container>
           }
@@ -144,18 +146,36 @@ function ProviderQuery(props) {
               <StateSelect defaultValue={query.state} onChange={handleChange('state')}/>
             </Grid>
             <Grid item xs={12} align="left" className={classes.search}>
-              <InsuranceInput max={1} 
-                              defaultValue={query.acceptedInsurance}
-                              onChange={handleChange('acceptedInsurance')}
-                              label='Health Insurance' 
-                              helperText='Optional: only enter if you wish to utilize your health insurance benefits'/>
+              <Hidden smUp> 
+                <InsuranceInput max={1} 
+                                defaultValue={query.acceptedInsurance}
+                                onChange={handleChange('acceptedInsurance')}
+                                label='Insurance' 
+                                helperText='Optional: only enter if you wish to utilize your health insurance benefits'/>
+              </Hidden>
+              <Hidden xsDown>
+                <InsuranceInput max={1} 
+                                defaultValue={query.acceptedInsurance}
+                                onChange={handleChange('acceptedInsurance')}
+                                label='Health Insurance' 
+                                helperText='Optional: only enter if you wish to utilize your health insurance benefits'/>
+              </Hidden>
             </Grid>
             <Grid item xs={12} align="left" className={classes.search}>
-              <GenderSelect onChange={handleChange('gender')}
-                            defaultValue={query.gender}
-                            required={false}
-                            label='Preferred Gender Identification' 
-                            helperText='Optional: choose preferred gender identification of therapist'/>
+              <Hidden smUp> 
+                <GenderSelect onChange={handleChange('gender')}
+                              defaultValue={query.gender}
+                              required={false}
+                              label='Gender' 
+                              helperText='Optional: choose preferred gender identification of therapist'/>
+              </Hidden>
+              <Hidden xsDown>
+                <GenderSelect onChange={handleChange('gender')}
+                              defaultValue={query.gender}
+                              required={false}
+                              label='Preferred Gender Identification' 
+                              helperText='Optional: choose preferred gender identification of therapist'/>
+              </Hidden>
             </Grid>
             <Grid item xs={12} align="left" className={classes.search}>
               <SpecializationInput onChange={handleChange('specializations')}
