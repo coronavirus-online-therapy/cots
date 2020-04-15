@@ -5,7 +5,6 @@ import ProviderAuth from './Auth';
 import ProviderProfile from './Profile';
 import ProviderDetails from './ProviderDetails';
 import { ConfirmSignIn, 
-         ForgotPassword, 
          Loading,
          RequireNewPassword, 
          TOTPSetup,
