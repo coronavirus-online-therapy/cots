@@ -1,0 +1,21 @@
+{
+    "appName": "cots",
+    "roleName": "pinpointLambdaRole94684c21",
+    "cloudformationPolicyName": "cloudformationPolicy94684c21",
+    "cloudWatchPolicyName": "cloudWatchPolicy94684c21",
+    "pinpointPolicyName": "pinpointPolicy94684c21",
+    "authPolicyName": "pinpoint_amplify_94684c21",
+    "unauthPolicyName": "pinpoint_amplify_94684c21",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    }
+}

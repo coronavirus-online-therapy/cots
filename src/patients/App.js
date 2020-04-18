@@ -1,4 +1,5 @@
 import React, {useState, useEffect}  from 'react';
+import { Analytics } from 'aws-amplify';
 
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
@@ -64,7 +65,20 @@ function App() {
       setProviders(null);
       return;
     }
-    new Referral(query).execute().then(setProviders);
+    new Referral(query).execute().then(plist => {
+      const resultCount = plist.length;
+      const averageScore = resultCount?(plist.reduce((score, p) => score + p.score, 0) / resultCount):0;
+      const qattrs = Object.entries(query).filter(([k,v]) => k !== 'tosAcceptedAt').reduce((q,[k,v]) => {
+        q[k] = v.toString();
+        return q;
+      },{});
+      setProviders(plist);
+      Analytics.record({
+        name: 'referral', 
+        attributes: qattrs,
+        metrics: { resultCount, averageScore },
+      });
+    });
   }, [query, setProviders]);
 
   return (
