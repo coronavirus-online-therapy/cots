@@ -101,5 +101,11 @@
 				}
 			}
 		}
+	},
+	"analytics": {
+		"cots": {
+			"service": "Pinpoint",
+			"providerPlugin": "awscloudformation"
+		}
 	}
 }
