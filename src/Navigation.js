@@ -42,12 +42,13 @@ const useStyles = makeStyles(theme => ({
 
 const links=[
   {
-    label: 'Welcome',
+    label: '< Return to Coronavirus Online Therapy',
     href: 'https://www.coronavirusonlinetherapy.com/'
   },
+  /*
   {
-    label: 'Who We Serve',
-    href: 'https://www.coronavirusonlinetherapy.com/who-we-serve'
+    label: 'Whom We Serve',
+    href: 'https://www.coronavirusonlinetherapy.com/whom-we-serve'
   },
   {
     label: 'Request A Therapist',
@@ -77,6 +78,7 @@ const links=[
     label: 'Contact',
     href: 'https://www.coronavirusonlinetherapy.com/contact',
   },
+  */
 ];
 
 
