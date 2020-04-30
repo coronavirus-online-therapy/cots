@@ -17,6 +17,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Alert from '@material-ui/lab/Alert';
 
 import { makeStyles } from '@material-ui/core/styles';
+import ReactGA from 'react-ga';
 
 import TermsOfService from '../common/TermsOfService';
 import AccessPoints from '../common/AccessPoints';
@@ -107,10 +108,12 @@ function Profile(props) {
       try {
         let response;
         if(mode === 'CREATE') {
+         ReactGA.event({category: 'Therapist', action: 'Create Profile'});
          response = await providerDetails.create();
          await doAccessPoints();
          setConfirmMessage('Thank you. Your profile is now live');
         } else if(mode === 'UPDATE') {
+         ReactGA.event({category: 'Therapist', action: 'Update Profile'});
          response = await providerDetails.update();
          await doAccessPoints();
          setConfirmMessage('Thank you. Your profile has been updated.');
@@ -124,7 +127,9 @@ function Profile(props) {
       } catch(err) {
         console.error(err);
         if(err.errors) {
-          setError(err.errors.map(e => e.message));
+          const msg = err.errors.map(e => e.message);
+          setError(msg);
+          ReactGA.exception({description: msg})
         } else {
           setError(err);
         }

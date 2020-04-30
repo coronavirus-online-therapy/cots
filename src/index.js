@@ -4,6 +4,8 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+import ReactGA from 'react-ga';
+
 import { datadogLogs } from '@datadog/browser-logs'
 datadogLogs.init({
   clientToken: 'pub0148163baf468a253c412a931378e543',
@@ -12,6 +14,8 @@ datadogLogs.init({
   sampleRate: 100
 });
 
+ReactGA.initialize('UA-162214201-2');
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 ReactDOM.render(
   <React.StrictMode>

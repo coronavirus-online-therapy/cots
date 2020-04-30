@@ -1,4 +1,5 @@
 import React, {useState, useEffect}  from 'react';
+import ReactGA from 'react-ga';
 import { Analytics } from 'aws-amplify';
 
 import Container from '@material-ui/core/Container';
@@ -78,6 +79,7 @@ function App() {
         attributes: qattrs,
         metrics: { resultCount, averageScore },
       });
+      ReactGA.event({category: 'Client', action: 'Referral', label: query.state, value: averageScore});
     });
   }, [query, setProviders]);
 
