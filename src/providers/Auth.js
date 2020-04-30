@@ -10,6 +10,7 @@ import Alert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
 import { Auth } from "aws-amplify";
 import CircularProgress from '@material-ui/core/CircularProgress';
+import ReactGA from 'react-ga';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -56,6 +57,7 @@ function ProviderAuth(props) {
   }
 
   const handleAuthError = (e) => {
+    ReactGA.exception({description: e.message});
     console.error({...e, cognitoUser: {email: creds.username}}); 
     setError(e.message);
   };
@@ -92,6 +94,7 @@ function ProviderAuth(props) {
       .then(data => {
         props.onStateChange('confirmSignUp', data.user.username);
       })
+      .then(() => ReactGA.event({category: 'Therapist', action: 'Sign Up'}))
       .catch(handleAuthError)
       .finally(() => setLoading(false));
   };
@@ -101,6 +104,7 @@ function ProviderAuth(props) {
     setError('');
     Auth.confirmSignUp(creds.username, creds.code)
       .then(() => props.onStateChange('signedUp'))
+      .then(() => ReactGA.event({category: 'Therapist', action: 'Confirm Sign Up'}))
       .then(() => doSignIn())
       .catch(handleAuthError)
       .finally(() => setLoading(false));
@@ -111,6 +115,7 @@ function ProviderAuth(props) {
     setError('');
     Auth.forgotPassword(creds.username)
       .then(() => setForgotStarted(true))
+      .then(() => ReactGA.event({category: 'Therapist', action: 'Forgot Password'}))
       .catch(handleAuthError)
       .finally(() => setLoading(false));
   }
@@ -123,6 +128,7 @@ function ProviderAuth(props) {
         setForgotStarted(false);
         doSignIn(e);
       })
+      .then(() => ReactGA.event({category: 'Therapist', action: 'Forgot Password Submit'}))
       .catch(handleAuthError)
       .finally(() => setLoading(false));
   }
@@ -156,6 +162,7 @@ function ProviderAuth(props) {
           } else {
             Auth.verifiedContact(user).then(data => {
               if (Object.keys(data.verified).length !== 0) {
+                ReactGA.set({ userId: creds.username });
                 props.onStateChange('signedIn', user);
               } else {
                 user = Object.assign(user, data);
@@ -163,7 +170,9 @@ function ProviderAuth(props) {
               }
             });
           }
-        }).catch((e) => {
+        })
+        .then(() => ReactGA.event({category: 'Therapist', action: 'Sign In'}))
+        .catch((e) => {
           if(e.code === "UserNotConfirmedException") {
             console.log('Tried to sign-in with unconfirmed user.  Initiate confirmation.');
             props.onStateChange('confirmSignUp', { username: creds.username });
