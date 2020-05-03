@@ -227,18 +227,20 @@ function ProviderAuth(props) {
         <Container maxWidth="md" align="center">
           <br/>
           <Typography>
-           During this pandemic, we are gratefully adding more therapists who are willing to offer short-term (minimum four sessions per accepted referral) pro-bono sessions, and those willing to accept fees of $50 or less to our network. 
+          We are presently inviting licensed, insured therapists authorized for unsupervised private practice to join our collective.  (We cannot accept interns and associates who do not meet these criteria at this time)  Therapists joining us must be willing to offer short-term (minimum four online sessions per accepted referral) pro-bono sessions or fees of $50 or less.
           </Typography>
           <br/>
           <Typography>
-		  Therapists, we would love for you to join us! At this time, we require each clinician to be licensed for independent clinical practice and have their own malpractice insurance.<br/>
-If you aren’t yet licensed for independent clinical private practice, please stop and have the practice owner you work for complete a therapist profile instead.<br/>
-	    Before you create a profile, we ask that you please read our <Link href='https://www.coronavirusonlinetherapy.com/therapist-portal-faq'>Therapist Portal FAQ</Link> to ensure an easy signup process.
+            <b>By creating a profile, you will be subscribed to our administrative emails.  Should you unsubscribe we will need to delete your profile.</b>
           </Typography>
-	   <br/>
-	  <Typography>
-	  	  At this time we are only accepting licensed, insured clinicians who are authorized for clinical private practice by their state board(s). We are unable to accept associates and interns who are NOT licensed and authorized to conduct clinical private practice. This includes AMFT's. We instead ask that you have your supervisors enroll, so that they may refer you clients under their private practices, and supervision, at their sole discretion. Thank you.
-	  </Typography>
+          <br/>
+          <Typography>
+          PLEASE NOTE: These are private practice referrals.  Therapists are responsible for collecting fees, documentation, and choice of online platform to conduct sessions on.  CORONAVIRUS ONLINE THERAPY DOES NOT PAY THERAPISTS.  You must confirm fees and payment methods with clients prior to rendering services, as you would with any private practice referral.
+          </Typography>
+          <br/>
+          <Typography>
+          Before you create a profile, we ask that you please read our <Link href='https://www.coronavirusonlinetherapy.com/therapist-portal-faq'>Therapist Portal FAQ</Link> to ensure an easy signup process.
+          </Typography>
         </Container>
 		  <AuthForm title="Therapist Registration" onSubmit={doSignUp} error={error}>
 			<Grid container spacing={3} justify="center">
