@@ -74,6 +74,18 @@ GenderSelect.defaultProps = {
 }
 
 const genders = [
+    {
+        "label": "Agender",
+        "value": "AGENDER",
+    },
+    {
+        "label": "Cisgender",
+        "value": "CISGENDER",
+    },
+    {
+        "label": "Gender Fluid",
+        "value": "GENDER_FLUID",
+    },
   {
       "label": "Male",
       "value": "MALE",
@@ -83,9 +95,25 @@ const genders = [
       "value": "FEMALE",
   },
   {
-      "label": "Non-binary/Transgender",
+      "label": "Non-binary",
       "value": "NON_BINARY",
-  }
+  },
+  {
+      "label": "Genderqueer",
+      "value": "GENDER_QUEER"
+  },
+  {
+    "label": "Intersex",
+    "value": "INTERSEX",
+  },
+  {
+    "label": "Transgender",
+    "value": "TRANSGENDER",
+  },
+  {
+    "label": "Two-spirit",
+    "value": "TWO_SPIRIT",
+  },
 ];
 
 export default GenderSelect;
