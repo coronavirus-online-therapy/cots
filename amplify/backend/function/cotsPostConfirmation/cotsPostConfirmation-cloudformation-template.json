@@ -102,7 +102,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-cots-preview-105259-deployment",
-					"S3Key": "amplify-builds/cotsPostConfirmation-4b4578484f6a6d566572-build.zip"
+					"S3Key": "amplify-builds/cotsPostConfirmation-7a6d4a3444416e48524c-build.zip"
 				}
 			}
 		},

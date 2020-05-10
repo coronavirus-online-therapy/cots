@@ -3,6 +3,7 @@ type Provider
   @key(fields: ["owner"])
   @auth(rules: [
       {allow: owner, operations: [create, read, update, delete]},
+      {allow: groups, operations:[create, read, update, delete], groups: ["admin"]},
       {allow: private, operations: [read], provider: iam}
       {allow: private, operations: [read], provider: userPools}
       {allow: public, operations: [read]}
@@ -56,6 +57,7 @@ type AccessPoint
   @key(name: "byState", fields: ["state"], queryField: "accessPointsByState")
   @auth(rules: [
       {allow: owner, operations: [create, read, update, delete]},
+      {allow: groups, operations:[create, read, update, delete], groups: ["admin"]},
       {allow: private, operations: [read], provider: iam}
       {allow: private, operations: [read], provider: userPools}
       {allow: public, operations: [read]}
@@ -65,6 +67,7 @@ type AccessPoint
     owner: String!
     provider: Provider @connection(fields: ["owner"])
     license: String!
+    verified: Boolean @auth(rules: [{allow: groups, operations:[create, update, delete], groups: ["admin"]}])
 }
 
 type Query {

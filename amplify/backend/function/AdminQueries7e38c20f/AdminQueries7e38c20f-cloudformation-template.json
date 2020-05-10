@@ -32,12 +32,12 @@
 				"FunctionName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"GetProviderEmail",
+						"AdminQueries7e38c20f",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"GetProviderEmail",
+									"AdminQueries7e38c20f",
 									"-",
 									{
 										"Ref": "env"
@@ -52,10 +52,8 @@
 						"ENV": {
 							"Ref": "env"
 						},
-						"REGION": {
-							"Ref": "AWS::Region"
-						},
-						"AUTH_COTS_USERPOOLID": {
+						"GROUP": "admin",
+						"USERPOOL": {
 							"Ref": "authcotsUserPoolId"
 						}
 					}
@@ -66,11 +64,11 @@
 						"Arn"
 					]
 				},
-				"Runtime": "nodejs12.x",
+				"Runtime": "nodejs10.x",
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-cots-preview-105259-deployment",
-					"S3Key": "amplify-builds/cotsProviderBackend-4461313955503231376c-build.zip"
+					"S3Key": "amplify-builds/AdminQueries7e38c20f-674e73526c75544b4963-build.zip"
 				}
 			}
 		},
@@ -80,12 +78,12 @@
 				"RoleName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"cotsLambdaRoleba985517",
+						"AdminQueries7e38c20fLambdaRole",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"cotsLambdaRoleba985517",
+									"AdminQueries7e38c20fLambdaRole",
 									"-",
 									{
 										"Ref": "env"
@@ -151,65 +149,40 @@
 									}
 								]
 							}
-						}
-					]
-				}
-			}
-		},
-		"AmplifyResourcesPolicy": {
-			"DependsOn": [
-				"LambdaExecutionRole"
-			],
-			"Type": "AWS::IAM::Policy",
-			"Properties": {
-				"PolicyName": "amplify-lambda-execution-policy",
-				"Roles": [
-					{
-						"Ref": "LambdaExecutionRole"
-					}
-				],
-				"PolicyDocument": {
-					"Version": "2012-10-17",
-					"Statement": [
+						},
 						{
 							"Effect": "Allow",
 							"Action": [
-								"cognito-identity:Describe*",
-								"cognito-identity:Get*",
-								"cognito-identity:List*",
-								"cognito-idp:Describe*",
-								"cognito-idp:AdminGetDevice",
+								"cognito-idp:ListUsersInGroup",
+								"cognito-idp:AdminUserGlobalSignOut",
+								"cognito-idp:AdminEnableUser",
+								"cognito-idp:AdminDisableUser",
+								"cognito-idp:AdminRemoveUserFromGroup",
+								"cognito-idp:AdminAddUserToGroup",
+								"cognito-idp:AdminListGroupsForUser",
 								"cognito-idp:AdminGetUser",
-								"cognito-idp:AdminList*",
-								"cognito-idp:List*",
-								"cognito-sync:Describe*",
-								"cognito-sync:Get*",
-								"cognito-sync:List*",
-								"iam:ListOpenIdConnectProviders",
-								"iam:ListRoles",
-								"sns:ListPlatformApplications"
+								"cognito-idp:AdminConfirmSignUp",
+								"cognito-idp:ListUsers"
 							],
-							"Resource": [
-								{
-									"Fn::Join": [
-										"",
-										[
-											"arn:aws:cognito-idp:",
-											{
-												"Ref": "AWS::Region"
-											},
-											":",
-											{
-												"Ref": "AWS::AccountId"
-											},
-											":userpool/",
-											{
-												"Ref": "authcotsUserPoolId"
-											}
-										]
+							"Resource": {
+								"Fn::Join": [
+									"",
+									[
+										"arn:aws:cognito-idp:",
+										{
+											"Ref": "AWS::Region"
+										},
+										":",
+										{
+											"Ref": "AWS::AccountId"
+										},
+										":userpool/",
+										{
+											"Ref": "authcotsUserPoolId"
+										}
 									]
-								}
-							]
+								]
+							}
 						}
 					]
 				}

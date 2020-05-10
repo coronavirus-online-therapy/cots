@@ -97,6 +97,7 @@ export const getAccessPoint = /* GraphQL */ `
       state
       owner
       license
+      verified
       provider {
         owner
         fullName
@@ -138,6 +139,7 @@ export const listAccessPoints = /* GraphQL */ `
         state
         owner
         license
+        verified
       }
       nextToken
     }
@@ -162,6 +164,7 @@ export const accessPointsByState = /* GraphQL */ `
         state
         owner
         license
+        verified
       }
       nextToken
     }

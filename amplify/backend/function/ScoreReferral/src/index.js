@@ -1,10 +1,8 @@
 /* Amplify Params - DO NOT EDIT
-You can access the following resource attributes as environment variables from your Lambda function
-var environment = process.env.ENV
-var region = process.env.REGION
-var apiCotsGraphQLAPIIdOutput = process.env.API_COTS_GRAPHQLAPIIDOUTPUT
-var apiCotsGraphQLAPIEndpointOutput = process.env.API_COTS_GRAPHQLAPIENDPOINTOUTPUT
-
+	API_COTS_GRAPHQLAPIENDPOINTOUTPUT
+	API_COTS_GRAPHQLAPIIDOUTPUT
+	ENV
+	REGION
 Amplify Params - DO NOT EDIT */
 
 const http = require('http');

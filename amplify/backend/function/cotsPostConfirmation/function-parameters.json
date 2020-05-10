@@ -12,6 +12,5 @@
     "triggerTemplate": "PostConfirmation.json.ejs",
     "triggerEventPath": "PostConfirmation.event.json",
     "skipEdit": true,
-    "resourceName": "cotsPostConfirmation",
-    "GROUP": "providers"
+    "resourceName": "cotsPostConfirmation"
 }

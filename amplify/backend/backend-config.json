@@ -42,9 +42,24 @@
 		"cotsPostConfirmation": {
 			"build": true,
 			"providerPlugin": "awscloudformation",
-			"service": "Lambda"
+			"service": "Lambda",
+			"dependsOn": []
 		},
-		"cotsProviderBackend": {
+		"AdminQueries7e38c20f": {
+			"service": "Lambda",
+			"providerPlugin": "awscloudformation",
+			"build": true,
+			"dependsOn": [
+				{
+					"category": "auth",
+					"resourceName": "cots",
+					"attributes": [
+						"UserPoolId"
+					]
+				}
+			]
+		},
+		"GetProviderEmail": {
 			"build": true,
 			"providerPlugin": "awscloudformation",
 			"service": "Lambda",
@@ -58,7 +73,7 @@
 				}
 			]
 		},
-		"cotsReferralBackend": {
+		"ScoreReferral": {
 			"build": true,
 			"providerPlugin": "awscloudformation",
 			"service": "Lambda",
@@ -100,6 +115,27 @@
 					}
 				}
 			}
+		},
+		"AdminQueries": {
+			"service": "API Gateway",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [
+				{
+					"category": "auth",
+					"resourceName": "cots",
+					"attributes": [
+						"UserPoolId"
+					]
+				},
+				{
+					"category": "function",
+					"resourceName": "AdminQueries7e38c20f",
+					"attributes": [
+						"Arn",
+						"Name"
+					]
+				}
+			]
 		}
 	},
 	"analytics": {
