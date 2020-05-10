@@ -6,27 +6,33 @@ class ProviderDetails {
     Object.assign(this, props);
   }
 
-  async read() {
-    let user = await Auth.currentAuthenticatedUser();
-    if(user && user.getUsername()) {
-      let { data: {getProvider}} = await API.graphql(graphqlOperation(getProviderWithAccessPoints, {owner: user.getUsername()}));
-      Object.assign(this, getProvider);
-    } else {
-      throw new Error("No current authenticated user.");
+  async read(owner) {
+    if(owner === undefined) {
+      let user = await Auth.currentAuthenticatedUser();
+      if(user && user.getUsername()) {
+        owner = user.getUsername();
+      } else {
+        throw new Error("No current authenticated user.");
+      }
     }
+    let { data: {getProvider}} = await API.graphql(graphqlOperation(getProviderWithAccessPoints, {owner}));
+    Object.assign(this, getProvider);
   }
 
   async create() {
-    let user = await Auth.currentAuthenticatedUser();
-    this.owner = user.getUsername();
-    //this.active = true;
+    if(this.owner === undefined) {
+      let user = await Auth.currentAuthenticatedUser();
+      this.owner = user.getUsername();
+    }
     this.active = (String(this.active) === 'true');
     this.rate = parseInt(this.rate);
     return await API.graphql(graphqlOperation(mutations.createProvider, {input: this}));
   }
   async update() {
-    let user = await Auth.currentAuthenticatedUser();
-    this.owner = user.getUsername();
+    if(this.owner === undefined) {
+      let user = await Auth.currentAuthenticatedUser();
+      this.owner = user.getUsername();
+    }
     this.rate = parseInt(this.rate);
     this.active = (String(this.active) === 'true');
     this.accessPoints = undefined;
@@ -34,18 +40,36 @@ class ProviderDetails {
   }
 
   async addAccessPoint(accessPoint) {
-    let user = await Auth.currentAuthenticatedUser();
-    accessPoint.owner = user.getUsername();
+    if(accessPoint.owner === undefined) {
+      if(this.owner === undefined) {
+        let user = await Auth.currentAuthenticatedUser();
+        accessPoint.owner = user.getUsername();
+      } else {
+        accessPoint.owner = this.owner
+      }
+    }
     return await API.graphql(graphqlOperation(mutations.createAccessPoint, {input: accessPoint}));
   }
   async updateAccessPoint(accessPoint) {
-    let user = await Auth.currentAuthenticatedUser();
-    accessPoint.owner = user.getUsername();
+    if(accessPoint.owner === undefined) {
+      if(this.owner === undefined) {
+        let user = await Auth.currentAuthenticatedUser();
+        accessPoint.owner = user.getUsername();
+      } else {
+        accessPoint.owner = this.owner
+      }
+    }
     return await API.graphql(graphqlOperation(mutations.updateAccessPoint, {input: accessPoint}));
   }
   async deleteAccessPoint(accessPoint) {
-    let user = await Auth.currentAuthenticatedUser();
-    accessPoint.owner = user.getUsername();
+    if(accessPoint.owner === undefined) {
+      if(this.owner === undefined) {
+        let user = await Auth.currentAuthenticatedUser();
+        accessPoint.owner = user.getUsername();
+      } else {
+        accessPoint.owner = this.owner
+      }
+    }
     return await API.graphql(graphqlOperation(mutations.deleteAccessPoint, {input: accessPoint}));
   }
 

@@ -6,6 +6,7 @@ import awsconfig from './aws-exports';
 
 import Navigation from './Navigation';
 import ProviderApp from './providers/App';
+import AdminApp from './admin/App';
 import PatientApp from './patients/App';
 
 import {
@@ -58,6 +59,9 @@ function App() {
         <div className={classes.offset}>
           <Router>
             <Switch>
+              <Route path="/admin">
+                <AdminApp />
+              </Route>
               <Route path="/providers">
                 <ProviderApp />
               </Route>
