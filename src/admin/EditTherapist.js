@@ -46,7 +46,6 @@ function EditTherapist() {
     }
 
   };
-  console.log(user);
   return (
     <Grid container spacing={3} justify="center">
       <Grid item xs={12}>
