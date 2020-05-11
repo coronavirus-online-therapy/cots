@@ -15,6 +15,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Alert from '@material-ui/lab/Alert';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 import { makeStyles } from '@material-ui/core/styles';
 import ReactGA from 'react-ga';
@@ -45,21 +46,47 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-
-
 function Profile(props) {
   const classes = useStyles();
-  const [mode, setMode] = useState(props.provider.owner?'VIEW':'CREATE');
+  const [mode, setMode] = useState(undefined);
   const [submit, setSubmit] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [providerDetails, setProviderDetails] = useState(new ProviderDetails(props.provider));
+  const [providerDetails, setProviderDetails] = useState(new ProviderDetails());
   const [accessPointOps, setAccessPointOps] = useState([]);
   const [confirmMessage, setConfirmMessage] = useState('');
 
-  if(mode === 'CREATE' && providerDetails.active === undefined) {
-    providerDetails.active = true;
-  }
+  useEffect(() => {
+    const doLoad = async (providerId) => {
+      setMode(undefined);
+      if(providerId === undefined || providerId === null) {
+        return;
+      }
+      setLoading(true);
+      const pd = new ProviderDetails();
+      await pd.read(providerId).catch(console.error);
+      if(!pd.owner && pd.active === undefined) {
+        pd.active = true;
+      }
+      setProviderDetails(pd);
+      setLoading(false);
+    };
+
+    doLoad(props.providerId);
+  }, [props.providerId, setProviderDetails, setMode]);
+
+  useEffect(() => {
+    if(loading) {
+      setMode(undefined);
+      return; 
+    }
+    setMode(mode => {
+      if(mode !== undefined) {
+        return mode;
+      }
+      return providerDetails.owner?'VIEW':'CREATE';
+    });
+  }, [loading, providerDetails, setMode]);
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -188,6 +215,14 @@ function Profile(props) {
     setMode('UPDATE');
   }
 
+  if(mode === undefined) {
+    if(loading) {
+      return (<LinearProgress/>)
+    } else {
+      return null;
+    }
+  }
+
   return (
     <div className={classes.root}>
       <Container maxWidth="md">
@@ -195,8 +230,8 @@ function Profile(props) {
           <form className={classes.root} autoComplete="off" onSubmit={handleSubmit}>
             <div>
               <Grid container spacing={3} justify="center">
-                <Grid item xs={9}>
-                  <Typography variant="h2" component="h2" align="right">
+                <Grid item xs={7}>
+                  <Typography variant="h5" component="h5" align="right">
                     Therapist Profile
                   </Typography>
                 </Grid>

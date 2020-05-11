@@ -85,7 +85,7 @@ function Denied() {
 }
 function AdminMain() {
   const classes = useStyles();
-  const [adminAction, setAdminAction] = React.useState(EditTherapist);
+  const [adminAction, setAdminAction] = React.useState(<EditTherapist/>);
   return (
     <div className={classes.root}>
       <AdminDrawer onAdminActionChange={setAdminAction}/>
@@ -126,22 +126,22 @@ function AdminDrawer(props) {
       </IconButton>
       <Divider />
       <List>
-        <ListItem button key='Edit Therapist' onClick={changeAdminAction(EditTherapist)}>
+        <ListItem button key='Edit Therapist' onClick={changeAdminAction(<EditTherapist/>)}>
           <ListItemIcon><EditIcon /></ListItemIcon>
           <ListItemText primary='Edit Therapist' />
         </ListItem>
-        <ListItem button key='Verify Therapists' onClick={changeAdminAction(VerifyTherapists)}>
+        <ListItem button key='Verify Therapists' onClick={changeAdminAction(<VerifyTherapists/>)}>
           <ListItemIcon><VerifyIcon /></ListItemIcon>
           <ListItemText primary='Verify Therapists' />
         </ListItem>
       </List>
       <Divider />
       <List>
-        <ListItem button key='Stats' onClick={changeAdminAction(Stats)}>
+        <ListItem button key='Stats' onClick={changeAdminAction(<Stats/>)}>
           <ListItemIcon><StatsIcon /></ListItemIcon>
           <ListItemText primary='Stats' />
         </ListItem>
-        <ListItem button key='Export' onClick={changeAdminAction(Export)}>
+        <ListItem button key='Export' onClick={changeAdminAction(<Export/>)}>
           <ListItemIcon><ExportIcon /></ListItemIcon>
           <ListItemText primary='Export' />
         </ListItem>

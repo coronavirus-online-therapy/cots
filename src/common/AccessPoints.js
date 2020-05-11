@@ -6,7 +6,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import States from './States';
 
 function AccessPoints(props) {
-  const [value, setValue] = useState(props.defaultValue.map(p => {return {licState: p.state, licNum: p.license}}));
+  const [value, setValue] = useState(props.defaultValue.map(p => {return {licState: p.state, licNum: p.license, licVerified: p.verified === true?'yes':'in progress'}}));
   const [error, setError] = useState("");
 
   const validate = (data) => {
@@ -72,13 +72,14 @@ function AccessPoints(props) {
             disabled={props.disabled}
             columns={[
                 { title: "State", field: "licState", lookup: stateLookup, editable: 'onAdd' },
-                { title: "License #", field: "licNum" }
+                { title: "License #", field: "licNum" },
+                { title: "Verified?", field: "licVerified", editable: false }
             ]}
             data={value}
             options={{
                 paging: false,
                 search: false,
-                actionsColumnIndex: 2
+                actionsColumnIndex: 3
             }}
             editable={props.disabled?{}:{
                 onRowAdd: handleAdd,
