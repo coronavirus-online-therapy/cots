@@ -4,7 +4,6 @@ import MaterialTable from "material-table";
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import States from './States';
-import { Checkbox } from '@material-ui/core';
 
 function AccessPoints(props) {
   const [value, setValue] = useState(props.defaultValue.map(p => {return {licState: p.state, licNum: p.license, licVerified: p.verified === true?true:false}}));
@@ -68,8 +67,6 @@ function AccessPoints(props) {
       map[state.Code] = state.State;
       return map;
   }, {});
-
-  console.log(props);
 
   return( 
     <FormControl fullWidth>
