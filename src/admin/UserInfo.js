@@ -1,9 +1,5 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import Verified from '@material-ui/icons/Close';
-import Unverified from '@material-ui/icons/Close';
 
 function UserInfo(props) {
   const [user] = React.useState(props.user);

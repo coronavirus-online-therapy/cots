@@ -1,4 +1,4 @@
-import { Auth, API, graphqlOperation } from "aws-amplify";
+import { API, graphqlOperation } from "aws-amplify";
 import * as mutations from '../graphql/mutations';
 
 class ProviderDetails {

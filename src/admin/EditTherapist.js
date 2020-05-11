@@ -12,7 +12,7 @@ import { Auth, API } from 'aws-amplify';
 function EditTherapist() {
   const [error, setError] = React.useState('');
   const [user, setUser] = React.useState();
-  const [email, setEmail] = React.useState('cplee@nektos.com');
+  const [email, setEmail] = React.useState('');
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
   };
