@@ -1,5 +1,4 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
 import MaterialTable from "material-table";
 import { API, graphqlOperation } from "aws-amplify";
 
