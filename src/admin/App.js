@@ -85,7 +85,7 @@ function Denied() {
 }
 function AdminMain() {
   const classes = useStyles();
-  const [adminAction, setAdminAction] = React.useState(/*<EditTherapist/>*/<VerifyTherapists/>);
+  const [adminAction, setAdminAction] = React.useState(<EditTherapist/>);
   return (
     <div className={classes.root}>
       <AdminDrawer onAdminActionChange={setAdminAction}/>

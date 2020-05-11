@@ -80,6 +80,7 @@ const getProviderWithAccessPoints = /* GraphQL */ `
         items {
           state
           license
+          verified
         }
       }
     }

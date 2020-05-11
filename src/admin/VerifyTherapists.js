@@ -1,4 +1,5 @@
-import React from 'react';import MaterialTable from "material-table";
+import React from 'react';
+import MaterialTable from "material-table";
 import ProviderProfile from '../providers/Profile';
 import { API, graphqlOperation } from "aws-amplify";
 
@@ -20,23 +21,32 @@ class UnverifiedAccessPointsPager {
     }
 
 
-    let limit = this.pageSize;
+    let limit = this.pageSize+1;
     let nextToken = this.nextPageToken
-    let { data: {listAccessPoints}} = await API.graphql(graphqlOperation(getUnverifiedAccessPointsQuery, {limit, nextToken}));
 
-    const data = listAccessPoints.items.map(item => ({
-      ...item.provider,
-      owner: item.owner,
-      state: item.state,
-      license: item.license,
-    }));
-    this.data.pop();
-    this.data.push(...data);
+    let found = 0;
+    while (found < this.pageSize) {
+      let { data: {listAccessPoints}} = await API.graphql(graphqlOperation(getUnverifiedAccessPointsQuery, {limit, nextToken}));
+      const data = listAccessPoints.items.map(item => ({
+        ...item.provider,
+        owner: item.owner,
+        state: item.state,
+        license: item.license,
+      }));
+      found += data.length;
+      this.data.push(...data);
 
-    if(listAccessPoints.nextToken !== null) {
-      this.data.push({})
-      this.nextPage = pageNum + 1;
-      this.nextPageToken = listAccessPoints.nextToken;
+      if(listAccessPoints.nextToken !== null) {
+        if(found < this.pageSize) {
+          nextToken = listAccessPoints.nextToken;
+        } else {
+          this.nextPage = pageNum + 1;
+          this.nextPageToken = listAccessPoints.nextToken;
+          break;
+        }
+      } else {
+        break;
+      }
     }
   }
 }
@@ -48,11 +58,10 @@ function VerifyTherapists() {
   const [pager, setPager] = React.useState(new UnverifiedAccessPointsPager());
 
   React.useEffect(() => {
-    console.log(`doLoad page:${page}`)
-
     const doLoad = async () => {
       setLoading(true);
       await pager.ensurePageLoaded(page)
+      setPage(0);
       setData(pager.data);
       setLoading(false);
     }
@@ -77,6 +86,7 @@ function VerifyTherapists() {
         ]}
         data={data}
         isLoading={loading}
+        initialPage={page}
         actions={[
           {
             icon: 'verified_user',
@@ -90,6 +100,7 @@ function VerifyTherapists() {
             pageSize: pager.pageSize,
             pageSizeOptions: [pager.pageSize],
             search: false,
+            showSelectAllCheckbox: false,
         }}
         localization={{
           pagination: {

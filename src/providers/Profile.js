@@ -17,6 +17,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Alert from '@material-ui/lab/Alert';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
+import { Auth } from "aws-amplify";
 import { makeStyles } from '@material-ui/core/styles';
 import ReactGA from 'react-ga';
 
@@ -262,6 +263,7 @@ function Profile(props) {
                 <Grid item xs={8} align="left">
                     <AccessPoints onAdd={handleAccessPointAdd} onUpdate={handleAccessPointUpdate} onDelete={handleAccessPointDelete}
                                       disabled={mode === 'VIEW'}
+                                      statusEditable={props.userIsAdmin}
                                       defaultValue={providerDetails.getAccessPoints()} 
                     />
                 </Grid>
