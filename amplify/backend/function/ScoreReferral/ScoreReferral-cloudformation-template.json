@@ -187,7 +187,8 @@
 							"Effect": "Allow",
 							"Action": [
 								"appsync:Get*",
-								"appsync:List*"
+								"appsync:List*",
+								"appsync:GraphQL"
 							],
 							"Resource": [
 								{

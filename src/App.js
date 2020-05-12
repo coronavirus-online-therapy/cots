@@ -55,7 +55,6 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
-        <Navigation/>
         <div className={classes.offset}>
           <Router>
             <Switch>
@@ -63,9 +62,11 @@ function App() {
                 <AdminApp />
               </Route>
               <Route path="/providers">
+                yy<Navigation/>
                 <ProviderApp />
               </Route>
               <Route path="/">
+                <Navigation/>
                 <PatientApp />
               </Route>
             </Switch>

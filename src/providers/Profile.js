@@ -136,6 +136,7 @@ function Profile(props) {
         let response;
         if(mode === 'CREATE') {
          ReactGA.event({category: 'Therapist', action: 'Create Profile'});
+         providerDetails.owner = props.providerId;
          response = await providerDetails.create();
          await doAccessPoints();
          setConfirmMessage('Thank you. Your profile is now live');
