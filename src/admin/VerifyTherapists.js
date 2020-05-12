@@ -32,16 +32,22 @@ class UnverifiedAccessPointsPager {
       return;
     }
 
-    let limit = this.pageSize+1;
+    let limit = 100//this.pageSize+1;
     let nextToken = this.nextPageToken;
-    let state = this.state;
-    if(state === null || state === "") {
-      state = undefined
+    let filter = {
+      verified: {
+        ne: true
+      }
+    }
+    if(this.state !== undefined && this.state !== null && this.state !== "") {
+      filter.state = {
+        eq: this.state
+      }
     }
 
     let found = 0;
     while (found < this.pageSize) {
-      let { data: {listAccessPoints}} = await API.graphql(graphqlOperation(getUnverifiedAccessPointsQuery, {limit, nextToken, state})).catch(e => e);
+      let { data: {listAccessPoints}} = await API.graphql(graphqlOperation(getUnverifiedAccessPointsQuery, {limit, nextToken, filter})).catch(e => e);
       const data = listAccessPoints.items.map(item => ({
         ...item.provider,
         owner: item.owner,
@@ -72,13 +78,16 @@ function VerifyTherapists() {
   const [page, setPage] = React.useState(0);
   const [data, setData] = React.useState([]);
   const [state, setState] = React.useState();
-  const [pager, setPager] = React.useState(new UnverifiedAccessPointsPager(state));
+  const [pager, setPager] = React.useState(new UnverifiedAccessPointsPager());
 
   React.useEffect(() => {
-    if(state !== pager.state) {
-      setPager(new UnverifiedAccessPointsPager(state));
-    }
-  }, [state, setPager, pager.state]);
+    setPager(p => {
+      if(state !== p.state) {
+        return new UnverifiedAccessPointsPager(state)
+      } 
+      return p;
+    });
+  }, [state, setPager]);
 
   React.useEffect(() => {
     const doLoad = async () => {
@@ -147,8 +156,8 @@ function VerifyTherapists() {
 export default VerifyTherapists;
 
 const getUnverifiedAccessPointsQuery = /* GraphQL */ `
-  query GetUnverifiedAccessPoints($limit: Int, $nextToken: String, $state: String) {
-  listAccessPoints(filter: {verified: {ne: true}, state: {eq: $state}}, limit: $limit, nextToken: $nextToken) {
+  query GetUnverifiedAccessPoints($limit: Int, $nextToken: String, $filter: ModelAccessPointFilterInput) {
+  listAccessPoints(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       license
       provider {
