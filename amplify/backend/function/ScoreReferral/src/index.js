@@ -15,7 +15,7 @@ exports.handler = async (event, context) => {
 
     // fetch access points state
     const accessPoints = await getAccessPoints(event.arguments.query.state, 500);
-    const providers = accessPoints.map(ap => ap.provider).filter(p => p.active);
+    const providers = accessPoints.map(ap => ({...ap.provider,verified:ap.verified})).filter(p => p.active);
 
     // score & sort
     const results = providers.map(score(event.arguments.query));
@@ -30,16 +30,19 @@ exports.handler = async (event, context) => {
     // trim to length
     results.length = Math.min(results.length, event.arguments.limit);
 
-    console.log(results.map(r => {return {provider: r.provider.owner, score: r.score}}));
+    console.log(results.map(r => {return {provider: r.provider.owner, score: r.score, verified: r.verified}}));
     context.done(null, results);
 };
 
 function score(query) {
     return (provider) => {
         const score = scoreProvider(query, provider);
+        const verified = provider.verified;
+        delete provider.verified;
         return {
             provider,
             score,
+            verified,
         };
     };
 }
@@ -184,6 +187,7 @@ const accessPointsByStateWithProvider = /* GraphQL */ `
       nextToken: $nextToken
     ) {
       items {
+        verified
         provider {
           owner
           fullName

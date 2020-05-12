@@ -22,6 +22,7 @@ export const referrals = /* GraphQL */ `
         active
         tosAcceptedAt
       }
+      verified
     }
   }
 `;

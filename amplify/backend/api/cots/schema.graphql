@@ -78,6 +78,7 @@ type Query {
 type ReferralResult {
   score: Float! @aws_api_key @aws_cognito_user_pools
   provider: Provider! @aws_api_key @aws_cognito_user_pools
+  verified: Boolean @aws_api_key @aws_cognito_user_pools
 }
 
 input ReferralQuery

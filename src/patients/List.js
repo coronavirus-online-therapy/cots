@@ -10,9 +10,12 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import Hidden from '@material-ui/core/Hidden';
+import Tooltip from '@material-ui/core/Tooltip';
 import Alert from '@material-ui/lab/Alert';
+import { green } from '@material-ui/core/colors';
 
 
+import VerifyIcon from '@material-ui/icons/VerifiedUser';
 import EmailIcon from '@material-ui/icons/Email';
 import PhoneIcon from '@material-ui/icons/Phone';
 import LanguageIcon from '@material-ui/icons/Language';
@@ -92,6 +95,7 @@ export default function ListView({providers}) {
                 <Grid item xs={9}>
                   <Typography variant="h4" component="h4" align="left">
                     {provider.fullName}, {provider.licenseType}
+                    {provider.verified && <Tooltip title="Verified"><VerifyIcon style={{ color: green[500] }}/></Tooltip>}
                   </Typography>
                 </Grid>
                 <Grid item xs={3} align="right">

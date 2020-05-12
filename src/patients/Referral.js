@@ -24,11 +24,11 @@ class Referral {
         },
         authMode: 'API_KEY'
       });
-      return referrals.map(a => {return{...a.provider, score: a.score}});
+      return referrals.map(a => {return{...a.provider, score: a.score, verified: a.verified}});
     } catch (e) {
       console.error(e);
       try {
-        return e.data.referrals.map(a => {return{...a.provider, score: a.score}});
+        return e.data.referrals.map(a => {return{...a.provider, score: a.score, verified: a.verified}});
       } catch (e2) {
         console.error(e2);
         return [];
@@ -50,6 +50,7 @@ export const referralsQuery = /* GraphQL */ `
       limit: $limit
     ) {
       score 
+      verified
       provider {
         owner
         fullName
