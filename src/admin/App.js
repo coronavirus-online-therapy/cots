@@ -57,7 +57,7 @@ function App(props) {
   } else {
     const groups = props.authData.signInUserSession.accessToken.payload["cognito:groups"]
     if (!groups.includes('admin')) {
-      return Denied();
+      return (<Denied/>)
     }
     return (
 
