@@ -10,7 +10,7 @@ function Stats() {
     const doLoad = async () => {
       setLoading(true);
       const byState = {};
-      let nextToken = "";
+      let nextToken = null;
       while(true) {
         let { data: {listAccessPoints}} = await API.graphql(graphqlOperation(apStatesQuery, {limit: 100, nextToken}));
         for(let item of listAccessPoints.items) {

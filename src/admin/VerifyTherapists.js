@@ -11,7 +11,7 @@ class UnverifiedAccessPointsPager {
 
   reset() {
     this.nextPage = 0;
-    this.nextPageToken = "";
+    this.nextPageToken = null;
     this.data = [];
   }
 
@@ -26,7 +26,7 @@ class UnverifiedAccessPointsPager {
 
     let found = 0;
     while (found < this.pageSize) {
-      let { data: {listAccessPoints}} = await API.graphql(graphqlOperation(getUnverifiedAccessPointsQuery, {limit, nextToken}));
+      let { data: {listAccessPoints}} = await API.graphql(graphqlOperation(getUnverifiedAccessPointsQuery, {limit, nextToken})).catch(e => e);
       const data = listAccessPoints.items.map(item => ({
         ...item.provider,
         owner: item.owner,
@@ -69,10 +69,12 @@ function VerifyTherapists() {
   }, [pager, page, setData]);
 
   const verifyAccessPoint = async (event, rowData) => {
+    setLoading(true);
     for (let row of rowData) {
       const resp = await API.graphql(graphqlOperation(verifyAccessPointMutation, {owner: row.owner, state: row.state}));
       console.log(resp);
     }
+    setLoading(false);
     setPager(new UnverifiedAccessPointsPager());
   }
   return (
