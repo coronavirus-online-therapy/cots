@@ -1,11 +1,23 @@
 import React from 'react';
 import MaterialTable from "material-table";
+import StateSelect from '../common/StateSelect';
 import ProviderProfile from '../providers/Profile';
 import { API, graphqlOperation } from "aws-amplify";
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+  },
+  stateSelect: {
+    maxWidth: '50%'
+  }
+}));
 
 class UnverifiedAccessPointsPager {
-  constructor() {
+  constructor(state) {
     this.pageSize = 5;
+    this.state = state;
     this.reset();
   }
 
@@ -20,13 +32,16 @@ class UnverifiedAccessPointsPager {
       return;
     }
 
-
     let limit = this.pageSize+1;
-    let nextToken = this.nextPageToken
+    let nextToken = this.nextPageToken;
+    let state = this.state;
+    if(state === null || state === "") {
+      state = undefined
+    }
 
     let found = 0;
     while (found < this.pageSize) {
-      let { data: {listAccessPoints}} = await API.graphql(graphqlOperation(getUnverifiedAccessPointsQuery, {limit, nextToken})).catch(e => e);
+      let { data: {listAccessPoints}} = await API.graphql(graphqlOperation(getUnverifiedAccessPointsQuery, {limit, nextToken, state})).catch(e => e);
       const data = listAccessPoints.items.map(item => ({
         ...item.provider,
         owner: item.owner,
@@ -52,10 +67,18 @@ class UnverifiedAccessPointsPager {
 }
 
 function VerifyTherapists() {
+  const classes = useStyles();
   const [loading, setLoading] = React.useState(false);
   const [page, setPage] = React.useState(0);
   const [data, setData] = React.useState([]);
-  const [pager, setPager] = React.useState(new UnverifiedAccessPointsPager());
+  const [state, setState] = React.useState();
+  const [pager, setPager] = React.useState(new UnverifiedAccessPointsPager(state));
+
+  React.useEffect(() => {
+    if(state !== pager.state) {
+      setPager(new UnverifiedAccessPointsPager(state));
+    }
+  }, [state, setPager, pager.state]);
 
   React.useEffect(() => {
     const doLoad = async () => {
@@ -75,54 +98,57 @@ function VerifyTherapists() {
       console.log(resp);
     }
     setLoading(false);
-    setPager(new UnverifiedAccessPointsPager());
+    setPager(new UnverifiedAccessPointsPager(state));
   }
   return (
-    <MaterialTable
-        columns={[
-            { title: "Name", field: "fullName", sorting: false },
-            { title: "State", field: "state", sorting: false },
-            { title: "License Type", field: "licenseType", sorting: false },
-            { title: "License #", field: "license", sorting: false },
-            { title: "Email", field: "email", sorting: false },
-        ]}
-        data={data}
-        isLoading={loading}
-        initialPage={page}
-        actions={[
-          {
-            icon: 'verified_user',
-            tooltip: 'Verify User',
-            onClick: verifyAccessPoint,
-          }
-        ]}
-        options={{
-            selection: true,
-            paging: true,
-            pageSize: pager.pageSize,
-            pageSizeOptions: [pager.pageSize],
-            search: false,
-            showSelectAllCheckbox: false,
-        }}
-        localization={{
-          pagination: {
-            labelDisplayedRows: "{from}-{to}"
-          } 
-        }}
-        title='Unverified Therapists'
-        onChangePage={setPage}
-        detailPanel={rowData => {
-          return (<ProviderProfile providerId={rowData.owner}/>);
-        }}
-    />
+    <div>
+      <StateSelect defaultValue={state} onChange={setState} className={classes.stateSelect} helperText=""/>
+      <MaterialTable
+          columns={[
+              { title: "Name", field: "fullName", sorting: false },
+              { title: "State", field: "state", sorting: false },
+              { title: "License Type", field: "licenseType", sorting: false },
+              { title: "License #", field: "license", sorting: false },
+              { title: "Email", field: "email", sorting: false },
+          ]}
+          data={data}
+          isLoading={loading}
+          initialPage={page}
+          actions={[
+            {
+              icon: 'verified_user',
+              tooltip: 'Verify User',
+              onClick: verifyAccessPoint,
+            }
+          ]}
+          options={{
+              selection: true,
+              paging: true,
+              pageSize: pager.pageSize,
+              pageSizeOptions: [pager.pageSize],
+              search: false,
+              showSelectAllCheckbox: false,
+          }}
+          localization={{
+            pagination: {
+              labelDisplayedRows: "{from}-{to}"
+            } 
+          }}
+          title='Unverified Therapists'
+          onChangePage={setPage}
+          detailPanel={rowData => {
+            return (<ProviderProfile providerId={rowData.owner}/>);
+          }}
+      />
+    </div>
   );
 }
 
 export default VerifyTherapists;
 
 const getUnverifiedAccessPointsQuery = /* GraphQL */ `
-  query GetUnverifiedAccessPoints($limit: Int, $nextToken: String) {
-  listAccessPoints(filter: {verified: {ne: true}}, limit: $limit, nextToken: $nextToken) {
+  query GetUnverifiedAccessPoints($limit: Int, $nextToken: String, $state: String) {
+  listAccessPoints(filter: {verified: {ne: true}, state: {eq: $state}}, limit: $limit, nextToken: $nextToken) {
     items {
       license
       provider {
