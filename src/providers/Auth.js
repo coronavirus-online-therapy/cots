@@ -227,19 +227,19 @@ function ProviderAuth(props) {
         <Container maxWidth="md" align="center">
           <br/>
           <Typography>
-          We are presently inviting licensed, insured therapists authorized for unsupervised private practice to join our collective.  (We cannot accept interns and associates who do not meet these criteria at this time)  Therapists joining us must be willing to offer short-term (minimum four online sessions per accepted referral) pro-bono sessions or fees of $50 or less.
+          <strong>We are presently inviting licensed, insured therapists authorized for unsupervised private practice to join our collective. </strong> (We cannot accept interns and associates who do not meet these criteria at this time. <strong> If you aren’t yet licensed for independent clinical practice, <i> please stop </i> and instead </strong> <Link href="https://www.coronavirusonlinetherapy.org/intern-therapist-waitlist" target="_blank"><u><i> sign up for our waiting list </i></u></Link>) Therapists joining us must be willing to offer short-term (minimum four online sessions per accepted referral) pro-bono sessions or fees of $50 or less.
           </Typography>
           <br/>
           <Typography>
-            <b>By creating a profile, you will be subscribed to our administrative emails.  Should you unsubscribe we will need to delete your profile.</b>
+          We are also very aware of the need to support our therapists, and are presently working on ways to do so.  All of our therapists are invited to join our private <Link href="https://www.facebook.com/groups/coronavirusonlinetherapyproviders/" target="_blank"><u><i>Therapist Facebook Group </i></u></Link>&nbsp;to connect with one another, find answers to commonly asked questions, and to support one another.
           </Typography>
           <br/>
           <Typography>
-          PLEASE NOTE: These are private practice referrals.  Therapists are responsible for collecting fees, documentation, and choice of online platform to conduct sessions on.  CORONAVIRUS ONLINE THERAPY DOES NOT PAY THERAPISTS.  You must confirm fees and payment methods with clients prior to rendering services, as you would with any private practice referral.
+          Before you create a profile, we ask that you please read our <Link href="https://www.coronavirusonlinetherapy.com/therapist-portal-faq" target="_blank"><u> Therapist Portal FAQ </u></Link>  to ensure an easy signup process.
           </Typography>
           <br/>
           <Typography>
-          Before you create a profile, we ask that you please read our <Link href='https://www.coronavirusonlinetherapy.com/therapist-portal-faq'>Therapist Portal FAQ</Link> to ensure an easy signup process.
+          <strong>PLEASE NOTE:</strong> These are private practice referrals. Therapists are responsible for collecting fees, documentation, and choice of online platform to conduct sessions on. <strong>Coronavirus Online Therapy does not pay therapists. </strong>  You must confirm fees and payment methods with clients prior to rendering services, as you would with any private practice referral. <strong>By creating a profile, you will be subscribed to our administrative emails. Should you unsubscribe, we will need to delete your profile.</strong> 
           </Typography>
         </Container>
 		  <AuthForm title="Therapist Registration" onSubmit={doSignUp} error={error}>
