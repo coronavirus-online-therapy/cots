@@ -109,6 +109,7 @@ export const createAccessPoint = /* GraphQL */ `
       state
       owner
       license
+      verified
       provider {
         owner
         fullName
@@ -138,6 +139,7 @@ export const updateAccessPoint = /* GraphQL */ `
       state
       owner
       license
+      verified
       provider {
         owner
         fullName
@@ -167,6 +169,7 @@ export const deleteAccessPoint = /* GraphQL */ `
       state
       owner
       license
+      verified
       provider {
         owner
         fullName

@@ -1,0 +1,5 @@
+{
+  "httpMethod": "POST",
+  "path": "/deleteUser",
+  "body": "{\"username\": \"foo\"}"
+}

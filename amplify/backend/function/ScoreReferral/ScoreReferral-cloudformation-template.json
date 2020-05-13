@@ -2,6 +2,11 @@
 	"AWSTemplateFormatVersion": "2010-09-09",
 	"Description": "Lambda resource stack creation using Amplify CLI",
 	"Parameters": {
+		"CloudWatchRule": {
+			"Type": "String",
+			"Default": "NONE",
+			"Description": " Schedule Expression"
+		},
 		"env": {
 			"Type": "String"
 		},
@@ -77,7 +82,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-cots-preview-105259-deployment",
-					"S3Key": "amplify-builds/cotsReferralBackend-4c6c63544348586d4435-build.zip"
+					"S3Key": "amplify-builds/ScoreReferral-6c6b6d4c50796e686231-build.zip"
 				}
 			}
 		},
@@ -87,12 +92,12 @@
 				"RoleName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"cotsLambdaRole6ec10841",
+						"cotsLambdaRole489c2357",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"cotsLambdaRole6ec10841",
+									"cotsLambdaRole489c2357",
 									"-",
 									{
 										"Ref": "env"

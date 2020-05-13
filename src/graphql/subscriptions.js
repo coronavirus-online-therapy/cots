@@ -2,7 +2,7 @@
 // this is an auto generated file. This will be overwritten
 
 export const onCreateProvider = /* GraphQL */ `
-  subscription OnCreateProvider($owner: String!) {
+  subscription OnCreateProvider($owner: String) {
     onCreateProvider(owner: $owner) {
       owner
       fullName
@@ -32,7 +32,7 @@ export const onCreateProvider = /* GraphQL */ `
   }
 `;
 export const onUpdateProvider = /* GraphQL */ `
-  subscription OnUpdateProvider($owner: String!) {
+  subscription OnUpdateProvider($owner: String) {
     onUpdateProvider(owner: $owner) {
       owner
       fullName
@@ -62,7 +62,7 @@ export const onUpdateProvider = /* GraphQL */ `
   }
 `;
 export const onDeleteProvider = /* GraphQL */ `
-  subscription OnDeleteProvider($owner: String!) {
+  subscription OnDeleteProvider($owner: String) {
     onDeleteProvider(owner: $owner) {
       owner
       fullName
@@ -92,11 +92,12 @@ export const onDeleteProvider = /* GraphQL */ `
   }
 `;
 export const onCreateAccessPoint = /* GraphQL */ `
-  subscription OnCreateAccessPoint($owner: String!) {
+  subscription OnCreateAccessPoint($owner: String) {
     onCreateAccessPoint(owner: $owner) {
       state
       owner
       license
+      verified
       provider {
         owner
         fullName
@@ -118,11 +119,12 @@ export const onCreateAccessPoint = /* GraphQL */ `
   }
 `;
 export const onUpdateAccessPoint = /* GraphQL */ `
-  subscription OnUpdateAccessPoint($owner: String!) {
+  subscription OnUpdateAccessPoint($owner: String) {
     onUpdateAccessPoint(owner: $owner) {
       state
       owner
       license
+      verified
       provider {
         owner
         fullName
@@ -144,11 +146,12 @@ export const onUpdateAccessPoint = /* GraphQL */ `
   }
 `;
 export const onDeleteAccessPoint = /* GraphQL */ `
-  subscription OnDeleteAccessPoint($owner: String!) {
+  subscription OnDeleteAccessPoint($owner: String) {
     onDeleteAccessPoint(owner: $owner) {
       state
       owner
       license
+      verified
       provider {
         owner
         fullName

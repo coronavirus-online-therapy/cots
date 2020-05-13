@@ -1,10 +1,8 @@
 /* Amplify Params - DO NOT EDIT
-You can access the following resource attributes as environment variables from your Lambda function
-var environment = process.env.ENV
-var region = process.env.REGION
-var apiCotsGraphQLAPIIdOutput = process.env.API_COTS_GRAPHQLAPIIDOUTPUT
-var apiCotsGraphQLAPIEndpointOutput = process.env.API_COTS_GRAPHQLAPIENDPOINTOUTPUT
-
+	API_COTS_GRAPHQLAPIENDPOINTOUTPUT
+	API_COTS_GRAPHQLAPIIDOUTPUT
+	ENV
+	REGION
 Amplify Params - DO NOT EDIT */
 
 const http = require('http');
@@ -17,7 +15,7 @@ exports.handler = async (event, context) => {
 
     // fetch access points state
     const accessPoints = await getAccessPoints(event.arguments.query.state, 500);
-    const providers = accessPoints.map(ap => ap.provider).filter(p => p.active);
+    const providers = accessPoints.map(ap => ({...ap.provider,verified:ap.verified})).filter(p => p.active);
 
     // score & sort
     const results = providers.map(score(event.arguments.query));
@@ -32,16 +30,19 @@ exports.handler = async (event, context) => {
     // trim to length
     results.length = Math.min(results.length, event.arguments.limit);
 
-    console.log(results.map(r => {return {provider: r.provider.owner, score: r.score}}));
+    console.log(results.map(r => {return {provider: r.provider.owner, score: r.score, verified: r.verified}}));
     context.done(null, results);
 };
 
 function score(query) {
     return (provider) => {
         const score = scoreProvider(query, provider);
+        const verified = provider.verified;
+        delete provider.verified;
         return {
             provider,
             score,
+            verified,
         };
     };
 }
@@ -61,12 +62,22 @@ const scorers = {
         } 
         return p===q?1:-1;
     },
+    verified: (p, q) => {
+        if (q !== true) {
+            return 0;
+        }
+        if (p === true) {
+            return 1;
+        }
+        return -1;
+    },
     languages: scoreLists,
     acceptedInsurance: scoreLists,
     specializations: scoreLists,
     modalities: scoreLists,
 };
 const weights = {
+    verified: 100,
     rate: 50,
     languages: 10,
     gender: 5,
@@ -186,6 +197,7 @@ const accessPointsByStateWithProvider = /* GraphQL */ `
       nextToken: $nextToken
     ) {
       items {
+        verified
         provider {
           owner
           fullName

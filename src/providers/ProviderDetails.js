@@ -1,4 +1,4 @@
-import { Auth, API, graphqlOperation } from "aws-amplify";
+import { API, graphqlOperation } from "aws-amplify";
 import * as mutations from '../graphql/mutations';
 
 class ProviderDetails {
@@ -6,27 +6,18 @@ class ProviderDetails {
     Object.assign(this, props);
   }
 
-  async read() {
-    let user = await Auth.currentAuthenticatedUser();
-    if(user && user.getUsername()) {
-      let { data: {getProvider}} = await API.graphql(graphqlOperation(getProviderWithAccessPoints, {owner: user.getUsername()}));
-      Object.assign(this, getProvider);
-    } else {
-      throw new Error("No current authenticated user.");
-    }
+  async read(owner) {
+    let { data: {getProvider}} = await API.graphql(graphqlOperation(getProviderWithAccessPoints, {owner}));
+    Object.assign(this, getProvider);
+    return this;
   }
 
   async create() {
-    let user = await Auth.currentAuthenticatedUser();
-    this.owner = user.getUsername();
-    //this.active = true;
     this.active = (String(this.active) === 'true');
     this.rate = parseInt(this.rate);
     return await API.graphql(graphqlOperation(mutations.createProvider, {input: this}));
   }
   async update() {
-    let user = await Auth.currentAuthenticatedUser();
-    this.owner = user.getUsername();
     this.rate = parseInt(this.rate);
     this.active = (String(this.active) === 'true');
     this.accessPoints = undefined;
@@ -34,18 +25,21 @@ class ProviderDetails {
   }
 
   async addAccessPoint(accessPoint) {
-    let user = await Auth.currentAuthenticatedUser();
-    accessPoint.owner = user.getUsername();
+    if(accessPoint.owner === undefined) {
+      accessPoint.owner = this.owner
+    }
     return await API.graphql(graphqlOperation(mutations.createAccessPoint, {input: accessPoint}));
   }
   async updateAccessPoint(accessPoint) {
-    let user = await Auth.currentAuthenticatedUser();
-    accessPoint.owner = user.getUsername();
+    if(accessPoint.owner === undefined) {
+      accessPoint.owner = this.owner
+    }
     return await API.graphql(graphqlOperation(mutations.updateAccessPoint, {input: accessPoint}));
   }
   async deleteAccessPoint(accessPoint) {
-    let user = await Auth.currentAuthenticatedUser();
-    accessPoint.owner = user.getUsername();
+    if(accessPoint.owner === undefined) {
+      accessPoint.owner = this.owner
+    }
     return await API.graphql(graphqlOperation(mutations.deleteAccessPoint, {input: accessPoint}));
   }
 
@@ -86,6 +80,7 @@ const getProviderWithAccessPoints = /* GraphQL */ `
         items {
           state
           license
+          verified
         }
       }
     }

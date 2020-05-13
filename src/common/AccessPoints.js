@@ -6,7 +6,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import States from './States';
 
 function AccessPoints(props) {
-  const [value, setValue] = useState(props.defaultValue.map(p => {return {licState: p.state, licNum: p.license}}));
+  const [value, setValue] = useState(props.defaultValue.map(p => {return {licState: p.state, licNum: p.license, licVerified: p.verified === true?true:false}}));
   const [error, setError] = useState("");
 
   const validate = (data) => {
@@ -31,7 +31,8 @@ function AccessPoints(props) {
       if(props.onAdd) {
         props.onAdd({
             state: newData.licState,
-            license: newData.licNum
+            license: newData.licNum,
+            verified: props.statusEditable?newData.licVerified:undefined,
         });
       }
   };
@@ -45,7 +46,8 @@ function AccessPoints(props) {
         if(props.onUpdate) {
             props.onUpdate({
                 state: newData.licState,
-                license: newData.licNum
+                license: newData.licNum,
+                verified: props.statusEditable?newData.licVerified:undefined,
             });
         }
       }
@@ -72,13 +74,18 @@ function AccessPoints(props) {
             disabled={props.disabled}
             columns={[
                 { title: "State", field: "licState", lookup: stateLookup, editable: 'onAdd' },
-                { title: "License #", field: "licNum" }
+                { title: "License #", field: "licNum" },
+                { 
+                  title: "Verified?", 
+                  field: "licVerified", 
+                  editable: props.statusEditable?'always':'never', 
+                }
             ]}
             data={value}
             options={{
                 paging: false,
                 search: false,
-                actionsColumnIndex: 2
+                actionsColumnIndex: 3
             }}
             editable={props.disabled?{}:{
                 onRowAdd: handleAdd,
@@ -97,7 +104,8 @@ AccessPoints.defaultProps = {
     label: 'Licensed States',
     variant: 'outlined',
     disabled: false,
-    defaultValue: []
+    defaultValue: [],
+    statusEditable: false,
 }
 
 export default AccessPoints;

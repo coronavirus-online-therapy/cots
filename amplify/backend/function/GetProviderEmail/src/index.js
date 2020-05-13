@@ -1,9 +1,7 @@
 /* Amplify Params - DO NOT EDIT
-You can access the following resource attributes as environment variables from your Lambda function
-var environment = process.env.ENV
-var region = process.env.REGION
-var authCotsUserPoolId = process.env.AUTH_COTS_USERPOOLID
-
+	AUTH_COTS_USERPOOLID
+	ENV
+	REGION
 Amplify Params - DO NOT EDIT */
 
 const AWS = require('aws-sdk');

@@ -49,11 +49,12 @@
                 "cots": {}
             },
             "function": {
-                "cotsProviderBackend": {},
-                "cotsReferralBackend": {},
                 "cotsPostConfirmation": {
                     "GROUP": "providers"
-                }
+                },
+                "AdminQueries7e38c20f": {},
+                "GetProviderEmail": {},
+                "ScoreReferral": {}
             },
             "hosting": {
                 "amplifyhosting": {
