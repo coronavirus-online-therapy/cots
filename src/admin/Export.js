@@ -33,7 +33,7 @@ async function getAllUsers(groupName) {
         queryStringParameters: {
           groupname: 'providers',
           limit,
-          ...(nextToken && {nexttoken: nextToken}),
+          ...(nextToken && {token: nextToken}),
         },
         headers: {
           'Content-Type' : 'application/json',
