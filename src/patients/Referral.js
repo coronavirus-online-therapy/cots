@@ -14,7 +14,7 @@ class Referral {
         q[keypair[0]] = keypair[1];
       }
       return q;
-    }, {});
+    }, {verified: true});
     try {
       const {data: {referrals}} = await API.graphql({
         query: referralsQuery,

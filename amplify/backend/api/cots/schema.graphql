@@ -90,4 +90,5 @@ input ReferralQuery
     specializations: [String]
     modalities: [String]
     languages: [String]
+    verified: Boolean
 }

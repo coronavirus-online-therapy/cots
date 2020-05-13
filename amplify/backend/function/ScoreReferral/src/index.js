@@ -62,12 +62,22 @@ const scorers = {
         } 
         return p===q?1:-1;
     },
+    verified: (p, q) => {
+        if (q !== true) {
+            return 0;
+        }
+        if (p === true) {
+            return 1;
+        }
+        return -1;
+    },
     languages: scoreLists,
     acceptedInsurance: scoreLists,
     specializations: scoreLists,
     modalities: scoreLists,
 };
 const weights = {
+    verified: 100,
     rate: 50,
     languages: 10,
     gender: 5,
