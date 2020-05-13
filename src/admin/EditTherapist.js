@@ -46,6 +46,7 @@ function EditTherapist() {
     }
 
   };
+
   return (
     <Grid container spacing={3} justify="center">
       <Grid item xs={12}>
@@ -62,7 +63,7 @@ function EditTherapist() {
       </Grid>
       {user && 
         <Grid item xs={12}>
-          <UserInfo user={user}/>
+          <UserInfo user={user} onChange={doLookup}/>
         </Grid>
       }
       {user && 

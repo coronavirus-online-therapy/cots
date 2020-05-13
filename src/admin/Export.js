@@ -3,7 +3,6 @@ import { CSVDownload } from "react-csv";
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { Auth, API } from 'aws-amplify';
-import awsconfig from '../aws-exports';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -33,7 +32,6 @@ async function getAllUsers(groupName) {
       {
         queryStringParameters: {
           groupname: 'providers',
-          userpoolid: awsconfig.aws_user_pools_id,
           limit,
           ...(nextToken && {nexttoken: nextToken}),
         },

@@ -231,6 +231,24 @@ async function signUserOut(username) {
   }
 }
 
+async function deleteUser(username) {
+  const params = {
+    UserPoolId: userPoolId,
+    Username: username,
+  };
+
+  try {
+    const result = await cognitoIdentityServiceProvider.adminDeleteUser(params).promise();
+    console.log(`Deleted ${username}`);
+    return {
+      message: `Deleted ${username}`,
+    };
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
 module.exports = {
   addUserToGroup,
   removeUserFromGroup,
@@ -242,4 +260,5 @@ module.exports = {
   listGroupsForUser,
   listUsersInGroup,
   signUserOut,
+  deleteUser,
 };

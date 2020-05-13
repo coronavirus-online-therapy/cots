@@ -68,7 +68,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-cots-preview-105259-deployment",
-					"S3Key": "amplify-builds/AdminQueries7e38c20f-674e73526c75544b4963-build.zip"
+					"S3Key": "amplify-builds/AdminQueries7e38c20f-34374147357174796634-build.zip"
 				}
 			}
 		},
@@ -156,6 +156,7 @@
 								"cognito-idp:ListUsersInGroup",
 								"cognito-idp:AdminUserGlobalSignOut",
 								"cognito-idp:AdminEnableUser",
+								"cognito-idp:AdminDeleteUser",
 								"cognito-idp:AdminDisableUser",
 								"cognito-idp:AdminRemoveUserFromGroup",
 								"cognito-idp:AdminAddUserToGroup",
