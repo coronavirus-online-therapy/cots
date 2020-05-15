@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import Alert from '@material-ui/lab/Alert';
 import ProviderProfile from '../providers/Profile';
 import UserInfo from './UserInfo';
@@ -13,6 +14,7 @@ function EditTherapist() {
   const [error, setError] = React.useState('');
   const [user, setUser] = React.useState();
   const [email, setEmail] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
   };
@@ -25,6 +27,7 @@ function EditTherapist() {
   const doLookup = async () => {
     setError('');
     setUser(undefined);
+    setLoading(true);
 
     try {
       const user = await API.get('AdminQueries', '/getUser', 
@@ -43,7 +46,8 @@ function EditTherapist() {
       } else {
         setError(e.message);
       }
-    }
+    } 
+    setLoading(false);
 
   };
 
@@ -57,6 +61,7 @@ function EditTherapist() {
       <Grid item xs={6}>
         <TextField fullWidth label="Email"  variant="outlined" onChange={handleEmailChange} onKeyPress={handleEmailKeyPress} defaultValue={email}/>
         {error && <Alert severity="error" variant="filled">{error}</Alert>}
+        {loading && <LinearProgress/>}
       </Grid>
       <Grid item xs={3}>
         <Button variant="contained" onClick={doLookup}>Lookup</Button>

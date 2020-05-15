@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
@@ -8,14 +7,12 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import EditIcon from '@material-ui/icons/Edit';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Alert from '@material-ui/lab/Alert';
-import LinearProgress from '@material-ui/core/LinearProgress';
 
 import { makeStyles } from '@material-ui/core/styles';
 import ReactGA from 'react-ga';
@@ -32,6 +29,7 @@ import LanguagesInput from '../common/LanguagesInput';
 import LicenseTypeInput from '../common/LicenseTypeInput';
 import ErrorSnackbar from '../common/ErrorSnackbar';
 import ProviderDetails from './ProviderDetails';
+import { LinearProgress } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -48,17 +46,14 @@ const useStyles = makeStyles(theme => ({
 
 function Profile(props) {
   const classes = useStyles();
-  const [mode, setMode] = useState(undefined);
-  const [submit, setSubmit] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [providerDetails, setProviderDetails] = useState(new ProviderDetails());
+  const [providerDetails, setProviderDetails] = useState();
   const [accessPointOps, setAccessPointOps] = useState([]);
   const [confirmMessage, setConfirmMessage] = useState('');
 
   useEffect(() => {
     const doLoad = async (providerId) => {
-      setMode(undefined);
       if(providerId === undefined || providerId === null) {
         return;
       }
@@ -73,34 +68,19 @@ function Profile(props) {
     };
 
     doLoad(props.providerId);
-  }, [props.providerId, setProviderDetails, setMode]);
+  }, [props.providerId, setProviderDetails]);
 
   useEffect(() => {
-    if(loading) {
-      setMode(undefined);
-      return; 
-    }
-    setMode(mode => {
-      if(mode !== undefined) {
-        return mode;
-      }
-      return providerDetails.owner?'VIEW':'CREATE';
-    });
-  }, [loading, providerDetails, setMode]);
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    setSubmit(true);
-  };
-
-  useEffect(() => {
-    if(!submit) {
+    if(providerDetails === undefined) {
       return;
     }
-    setError("");
-    setSubmit(false);
-    setLoading(true);
+    if(props.onLoad) {
+      props.onLoad(providerDetails);
+    }
+  }, [props, providerDetails]);
 
+  const saveAccessPoints = async () => {
+    // validation
     const apCount = accessPointOps.reduce((apCount, ap) => {
         if(ap.operation === 'ADD') {
           return apCount + 1;
@@ -115,57 +95,66 @@ function Profile(props) {
       return;
     }
 
-    const doAccessPoints = async () => {
-      try {
-        for (let ap of accessPointOps) {
-          if(ap.operation === 'ADD') {
-            await providerDetails.addAccessPoint(ap.accessPoint);
-          } else if(ap.operation === 'UPDATE') {
-            await providerDetails.updateAccessPoint(ap.accessPoint);
-          } else if(ap.operation === 'DELETE') {
-            await providerDetails.deleteAccessPoint(ap.accessPoint);
-          }
+    // apply each accesspoint operation
+    try {
+      for (let ap of accessPointOps) {
+        if(ap.operation === 'ADD') {
+          await providerDetails.addAccessPoint(ap.accessPoint);
+        } else if(ap.operation === 'UPDATE') {
+          await providerDetails.updateAccessPoint(ap.accessPoint);
+        } else if(ap.operation === 'DELETE') {
+          await providerDetails.deleteAccessPoint(ap.accessPoint);
         }
-      } finally {
-        setAccessPointOps([]);
       }
+    } finally {
+      setAccessPointOps([]);
+    }
+  }
+
+  const saveProvider = async () => {
+    let response;
+    if(props.viewMode === true) {
+      return;
     }
 
-    const doSubmit = async () => {
-      try {
-        let response;
-        if(mode === 'CREATE') {
-         ReactGA.event({category: 'Therapist', action: 'Create Profile'});
-         providerDetails.owner = props.providerId;
-         response = await providerDetails.create();
-         await doAccessPoints();
-         setConfirmMessage('Thank you. Your profile is now live');
-        } else if(mode === 'UPDATE') {
-         ReactGA.event({category: 'Therapist', action: 'Update Profile'});
-         response = await providerDetails.update();
-         await doAccessPoints();
-         setConfirmMessage('Thank you. Your profile has been updated.');
-        }
-        
-        if(props.onChange) {
-          props.onChange(response);
-        }
-        setMode('VIEW');
-      } catch(err) {
-        console.error(err);
-        if(err.errors) {
-          const msg = err.errors.map(e => e.message);
-          setError(msg);
-          ReactGA.exception({description: msg})
-        } else {
-          setError(err);
-        }
-      }
-      setLoading(false);
-    };
+    if(providerDetails.owner === undefined) {
+      ReactGA.event({category: 'Therapist', action: 'Create Profile'});
+      providerDetails.owner = props.providerId;
+      response = await providerDetails.create();
+      setConfirmMessage('Thank you. Your profile is now live');
+    } else {
+      ReactGA.event({category: 'Therapist', action: 'Update Profile'});
+      response = await providerDetails.update();
+      setConfirmMessage('Thank you. Your profile has been updated.');
+    }
+    return response;
+  }
 
-    doSubmit();
-  }, [submit, providerDetails, props, accessPointOps, mode]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    setError("");
+    setLoading(true);
+
+    try {
+      const response = await saveProvider();
+      await saveAccessPoints();
+      if(props.onChange) {
+        props.onChange(response);
+      }
+    } catch(err) {
+      console.error(err);
+      if(err.errors) {
+        const msg = err.errors.map(e => e.message);
+        setError(msg);
+        ReactGA.exception({description: msg})
+      } else {
+        setError(err);
+      }
+    }
+    setLoading(false);
+  };
 
   const handleChange = field => {
     return (event, value, reason) => {
@@ -209,19 +198,9 @@ function Profile(props) {
     }]);
   }
 
-  const navigateEdit = () => {
-    setSubmit(false);
-    setConfirmMessage('');
-    setMode('UPDATE');
-  }
-
-  if(mode === undefined) {
-    if(loading) {
-      return (<LinearProgress/>)
-    } else {
-      return null;
-    }
-  }
+  if(providerDetails === undefined) {
+    return (<LinearProgress/>);
+  } 
 
   return (
     <div className={classes.root}>
@@ -230,116 +209,105 @@ function Profile(props) {
           <form className={classes.root} autoComplete="off" onSubmit={handleSubmit}>
             <div>
               <Grid container spacing={3} justify="center">
-                <Grid item xs={7}>
-                  <Typography variant="h5" component="h5" align="right">
-                    Therapist Profile
-                  </Typography>
-                </Grid>
-                <Grid item xs={3}> 
-                    {mode === 'VIEW' && 
-                      <div>
-                      <Button variant="contained" color="primary" onClick={navigateEdit}><EditIcon/></Button>
-                      <div>
-                      <Typography>
-                        Edit
-                      </Typography>
-                      </div>
-                      </div>
+                <Grid item xs={10} align="left">
+                    {!props.viewMode && providerDetails.owner === undefined &&
+                        <Alert severity="warning">If you aren’t yet licensed for independent clinical practice, please stop and have the practice owner you work for complete a therapist profile instead.</Alert>
                     }
                 </Grid>
                 <Grid item xs={8} align="left">
                     <TextField fullWidth required id="full-name" label="Full Name"  variant="outlined" 
-                               disabled={mode === 'VIEW'}
+                               disabled={props.viewMode}
                                defaultValue={providerDetails.fullName} 
                                onChange={handleChange('fullName')}/>
                 </Grid>
                 <Grid item xs={8} align="left">
                     <LicenseTypeInput onChange={handleChange('licenseType')}
-                                      disabled={mode === 'VIEW'}
+                                      disabled={props.viewMode}
                                       defaultValue={providerDetails.licenseType} 
                     />
                 </Grid>
                 <Grid item xs={8} align="left">
                     <AccessPoints onAdd={handleAccessPointAdd} onUpdate={handleAccessPointUpdate} onDelete={handleAccessPointDelete}
-                                      disabled={mode === 'VIEW'}
+                                      disabled={props.viewMode}
                                       statusEditable={props.userIsAdmin}
                                       defaultValue={providerDetails.getAccessPoints()} 
                     />
                 </Grid>
                 <Grid item xs={8} align="left">
                     <TextField fullWidth required id="liability-policy" label="Liability Policy #"  variant="outlined" 
-                               disabled={mode === 'VIEW'}
+                               disabled={props.viewMode}
                                defaultValue={providerDetails.liabilityPolicy} 
                                onChange={handleChange('liabilityPolicy')}/>
                 </Grid>
                 <Grid item xs={8} align="left">
                     <TextField fullWidth id="phone" label="Office Phone #"  variant="outlined" 
-                               disabled={mode === 'VIEW'}
+                               disabled={props.viewMode}
                                defaultValue={providerDetails.phone} 
                                onChange={handleChange('phone')}/>
                 </Grid>
                 <Grid item xs={8} align="left">
                     <TextField fullWidth id="url" label="Website"  variant="outlined"
-                               disabled={mode === 'VIEW'}
+                               disabled={props.viewMode}
                                defaultValue={providerDetails.url} 
                                onChange={handleChange('url')}/>
                 </Grid>
                 <Grid item xs={8} align="left">
                   <FormControlLabel label="Available for referrals" control={
                     <Checkbox 
-                        disabled={mode === 'VIEW'}
-                        checked={providerDetails.active}
+                        disabled={props.viewMode}
+                        checked={providerDetails.active===true}
                         onClick={handleCheck}
                         name="active"
                         color="primary"/>
                     } />
                 </Grid>
                 <Grid item xs={8} align="left">
-                  <RateSelect disabled={mode === 'VIEW'}
+                  <RateSelect disabled={props.viewMode}
                               label='I agree to offer each accepted referral a minimum of four sessions.  The lowest fee I can accept at this time is:'
                               defaultValue={providerDetails.rate} 
                               onChange={handleChange('rate')}/>
                 </Grid>
                 <Grid item xs={8} align="left">
                     <InsuranceInput max="0" 
-                                    disabled={mode === 'VIEW'}
+                                    disabled={props.viewMode}
                                     defaultValue={providerDetails.acceptedInsurance} 
                                     onChange={handleChange('acceptedInsurance')}/>
                 </Grid>
                 <Grid item xs={8} align="left">
-                  <GenderSelect disabled={mode === 'VIEW'}
+                  <GenderSelect disabled={props.viewMode}
                                 defaultValue={providerDetails.gender} 
                                 onChange={handleChange('gender')}/>
                 </Grid>
                 <Grid item xs={8} align="left">
                     <SpecializationInput max="3" 
-                                         disabled={mode === 'VIEW'}
+                                         disabled={props.viewMode}
                                          defaultValue={providerDetails.specializations} 
                                          onChange={handleChange('specializations')}/>
                 </Grid>
                 <Grid item xs={8} align="left">
                     <ModalityInput max="3" 
-                                   disabled={mode === 'VIEW'}
+                                   disabled={props.viewMode}
                                    defaultValue={providerDetails.modalities} 
                                    onChange={handleChange('modalities')}/>
                 </Grid>
                 <Grid item xs={8} align="left">
                     <LanguagesInput max="3" onChange={handleChange('languages')} 
-                                    disabled={mode === 'VIEW'}
+                                    disabled={props.viewMode}
                                     defaultValue={providerDetails.languages} 
                     />
                 </Grid>
                 <Grid item xs={8} align="left">
-                  {mode === 'CREATE' && 
+                  {!props.viewMode && providerDetails.owner === undefined &&
                     <FormControlLabel control={
-                      <Checkbox color="primary" required={true}/>} label="&quot;I attest that I am licensed, insured, and authorized for clinical private practice by my state board(s).&quot;<br><br> If you aren’t yet licensed for independent clinical practice, please stop and have the practice owner you work for complete a therapist profile instead."/>
+                      <Checkbox color="primary" required={true}/>} label="I attest that I am licensed, insured, and authorized for clinical private practice by my state board(s)"/>
                   }
                 </Grid>
                 <Grid item xs={8} align="left">
-                    {mode === 'CREATE' && <AcceptTerms required={true} onChange={handleChange('tosAcceptedAt')} contract={TermsOfService}/>}
+                    {!props.viewMode && providerDetails.owner === undefined &&
+                      <AcceptTerms required={true} onChange={handleChange('tosAcceptedAt')} contract={TermsOfService}/>}
                 </Grid>
                 <Grid item xs={6} align="center">
-                  {mode !== 'VIEW' && <Button variant="contained" color="primary" type="submit">Submit</Button>}
+                  {!props.viewMode && <Button variant="contained" color="primary" type="submit">Submit</Button>}
                 </Grid>
               </Grid>
             </div>

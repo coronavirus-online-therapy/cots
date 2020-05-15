@@ -43,7 +43,7 @@ function GenderSelect(props) {
             <Select
                 native
                 disabled={props.disabled}
-                value={gender}
+                value={gender===null?undefined:gender}
                 required={props.required}
                 label={props.label}
                 onChange={handleStateChange}

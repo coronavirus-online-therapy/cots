@@ -20,8 +20,8 @@ class ProviderDetails {
   async update() {
     this.rate = parseInt(this.rate);
     this.active = (String(this.active) === 'true');
-    this.accessPoints = undefined;
-    return await API.graphql(graphqlOperation(mutations.updateProvider, {input: this}));
+    const provider = {...this, accessPoints: undefined};
+    return await API.graphql(graphqlOperation(mutations.updateProvider, {input: provider}));
   }
 
   async addAccessPoint(accessPoint) {
@@ -34,7 +34,6 @@ class ProviderDetails {
     if(accessPoint.owner === undefined) {
       accessPoint.owner = this.owner
     }
-    console.log(accessPoint);
     return await API.graphql(graphqlOperation(updateAccessPoint, {input: accessPoint}));
   }
   async deleteAccessPoint(accessPoint) {

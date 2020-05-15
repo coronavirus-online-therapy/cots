@@ -88,8 +88,8 @@ function AccessPoints(props) {
                 disabled={props.disabled}
                 columns={[
                     { title: "State", field: "licState", lookup: stateLookup, editable: 'onAdd' },
-                    { title: "License #", field: "licNum" },
-                    { title: "License Expiration", 
+                    { title: "License", field: "licNum" },
+                    { title: "Expiration", 
                       field: "licExpiration", 
                       width: 300,
                       editComponent: props => {
