@@ -15,7 +15,8 @@ import States from './States';
 
 function dateCallback(d, cb) {
     try {
-        cb(d.toISOString().slice(0, 10));
+        const v = new Date(d.getTime() - (d.getTimezoneOffset() * 60000)).toISOString().slice(0,10);
+        cb(v);
     } catch (e) {
         // don't callback for invalid date
     }
