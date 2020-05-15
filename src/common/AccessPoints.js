@@ -3,10 +3,27 @@ import React, {useState} from 'react';
 import MaterialTable from "material-table";
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import Checkbox from '@material-ui/core/Checkbox';
+import VerifiedIcon from '@material-ui/icons/VerifiedUser';
+import UnverifiedIcon from '@material-ui/icons/NotInterested';
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
+import Tooltip from '@material-ui/core/Tooltip';
+import { red, green } from '@material-ui/core/colors';
+
 import States from './States';
 
+function dateCallback(d, cb) {
+    try {
+        const v = new Date(d.getTime() - (d.getTimezoneOffset() * 60000)).toISOString().slice(0,10);
+        cb(v);
+    } catch (e) {
+        // don't callback for invalid date
+    }
+}
+
 function AccessPoints(props) {
-  const [value, setValue] = useState(props.defaultValue.map(p => {return {licState: p.state, licNum: p.license, licVerified: p.verified === true?true:false}}));
+  const [value, setValue] = useState(props.defaultValue.map(p => {return {licState: p.state, licNum: p.license, licVerified: p.verified === true, licExpiration: p.licenseExpiration}}));
   const [error, setError] = useState("");
 
   const validate = (data) => {
@@ -16,6 +33,9 @@ function AccessPoints(props) {
       }
       if(!data.licNum) {
           err.push("License # is required.");
+      }
+      if(!data.licExpiration) {
+          err.push("License Expiration is required.");
       }
       if(err.length > 0) {
           setError(err);
@@ -32,6 +52,7 @@ function AccessPoints(props) {
         props.onAdd({
             state: newData.licState,
             license: newData.licNum,
+            licenseExpiration: newData.licExpiration,
             verified: props.statusEditable?newData.licVerified:undefined,
         });
       }
@@ -47,6 +68,7 @@ function AccessPoints(props) {
             props.onUpdate({
                 state: newData.licState,
                 license: newData.licNum,
+                licenseExpiration: newData.licExpiration,
                 verified: props.statusEditable?newData.licVerified:undefined,
             });
         }
@@ -70,33 +92,58 @@ function AccessPoints(props) {
 
   return( 
     <FormControl fullWidth>
-        <MaterialTable
-            disabled={props.disabled}
-            columns={[
-                { title: "State", field: "licState", lookup: stateLookup, editable: 'onAdd' },
-                { title: "License #", field: "licNum" },
-                { 
-                  title: "Verified?", 
-                  field: "licVerified", 
-                  editable: props.statusEditable?'always':'never', 
-                }
-            ]}
-            data={value}
-            options={{
-                paging: false,
-                search: false,
-                actionsColumnIndex: 3
-            }}
-            editable={props.disabled?{}:{
-                onRowAdd: handleAdd,
-                onRowUpdate: handleUpdate,
-                onRowDelete: handleDelete,
-            }}
-            title={props.label}
-        />
-        <FormHelperText error>{error}</FormHelperText>
-    </FormControl>
-    );
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <MaterialTable
+                disabled={props.disabled}
+                columns={[
+                    { title: "State", field: "licState", lookup: stateLookup, editable: 'onAdd' },
+                    { title: "License", field: "licNum" },
+                    { title: "Expiration", 
+                      field: "licExpiration", 
+                      width: 300,
+                      editComponent: props => {
+                        return (<KeyboardDatePicker
+                                    disableToolbar
+                                    autoOk
+                                    variant="inline"
+                                    format="yyyy-MM-dd"
+                                    margin="normal"
+                                    value={props.value===undefined?null:props.value}
+                                    onChange={e => dateCallback(e, props.onChange)}
+                                    label=""
+                                />);
+                      },
+                    },
+                    { 
+                        title: "Status", 
+                        field: "licVerified", 
+                        editComponent: props => (<Checkbox checked={props.value===true} onClick={(e) => { props.onChange(e.target.checked) }}/>),
+                        render: props => {
+                            if(props !== undefined && props.licVerified===true) {
+                                return (<Tooltip title="Verified"><VerifiedIcon style={{ color: green[500] }}/></Tooltip>);
+                            } else {
+                                return (<Tooltip title="Unverified"><UnverifiedIcon style={{ color: red[500] }}/></Tooltip>);
+                            }
+                        },
+                        editable: props.statusEditable?'always':'never', 
+                    }
+                ]}
+                data={value}
+                options={{
+                    paging: false,
+                    search: false,
+                    actionsColumnIndex: 4
+                }}
+                editable={props.disabled?{}:{
+                    onRowAdd: handleAdd,
+                    onRowUpdate: handleUpdate,
+                    onRowDelete: handleDelete,
+                }}
+                title={props.label}
+            />
+            <FormHelperText error>{error}</FormHelperText>
+        </MuiPickersUtilsProvider>
+    </FormControl>);
 }
 
 AccessPoints.defaultProps = {

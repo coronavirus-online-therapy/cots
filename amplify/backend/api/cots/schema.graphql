@@ -67,6 +67,7 @@ type AccessPoint
     owner: String!
     provider: Provider @connection(fields: ["owner"])
     license: String!
+    licenseExpiration: AWSDate
     verified: Boolean @auth(rules: [{allow: groups, operations:[create, update, delete], groups: ["admin"]}])
 }
 

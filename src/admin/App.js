@@ -3,6 +3,7 @@ import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import Alert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
+import { Auth } from "aws-amplify";
 
 import EditTherapist from './EditTherapist';
 import Navigation from './Navigation';
@@ -14,6 +15,7 @@ import { ConfirmSignIn,
          VerifyContact, 
          Authenticator } from 'aws-amplify-react';
 import { datadogLogs } from '@datadog/browser-logs'
+import { Button } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -32,11 +34,14 @@ const useStyles = makeStyles(theme => ({
 
 function Denied() {
   const classes = useStyles();
+  const doSignOut = () => {
+    Auth.signOut().catch(err => console.error(err));
+  };
   return (
     <div className={classes.root}>
       <Container maxWidth="md">
         <Paper style={{ margin: 16}}>
-          <Alert severity="error" variant="filled">Access Denied!</Alert>
+          <Alert severity="error" variant="filled">Access Denied! <Button onClick={doSignOut} variant="contained">Sign Out</Button></Alert>
         </Paper>
       </Container>
     </div>

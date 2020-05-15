@@ -97,6 +97,7 @@ export const onCreateAccessPoint = /* GraphQL */ `
       state
       owner
       license
+      licenseExpiration
       verified
       provider {
         owner
@@ -124,6 +125,7 @@ export const onUpdateAccessPoint = /* GraphQL */ `
       state
       owner
       license
+      licenseExpiration
       verified
       provider {
         owner
@@ -151,6 +153,7 @@ export const onDeleteAccessPoint = /* GraphQL */ `
       state
       owner
       license
+      licenseExpiration
       verified
       provider {
         owner

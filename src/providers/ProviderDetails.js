@@ -20,27 +20,27 @@ class ProviderDetails {
   async update() {
     this.rate = parseInt(this.rate);
     this.active = (String(this.active) === 'true');
-    this.accessPoints = undefined;
-    return await API.graphql(graphqlOperation(mutations.updateProvider, {input: this}));
+    const provider = {...this, accessPoints: undefined, email: undefined};
+    return await API.graphql(graphqlOperation(updateProvider, {input: provider}));
   }
 
   async addAccessPoint(accessPoint) {
     if(accessPoint.owner === undefined) {
       accessPoint.owner = this.owner
     }
-    return await API.graphql(graphqlOperation(mutations.createAccessPoint, {input: accessPoint}));
+    return await API.graphql(graphqlOperation(createAccessPoint, {input: accessPoint}));
   }
   async updateAccessPoint(accessPoint) {
     if(accessPoint.owner === undefined) {
       accessPoint.owner = this.owner
     }
-    return await API.graphql(graphqlOperation(mutations.updateAccessPoint, {input: accessPoint}));
+    return await API.graphql(graphqlOperation(updateAccessPoint, {input: accessPoint}));
   }
   async deleteAccessPoint(accessPoint) {
     if(accessPoint.owner === undefined) {
       accessPoint.owner = this.owner
     }
-    return await API.graphql(graphqlOperation(mutations.deleteAccessPoint, {input: accessPoint}));
+    return await API.graphql(graphqlOperation(deleteAccessPoint, {input: accessPoint}));
   }
 
   getAccessPoints() {
@@ -80,9 +80,55 @@ const getProviderWithAccessPoints = /* GraphQL */ `
         items {
           state
           license
+          licenseExpiration
           verified
         }
       }
+    }
+  }
+`;
+export const updateProvider = /* GraphQL */ `
+  mutation UpdateProvider(
+    $input: UpdateProviderInput!
+    $condition: ModelProviderConditionInput
+  ) {
+    updateProvider(input: $input, condition: $condition) {
+      owner
+    }
+  }
+`;
+
+export const updateAccessPoint = /* GraphQL */ `
+  mutation UpdateAccessPoint(
+    $input: UpdateAccessPointInput!
+    $condition: ModelAccessPointConditionInput
+  ) {
+    updateAccessPoint(input: $input, condition: $condition) {
+      state
+      owner
+    }
+  }
+`;
+
+export const createAccessPoint = /* GraphQL */ `
+  mutation CreateAccessPoint(
+    $input: CreateAccessPointInput!
+    $condition: ModelAccessPointConditionInput
+  ) {
+    createAccessPoint(input: $input, condition: $condition) {
+      state
+      owner
+    }
+  }
+`;
+export const deleteAccessPoint = /* GraphQL */ `
+  mutation DeleteAccessPoint(
+    $input: DeleteAccessPointInput!
+    $condition: ModelAccessPointConditionInput
+  ) {
+    deleteAccessPoint(input: $input, condition: $condition) {
+      state
+      owner
     }
   }
 `;
