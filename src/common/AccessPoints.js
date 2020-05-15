@@ -13,6 +13,14 @@ import { red, green } from '@material-ui/core/colors';
 
 import States from './States';
 
+function dateCallback(d, cb) {
+    try {
+        cb(d.toISOString().slice(0, 10));
+    } catch (e) {
+        // don't callback for invalid date
+    }
+}
+
 function AccessPoints(props) {
   const [value, setValue] = useState(props.defaultValue.map(p => {return {licState: p.state, licNum: p.license, licVerified: p.verified === true, licExpiration: p.licenseExpiration}}));
   const [error, setError] = useState("");
@@ -100,7 +108,7 @@ function AccessPoints(props) {
                                     format="yyyy-MM-dd"
                                     margin="normal"
                                     value={props.value===undefined?null:props.value}
-                                    onChange={e => props.onChange(e.toISOString().slice(0, 10))}
+                                    onChange={e => dateCallback(e, props.onChange)}
                                     label=""
                                 />);
                       },
