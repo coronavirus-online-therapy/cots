@@ -20,8 +20,8 @@ class ProviderDetails {
   async update() {
     this.rate = parseInt(this.rate);
     this.active = (String(this.active) === 'true');
-    const provider = {...this, accessPoints: undefined};
-    return await API.graphql(graphqlOperation(mutations.updateProvider, {input: provider}));
+    const provider = {...this, accessPoints: undefined, email: undefined};
+    return await API.graphql(graphqlOperation(updateProvider, {input: provider}));
   }
 
   async addAccessPoint(accessPoint) {
@@ -84,6 +84,16 @@ const getProviderWithAccessPoints = /* GraphQL */ `
           verified
         }
       }
+    }
+  }
+`;
+export const updateProvider = /* GraphQL */ `
+  mutation UpdateProvider(
+    $input: UpdateProviderInput!
+    $condition: ModelProviderConditionInput
+  ) {
+    updateProvider(input: $input, condition: $condition) {
+      owner
     }
   }
 `;

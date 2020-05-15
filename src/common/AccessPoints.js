@@ -97,12 +97,10 @@ function AccessPoints(props) {
                                     disableToolbar
                                     autoOk
                                     variant="inline"
-                                    format="MM/dd/yyyy"
+                                    format="yyyy-MM-dd"
                                     margin="normal"
                                     value={props.value===undefined?null:props.value}
-                                    onChange={(e) => { 
-                                        props.onChange(e.toLocaleDateString())}
-                                    }
+                                    onChange={e => props.onChange(e.toISOString().slice(0, 10))}
                                     label=""
                                 />);
                       },
