@@ -98,6 +98,7 @@ export const getAccessPoint = /* GraphQL */ `
       state
       owner
       license
+      licenseExpiration
       verified
       provider {
         owner
@@ -140,6 +141,7 @@ export const listAccessPoints = /* GraphQL */ `
         state
         owner
         license
+        licenseExpiration
         verified
       }
       nextToken
@@ -165,6 +167,7 @@ export const accessPointsByState = /* GraphQL */ `
         state
         owner
         license
+        licenseExpiration
         verified
       }
       nextToken

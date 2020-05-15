@@ -145,7 +145,6 @@ function Profile(props) {
          response = await providerDetails.update();
          await doAccessPoints();
          setConfirmMessage('Thank you. Your profile has been updated.');
-         window.location.reload(false);
         }
         
         if(props.onChange) {

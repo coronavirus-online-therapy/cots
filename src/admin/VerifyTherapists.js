@@ -53,6 +53,7 @@ class UnverifiedAccessPointsPager {
         owner: item.owner,
         state: item.state,
         license: item.license,
+        licenseExpiration: item.licenseExpiration,
       }));
       found += data.length;
       this.data.push(...data);
@@ -103,12 +104,16 @@ function VerifyTherapists() {
   const verifyAccessPoint = async (event, rowData) => {
     setLoading(true);
     for (let row of rowData) {
-      const resp = await API.graphql(graphqlOperation(verifyAccessPointMutation, {owner: row.owner, state: row.state}));
-      console.log(resp);
+      await API.graphql(graphqlOperation(verifyAccessPointMutation, {owner: row.owner, state: row.state}));
     }
     setLoading(false);
     setPager(new UnverifiedAccessPointsPager(state));
   }
+
+  const reload = (response) => {
+    setPager(new UnverifiedAccessPointsPager(state));
+  };
+
   return (
     <div>
       <StateSelect defaultValue={state} onChange={setState} className={classes.stateSelect} helperText=""/>
@@ -118,6 +123,7 @@ function VerifyTherapists() {
               { title: "State", field: "state", sorting: false },
               { title: "License Type", field: "licenseType", sorting: false },
               { title: "License #", field: "license", sorting: false },
+              { title: "Expiration", field: "licenseExpiration", sorting: false },
               { title: "Email", field: "email", sorting: false },
           ]}
           data={data}
@@ -146,7 +152,7 @@ function VerifyTherapists() {
           title='Unverified Therapists'
           onChangePage={setPage}
           detailPanel={rowData => {
-            return (<ProviderProfile providerId={rowData.owner}/>);
+            return (<ProviderProfile providerId={rowData.owner} userIsAdmin={true} onChange={reload}/>);
           }}
       />
     </div>
@@ -160,6 +166,7 @@ const getUnverifiedAccessPointsQuery = /* GraphQL */ `
   listAccessPoints(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       license
+      licenseExpiration
       provider {
         fullName
         email

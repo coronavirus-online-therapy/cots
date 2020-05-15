@@ -198,6 +198,7 @@ const accessPointsByStateWithProvider = /* GraphQL */ `
     ) {
       items {
         verified
+        licenseExpiration
         provider {
           owner
           fullName

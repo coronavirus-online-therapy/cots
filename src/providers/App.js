@@ -18,7 +18,13 @@ function App(props) {
   datadogLogs.logger.addContext('username', props.authData.username);
   datadogLogs.logger.addContext('cognitoUser', props.authData.attributes);
 
-  return (<ProviderProfile providerId={props.authData.username}/>);
+  const reload = (response) => {
+    if(response.data.updateProvider !== undefined) {
+      window.location.reload(false);
+    }
+  };
+
+  return (<ProviderProfile providerId={props.authData.username} onChange={reload}/>);
 }
 
 const authTheme = {
