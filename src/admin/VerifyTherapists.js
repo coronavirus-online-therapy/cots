@@ -46,7 +46,8 @@ class UnverifiedAccessPointsPager {
     }
 
     let found = 0;
-    while (found < this.pageSize || (found % this.pageSize) === 0) {
+    let needMore = true;
+    while (needMore) {
       let { data: {listAccessPoints}} = await API.graphql(graphqlOperation(getUnverifiedAccessPointsQuery, {limit, nextToken, filter})).catch(e => e);
       const data = listAccessPoints.items.map(item => ({
         ...item.provider,
@@ -58,16 +59,14 @@ class UnverifiedAccessPointsPager {
       found += data.length;
       this.data.push(...data);
 
-      if(listAccessPoints.nextToken !== null) {
-        if(found < this.pageSize) {
-          nextToken = listAccessPoints.nextToken;
-        } else {
-          this.nextPage = pageNum + 1;
-          this.nextPageToken = listAccessPoints.nextToken;
-          break;
-        }
-      } else {
-        break;
+      if(listAccessPoints.nextToken === null) {
+        needMore = false;
+      } else if(found > this.pageSize && (found % this.pageSize) !== 0) {
+        this.nextPage = pageNum + 1;
+        this.nextPageToken = listAccessPoints.nextToken;
+        needMore = false;
+      } else { 
+        nextToken = listAccessPoints.nextToken;
       }
     }
   }
