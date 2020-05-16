@@ -46,7 +46,7 @@ class UnverifiedAccessPointsPager {
     }
 
     let found = 0;
-    while (found < this.pageSize) {
+    while (found < this.pageSize || (found % this.pageSize) === 0) {
       let { data: {listAccessPoints}} = await API.graphql(graphqlOperation(getUnverifiedAccessPointsQuery, {limit, nextToken, filter})).catch(e => e);
       const data = listAccessPoints.items.map(item => ({
         ...item.provider,
