@@ -82,7 +82,9 @@ export default function ListView({providers}) {
     <div className={classes.root}>
 	  <br/>
         <Alert severity="info">
+          <Typography variant="h6">
           PLEASE NOTE: You must let the therapist know you connected with them via Coronavirus Online Therapy, as well as tell them the fee you require. If you do not, they will quote you their full, regular fees. Thank you.
+          </Typography>
         </Alert>
 	  <br/>
         <Typography variant="h5" align="center">
