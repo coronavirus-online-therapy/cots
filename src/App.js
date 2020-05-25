@@ -62,7 +62,7 @@ function App() {
                 <AdminApp />
               </Route>
               <Route path="/providers">
-                yy<Navigation/>
+                <Navigation/>
                 <ProviderApp />
               </Route>
               <Route path="/">
