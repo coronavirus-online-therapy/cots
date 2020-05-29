@@ -16,6 +16,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import EditIcon from '@material-ui/icons/Edit';
 import VerifyIcon from '@material-ui/icons/VerifiedUser';
+import ExpiredIcon from '@material-ui/icons/EventBusy';
 import ExportIcon from '@material-ui/icons/ImportExport';
 import StatsIcon from '@material-ui/icons/Equalizer';
 import IconButton from '@material-ui/core/IconButton';
@@ -24,6 +25,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
 import EditTherapist from './EditTherapist';
 import VerifyTherapists from './VerifyTherapists';
+import ExpiredTherapists from './ExpiredTherapists';
 import Stats from './Stats';
 import Export from './Export';
 
@@ -111,6 +113,10 @@ function AdminDrawer(props) {
         <ListItem button key='Verify Therapists' onClick={changeAdminAction(<VerifyTherapists/>)}>
           <ListItemIcon><VerifyIcon /></ListItemIcon>
           <ListItemText primary='Verify Therapists' />
+        </ListItem>
+        <ListItem button key='Expired Therapists' onClick={changeAdminAction(<ExpiredTherapists/>)}>
+          <ListItemIcon><ExpiredIcon /></ListItemIcon>
+          <ListItemText primary='Expired Therapists' />
         </ListItem>
       </List>
       <Divider />
