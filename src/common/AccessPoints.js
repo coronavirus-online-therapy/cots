@@ -95,6 +95,7 @@ function AccessPoints(props) {
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <MaterialTable
                 disabled={props.disabled}
+                header={actions: 'Edit'}
                 columns={[
                     { title: "State", field: "licState", lookup: stateLookup, editable: 'onAdd' },
                     { title: "License", field: "licNum" },
