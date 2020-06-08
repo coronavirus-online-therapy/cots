@@ -14,7 +14,13 @@ exports.handler = async (event, context) => {
     console.log(event.arguments);
 
     // fetch access points state
-    const accessPoints = await getAccessPoints(event.arguments.query.state, 500);
+    let filter = undefined
+    if (event.arguments.query.verified !== undefined) {
+        filter = {
+            verified: {eq: event.arguments.query.verified}
+        }
+    }
+    const accessPoints = await getAccessPoints(event.arguments.query.state, 500, filter);
     const providers = accessPoints.map(ap => ({...ap.provider,verified:ap.verified})).filter(p => p.active);
 
     // score & sort
@@ -62,22 +68,12 @@ const scorers = {
         } 
         return p===q?1:-1;
     },
-    verified: (p, q) => {
-        if (q !== true) {
-            return 0;
-        }
-        if (p === true) {
-            return 1;
-        }
-        return -1;
-    },
     languages: scoreLists,
     acceptedInsurance: scoreLists,
     specializations: scoreLists,
     modalities: scoreLists,
 };
 const weights = {
-    verified: 100,
     rate: 50,
     languages: 10,
     gender: 5,
@@ -134,7 +130,7 @@ function scoreLists(pList, qList) {
     return sum/qList.length;
 }
 
-async function getAccessPoints(state, limit) {
+async function getAccessPoints(state, limit, filter) {
     const appsyncUrl = process.env.API_COTS_GRAPHQLAPIENDPOINTOUTPUT;
     const endpoint = new urlParse(appsyncUrl).hostname.toString();
     const port = new urlParse(appsyncUrl).port.toString();
@@ -151,6 +147,7 @@ async function getAccessPoints(state, limit) {
         variables: {
             state,
             limit,
+            filter,
         }
     });
 
@@ -188,11 +185,13 @@ async function getAccessPoints(state, limit) {
 const accessPointsByStateWithProvider = /* GraphQL */ `
   query AccessPointsByState(
     $state: String
+    $filter: ModelAccessPointFilterInput
     $limit: Int
     $nextToken: String
   ) {
     accessPointsByState(
       state: $state
+      filter: $filter
       limit: $limit
       nextToken: $nextToken
     ) {
